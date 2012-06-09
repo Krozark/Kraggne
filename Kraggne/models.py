@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 ORDER_CHOICES = 20
 
@@ -12,7 +13,7 @@ class MenuItem(MPTTModel):
             help_text = _("The order of the item in the display nav."))
 
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)
-    parent = TreeForeignKey('self',null=False,blank=False,default=1)
+    parent = TreeForeignKey('self',null=True,blank=True,default=1)
 
     cms_page = models.BooleanField(_('CMS page'),default=True,
             help_text=_("Rafere to a stadar or a CMS page."))
@@ -43,11 +44,11 @@ class MenuItem(MPTTModel):
 
 
 #The choices type of the ItemPage
-from django.contrib.contenttypes.models import ContentType
-CHOICES = []
-for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
-    m = ct.model_class()
-    CHOICES.append("%s.%s" % (m.__module__, m.__name__))
+#
+#CHOICES = []
+#for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
+#    m = ct.model_class()
+#    CHOICES.append("%s.%s" % (m.__module__, m.__name__))
 
 
 #class PageItem(models.Model):
