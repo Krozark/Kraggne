@@ -22,6 +22,7 @@ setup(
     install_requires = [
         "django-generic-flatblocks",
         "django-frontadmin",
+        "django-mptt",
     ],
     zip_safe=False,
 )
