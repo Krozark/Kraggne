@@ -2,11 +2,11 @@
 
 from django.conf import settings
 from django.conf.urls.defaults import patterns#, include, url
-#from easynav.views import GenericView
-#from easynav.models import ItemMenu
-#from easynav.utils import MakePattern
-#
+from Kraggne.views import GenericView
+from Kraggne.models import MenuItem
+from Kraggne.utils import MakePattern
+
 urlpatterns = patterns('',)
-#
-#for u in ItemMenu.objects.filter(auto_create_page = True).order_by('parent__pk','rank').all():
-#    urlpatterns += MakePattern(u)
+
+for u in MenuItem.objects.filter(cms_page = True,is_visible=True):
+    urlpatterns += MakePattern(u)

@@ -1,2 +1,20 @@
 [
+    {
+        "model" : "Kraggne.MenuItem",
+        "pk" : 1,
+        "fields" : {
+            "name" : "main",
+            "order" : 0,
+            "slug" : "main",
+            "parent" : null,
+            "cms_page" : 0,
+            "view" : "",
+            "is_visible" : 0,
+            "url" : "/",
+            "lft" : 1,
+            "rght" : 2,
+            "tree_id" : 1,
+            "level" : 0
+        }
+    }
 ]

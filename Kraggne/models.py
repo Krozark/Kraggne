@@ -44,11 +44,12 @@ class MenuItem(MPTTModel):
 
 
 #The choices type of the ItemPage
-#
-#CHOICES = []
-#for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
-#    m = ct.model_class()
-#    CHOICES.append("%s.%s" % (m.__module__, m.__name__))
+def getchoices():
+    CHOICES = []
+    for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
+        m = ct.model_class()
+        CHOICES.append("%s.%s" % (m.__module__, m.__name__))
+    return CHOICES
 
 
 #class PageItem(models.Model):

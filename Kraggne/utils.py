@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#from easynav.views import GenericView
+from Kraggne.views import GenericView
 from django.conf.urls.defaults import patterns,url
 
 def MakePattern(menuItem):
@@ -12,10 +12,13 @@ def MakePattern(menuItem):
             ur = ur[1:]
         if len(ur)>1 and ur[-1] != "/":
             ur+="/"
-
+    if ur[0] == '^':
+        ur = ur[1:]
+    if ur[-1] == '$':
+        ur= ur[:-1]
     return patterns('',url(
                 r'^%s$' % ur,
-                #GenericView.as_view(),
-                kwargs={"slug": menuItem.slug,},
-                name="easynav-%s" % menuItem.slug
+                GenericView.as_view(),
+                kwargs={"pk": menuItem.pk,},
+                name="kraggne-%s" % menuItem.slug
                 ))
