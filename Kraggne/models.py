@@ -4,7 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 ORDER_CHOICES = 20
 
-class ItemMenu(MPTTModel):
+class MenuItem(MPTTModel):
     name = models.CharField(_('Item'),max_length=255)
     order = models.PositiveIntegerField(_('Display order'),
             default=0,
@@ -50,7 +50,7 @@ for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
     CHOICES.append("%s.%s" % (m.__module__, m.__name__))
 
 
-#class ItemPage(models.Model):
+#class PageItem(models.Model):
 #    parent = models.ForeignKey(ItemMenu,null=False,blank=False,default=1,limit_choices_to = {'pk__in':ItemMenu.objects.filter(auto_create_page=True).exclude(pk=1)})
 #
 #    rank = models.PositiveIntegerField(_('Rank'),default=0,
