@@ -4,7 +4,7 @@ setup(
     name='Kraggen',
     version='0.1',
     description='A django cms project',
-    long_description=open('README').read(),
+    long_description=open('README.md').read(),
     author='Maxime Barbier',
     author_email='maxime.barbier1991@gmail.com',
     url='https://github.com/Krozark/Kraggne/tree/master',
