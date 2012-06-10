@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+
 ORDER_CHOICES = 20
 
 class MenuItem(MPTTModel):
@@ -44,6 +45,32 @@ class MenuItem(MPTTModel):
         return u'%s' % self.name
 
 
+from django.db.models.signals import post_save#, pre_save
+from django.dispatch import receiver
+from Kraggne.utils import MakePattern#,clearCache
+from Kraggne import urls as Kraggne_urls
+
+# rebuild url of children if it's nedeed to conserve the base url given
+@receiver(post_save, sender=MenuItem)
+def MenuItemSave(sender,**kwargs):
+
+    if hasattr(Kraggne_urls,'urlpatterns'):
+        urls = getattr(Kraggne_urls,'urlpatterns')
+        urls += MakePattern(kwargs['instance'])
+
+    children = MenuItem.objects.filter(parent=kwargs['instance'],view='',cms_page=True)
+    base_url = kwargs['instance'].url
+    for child in children:
+        url = child.url
+        if base_url == "/":
+            child.url = "/"+child.slug
+        elif base_url[-1] != "/":
+            child.url = base_url +"/"+child.slug
+        else:
+            child.url = base_url +child.slug
+
+        if url != child.url:
+            child.save()
 
 #The choices type of the ItemPage
 def getchoices():
@@ -52,6 +79,7 @@ def getchoices():
         m = ct.model_class()
         CHOICES.append("%s.%s" % (m.__module__, m.__name__))
     return CHOICES
+
 
 
 #class PageItem(models.Model):

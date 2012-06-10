@@ -6,11 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.test.client import Client
 import re
 
-from Kraggne import urls as Kraggne_urls
 from Kraggne.utils import MakePattern
 
 from Kraggne.models import MenuItem
-
 
 class MenuItemForm(forms.ModelForm):
 
@@ -54,17 +52,17 @@ class MenuItemForm(forms.ModelForm):
 
         else: #auto
             if link:
-                if link[0] == '^': #regex
-                    try:
-                        re.compile(link)
-                        return link
-                    except:
-                        raise forms.ValidationError(_("%s is not a valide Regex." % link))
-                elif link[0] != "/":
-                    self.url = "/"+link
-                else:
+                try:
+                    re.compile(link)
                     self.url = link
-                return link
+                    return link
+                except:
+                    raise forms.ValidationError(_("%s is not a valide Regex." % link))
+                #elif link[0] != "/":
+                #    self.url = "/"+link
+                #else:
+                #    self.url = link
+                #return link
         
         parent = self.cleaned_data['parent']
         if parent:
@@ -92,10 +90,10 @@ class MenuItemForm(forms.ModelForm):
         item = super(MenuItemForm, self).save(commit=False)
         item.url = self.url
         
-        #try to register the new url
-        if hasattr(Kraggne_urls,'urlpatterns'):
-            urls = getattr(Kraggne_urls,'urlpatterns')
-            urls += MakePattern(item)
+        ##try to register the new url
+        #if hasattr(Kraggne_urls,'urlpatterns'):
+        #    urls = getattr(Kraggne_urls,'urlpatterns')
+        #    urls += MakePattern(item)
 
         if commit:
             item.save() 
