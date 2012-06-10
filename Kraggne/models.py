@@ -29,6 +29,8 @@ class MenuItem(MPTTModel):
     class Meta:
         ordering = ('lft', 'tree_id')
 
+    class MPTTMeta:
+        order_insertion_by = ['order']
 
     def __IsAccessible__(self):
         if self.is_visible and self.parent != None:

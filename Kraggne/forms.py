@@ -76,7 +76,7 @@ class MenuItemForm(forms.ModelForm):
                 self.url = parent.url +self.cleaned_data['slug'] 
         else:
             self.url = "/"+self.cleaned_data['slug']
-        return self.cleaned_data['slug']
+        return ''
 
     def clean(self):
         super(MenuItemForm, self).clean()

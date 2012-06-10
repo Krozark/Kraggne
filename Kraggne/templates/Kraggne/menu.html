@@ -1,11 +1,7 @@
-<ul class="breadcrumb">
+<ul class="menu">
     {% for menu in object_list %}
     <li>
-        {% if menu.slug == page_slug %}
-        {{menu}}
-        {% else %}
         <a href="{{menu.get_absolute_url}}">{{menu}}</a>
-        {% endif %}
     </li>
     {% endfor %}
 </ul>

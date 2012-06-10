@@ -10,20 +10,18 @@ from django.utils.translation import ugettext_lazy as _
 from Kraggne.models import MenuItem
 
 class GenericView(TemplateView):
-    template_name = "Karggne/genericPage.html"
+    template_name = "Kraggne/genericPage.html"
 
     def get_context_data(self, **kwargs):
         context = super(GenericView, self).get_context_data(**kwargs)
 
-        pk =  kwargs['params'].get('pk',False)
-        if not pk:
-            pk =  kwargs.get('pk',False)
+        pk =  kwargs.get('pk',False)
         if pk:
             page = MenuItem.objects.get(pk=pk)
             context['page_slug'] = page.slug
-            content = ItemPage.objects.filter(parent__slug=slug).order_by('')
-            print content
-            context['content_blocks'] = content
+            #content = ItemPage.objects.filter(parent__slug=slug).order_by('')
+            #print content
+            #context['content_blocks'] = content
         return context
 
 #from django.shortcuts import render_to_response
