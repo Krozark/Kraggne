@@ -125,13 +125,14 @@ register.tag('breadcrumb', do_breadcrumb)
 
 class menuNode(Node):
 
-    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,level=0):
+    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,level_min=0,level_nb=0):
         self.slug = slug
         self.template_path = template_path
         self.store_in_object = store_in_object
         self.variable_name = variable_name
         self.include_self = include_self
-        self.level = level
+        self.level_min = level_min
+        self.level_nb = level_nb
 
     def render(self, context):
 
@@ -146,12 +147,17 @@ class menuNode(Node):
         if not menu:
             return ''
 
-        if self.level > 0:
-            tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__lte=menu.level+self.level)
-        elif self.level == 0:
-            tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
+        if self.level_min > 0:
+            tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__gte=menu.level+self.level_min)
         else:
-            tree = menu.get_ancestors(include_self=True).filter(level__gte=menu.level+self.level)[0].get_descendants(include_self=self.include_self).filter(is_visible=True)
+            if self.level_min < 0:
+                menu = menu.get_ancestors(include_self=True).filter(level__gte=menu.level+self.level_min-1)[0]
+                tree = menu.get_descendants(include_self=False).filter(is_visible=True)
+            else:
+                tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
+
+        if self.level_nb>0:
+            tree = tree.filter(level__lte=menu.level+self.level_nb)
 
         context['root'] = menu
 
@@ -183,11 +189,12 @@ class menuNode(Node):
 
 def do_menu(parser, token):
     """
-    {% menu ["slug"] [include_self=True level=0] %}
-    {% menu ["slug"] into "slug_object" [include_self=True level=0] %}
-    {% menu ["slug"] with "templatename.html" [include_self=True level=0] %}
-    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True level=0] %}
-    the level arg is relative to the menu pass in arg
+    {% menu ["slug"] [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] into "slug_object" [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] with "templatename.html" [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True level_min=0 level_nb=0] %}
+    the level_min arg is relative to the menu pass in arg
+    level_min must be <= 0 for a good result. if >0, the result can change, and is not guarantie
     """
 
     bits = token.contents.split()
@@ -197,7 +204,8 @@ def do_menu(parser, token):
         'template_path': next_bit_for(bits, 'with'),
         'variable_name': next_bit_for(bits, 'as'),
         'include_self' : get_val_for(bits,'include_self',if_none=True,type=bool),
-        'level' : get_val_for(bits,'level',if_none=0,type=int),
+        'level_min' : get_val_for(bits,'level_min',if_none=0,type=int),
+        'level_nb' : get_val_for(bits,'level_nb',if_none=0,type=int),
     }
     return menuNode(**args)
 
