@@ -2,14 +2,14 @@
 
 {% block project.body %}
 
-{% for object in content_blocks %}
 {% comment %}
+{% for object in content_blocks %}
 <div class="block">
     {% with name="include/"|add:object.content_type|add:".inc.html" %}
     {% include name %}
     {% endwith %}
 </div>
-{% endcomment %}
 {% endfor %}
+{% endcomment %}
 
 {% endblock %}

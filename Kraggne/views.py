@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
 #from django.db.models import Q
 
-#from Kraggne.models import *
+from Kraggne.models import MenuItem
 
 class GenericView(TemplateView):
     template_name = "Karggne/genericPage.html"
@@ -19,10 +19,11 @@ class GenericView(TemplateView):
         if not pk:
             pk =  kwargs.get('pk',False)
         if pk:
-            pass
-           # content = ItemPage.objects.filter(parent__slug=slug).order_by('')
-           # print content
-           # context['content_blocks'] = content
+            page = MenuItem.objects.get(pk=pk)
+            context['page_slug'] = page.slug
+            content = ItemPage.objects.filter(parent__slug=slug).order_by('')
+            print content
+            context['content_blocks'] = content
         return context
 
 #from django.shortcuts import render_to_response
