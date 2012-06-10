@@ -125,13 +125,13 @@ register.tag('breadcrumb', do_breadcrumb)
 
 class menuNode(Node):
 
-    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,fulltree=True):
+    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,level=0):
         self.slug = slug
         self.template_path = template_path
         self.store_in_object = store_in_object
         self.variable_name = variable_name
         self.include_self = include_self
-        self.fulltree = fulltree
+        self.level = level
 
     def render(self, context):
 
@@ -146,11 +146,13 @@ class menuNode(Node):
         if not menu:
             return ''
 
-
-        if self.fulltree:
+        if self.level > 0:
+            tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__lte=menu.level+self.level)
+        elif self.level == 0:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
         else:
-            tree = menu.get_children()
+            tree = menu.get_ancestors(include_self=True).filter(level__gte=menu.level+self.level)[0].get_descendants(include_self=self.include_self).filter(is_visible=True)
+
         context['root'] = menu
 
         if self.store_in_object:
@@ -181,10 +183,11 @@ class menuNode(Node):
 
 def do_menu(parser, token):
     """
-    {% menu ["slug"] [include_self=True fulltree=True] %}
-    {% menu ["slug"] into "slug_object" [include_self=True fulltree=True] %}
-    {% menu ["slug"] with "templatename.html" [include_self=True fulltree=True] %}
-    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True fulltree=True] %}
+    {% menu ["slug"] [include_self=True level=0] %}
+    {% menu ["slug"] into "slug_object" [include_self=True level=0] %}
+    {% menu ["slug"] with "templatename.html" [include_self=True level=0] %}
+    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True level=0] %}
+    the level arg is relative to the menu pass in arg
     """
 
     bits = token.contents.split()
@@ -194,7 +197,7 @@ def do_menu(parser, token):
         'template_path': next_bit_for(bits, 'with'),
         'variable_name': next_bit_for(bits, 'as'),
         'include_self' : get_val_for(bits,'include_self',if_none=True,type=bool),
-        'fulltree' : get_val_for(bits,'fulltree',if_none=True,type=bool),
+        'level' : get_val_for(bits,'level',if_none=0,type=int),
     }
     return menuNode(**args)
 
@@ -294,12 +297,10 @@ register.tag('last', do_last)
 
 @register.filter
 def ancestor(arg,val):
-    print arg,val
     return arg.is_ancestor_of(val,include_self=True)
 
 @register.filter
 def descendant(arg,val):
-    print arg,val
     return arg.is_descendant_of(val,include_self=True)
 
 
