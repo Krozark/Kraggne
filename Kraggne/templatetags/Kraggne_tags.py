@@ -63,8 +63,7 @@ class breadcumbNode(Node):
     def render(self, context):
         if not self.slug:
             try:
-                self.slug = context["page_slug"]
-                menu = GetMenuBySlug(self.slug)
+                menu = context["page"]
             except:
                 return ''
         else:
@@ -138,10 +137,12 @@ class menuNode(Node):
 
         if not self.slug:
             try:
-                self.slug = context["page_slug"]
+                menu = context["page"]
             except:
                 return ''
-        menu = GetMenuBySlug(resolve(self.slug,context))
+        else:
+            menu = GetMenuBySlug(resolve(self.slug,context))
+
         if not menu:
             return ''
 
@@ -264,32 +265,31 @@ register.tag('last', do_last)
 ##########################################################################
 ######################### UTILS TAGS #####################################
 ##########################################################################
-class GetMenuNode(Node):
-
-    def __init__(self,store_in_object=None):
-        self.store_in_object = store_in_object or 'page_itemmenu'
-
-    def render(self, context):
-        try:
-            slug = context["page_slug"]
-            context[resolve(self.store_in_object,context)] = MenuItem.objects.get(slug=slug)
-            print MenuItem.objects.get(slug=slug)
-        except:
-            pass
-        return ''
-
-def do_getmenu(parser, token):
-    """
-    {% getmenu [into "slug_object"] %}
-    """
-
-    bits = token.contents.split()
-    args = {
-        'store_in_object': next_bit_for(bits, 'into'),
-    }
-    return GetMenuNode(**args)
-
-register.tag('getmenu', do_getmenu)
+#class GetMenuNode(Node):
+#
+#    def __init__(self,store_in_object=None):
+#        self.store_in_object = store_in_object or 'page_itemmenu'
+#
+#    def render(self, context):
+#        try:
+#            slug = context["page_slug"]
+#            context[resolve(self.store_in_object,context)] = MenuItem.objects.get(slug=slug)
+#        except:
+#            pass
+#        return ''
+#
+#def do_getmenu(parser, token):
+#    """
+#    {% getmenu [into "slug_object"] %}
+#    """
+#
+#    bits = token.contents.split()
+#    args = {
+#        'store_in_object': next_bit_for(bits, 'into'),
+#    }
+#    return GetMenuNode(**args)
+#
+#register.tag('getmenu', do_getmenu)
 
 
 @register.filter

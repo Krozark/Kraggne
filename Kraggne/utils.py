@@ -19,6 +19,6 @@ def MakePattern(menuItem):
     return patterns('',url(
                 r'^%s$' % ur,
                 GenericView.as_view(),
-                kwargs={"pk": menuItem.pk,},
+                kwargs={"page": menuItem,},
                 name="kraggne-%s" % menuItem.slug
                 ))

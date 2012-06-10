@@ -1,5 +1,4 @@
 {% load Kraggne_tags %}
-{% getmenu into menuitem %}
 
 <div class="menu">
 {% for menu in object_list %}
@@ -17,8 +16,8 @@
 
 
 {% last == menu.level diff %}
-<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:menuitem %}active{% else %}inactive{% endif %} item">
-<a href="{{menu.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:menuitem %}active{% else %}inactive{% endif %} link">{{menu}}</a>
+<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">
+<a href="{{menu.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} link">{{menu}}</a>
 
 
 

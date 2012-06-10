@@ -15,10 +15,10 @@ class GenericView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(GenericView, self).get_context_data(**kwargs)
 
-        pk =  kwargs.get('pk',False)
-        if pk:
-            page = MenuItem.objects.get(pk=pk)
-            context['page_slug'] = page.slug
+        page =  kwargs.get('page',False)
+        if page:
+            context['page'] = page
+
             #content = ItemPage.objects.filter(parent__slug=slug).order_by('')
             #print content
             #context['content_blocks'] = content
