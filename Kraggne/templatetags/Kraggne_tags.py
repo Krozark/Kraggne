@@ -2,6 +2,8 @@
 
 from django.template import Library, Node, TemplateSyntaxError, TemplateDoesNotExist, Variable
 from django.template.loader import select_template
+import operator
+
 from Kraggne.models import MenuItem
 
 register = Library()
@@ -34,8 +36,8 @@ def resolve(var, context):
     if var[0] in ('"', "'") and var[-1] == var[0]:
         return var[1:-1]
     else:
-        try : 
-            return context[var]
+        try:
+            return Variable(var).resolve(context)
         except:
             return var
 
@@ -62,10 +64,11 @@ class breadcumbNode(Node):
         if not self.slug:
             try:
                 self.slug = context["page_slug"]
+                menu = GetMenuBySlug(self.slug)
             except:
                 return ''
-
-        menu = GetMenuBySlug(resolve(self.slug,context))
+        else:
+            menu = GetMenuBySlug(resolve(self.slug,context))
 
         if not menu:
             return ''
@@ -123,21 +126,31 @@ register.tag('breadcrumb', do_breadcrumb)
 
 class menuNode(Node):
 
-    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True):
+    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,fulltree=True):
         self.slug = slug
         self.template_path = template_path
         self.store_in_object = store_in_object
         self.variable_name = variable_name
         self.include_self = include_self
+        self.fulltree = fulltree
 
-#is_ancestor_of(other, include_self=True)
-#get_descendants(include_self=False)
     def render(self, context):
+
+        if not self.slug:
+            try:
+                self.slug = context["page_slug"]
+            except:
+                return ''
         menu = GetMenuBySlug(resolve(self.slug,context))
         if not menu:
             return ''
 
-        tree = menu.get_descendants(include_self=self.include_self)
+
+        if self.fulltree:
+            tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
+        else:
+            tree = menu.get_children()
+        context['root'] = menu
 
         if self.store_in_object:
             context[resolve(self.store_in_object,context)] = tree
@@ -167,10 +180,10 @@ class menuNode(Node):
 
 def do_menu(parser, token):
     """
-    {% menu "slug" [include_self=True] %}
-    {% menu "slug" into "slug_object" [include_self=True] %}
-    {% menu "slug" with "templatename.html" [include_self=True] %}
-    {% menu "slug" with "templatename.html" as "variable" [include_self=True] %}
+    {% menu ["slug"] [include_self=True fulltree=True] %}
+    {% menu ["slug"] into "slug_object" [include_self=True fulltree=True] %}
+    {% menu ["slug"] with "templatename.html" [include_self=True fulltree=True] %}
+    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True fulltree=True] %}
     """
 
     bits = token.contents.split()
@@ -179,10 +192,128 @@ def do_menu(parser, token):
         'store_in_object': next_bit_for(bits, 'into'),
         'template_path': next_bit_for(bits, 'with'),
         'variable_name': next_bit_for(bits, 'as'),
-        'include_self' : get_val_for(bits,'include_self',if_none=True,type=bool)
+        'include_self' : get_val_for(bits,'include_self',if_none=True,type=bool),
+        'fulltree' : get_val_for(bits,'fulltree',if_none=True,type=bool),
     }
     return menuNode(**args)
 
 register.tag('menu', do_menu)
+
+####################################################################
+###################### compare #####################################
+####################################################################
+
+class lastNode(Node):
+
+    def __init__(self,op,var,dest):
+        self.op = op
+        self.var=var
+        self.dest=dest
+
+    def render(self, context):
+        var = Variable(self.var).resolve(context)
+        counter = Variable('forloop.counter0').resolve(context)
+        res = False
+
+        if counter == 0:
+            context['last_value'] = var
+            context[self.dest] = False
+            return''
+
+        if context.has_key('last_value'):
+            res = getattr(operator,self.op)((context['last_value']),var)
+        context['last_value'] = var
+        context[self.dest] = res
+        return ''
+
+
+        
+def do_last(parser, token):
+    """
+    {% last == obj2 var %}
+    {% last != obj2 var %}
+    {% last <= obj2 var %}
+    {% last < obj2 var %}
+    {% last >= obj2 var %}
+    {% last > obj2 var %}
+    """
+
+    bits = token.contents.split()
+    if bits.__len__() != 4:
+        return ''
+    op = bits[1]
+    if op == "==":
+        op = "eq"
+    elif op == "!=":
+        op = "ne"
+    elif op == "<=":
+        op = "le"
+    elif op == "<":
+        op = "lt"
+    elif op == ">=":
+        op = "ge"
+    elif op == ">":
+        op = "gt"
+    else:
+        return ''
+
+    return lastNode(op,bits[2],bits[3])
+
+register.tag('last', do_last)
+
+##########################################################################
+######################### UTILS TAGS #####################################
+##########################################################################
+class GetMenuNode(Node):
+
+    def __init__(self,store_in_object=None):
+        self.store_in_object = store_in_object or 'page_itemmenu'
+
+    def render(self, context):
+        try:
+            slug = context["page_slug"]
+            context[resolve(self.store_in_object,context)] = MenuItem.objects.get(slug=slug)
+            print MenuItem.objects.get(slug=slug)
+        except:
+            pass
+        return ''
+
+def do_getmenu(parser, token):
+    """
+    {% getmenu [into "slug_object"] %}
+    """
+
+    bits = token.contents.split()
+    args = {
+        'store_in_object': next_bit_for(bits, 'into'),
+    }
+    return GetMenuNode(**args)
+
+register.tag('getmenu', do_getmenu)
+
+
+@register.filter
+def ancestor(arg,val):
+    print arg,val
+    return arg.is_ancestor_of(val,include_self=True)
+
+@register.filter
+def descendant(arg,val):
+    print arg,val
+    return arg.is_descendant_of(val,include_self=True)
+
+
+@register.filter
+def range(arg,value ):
+    arg = arg or 0
+    value = value or 0
+    res = xrange(arg,value)
+   # if (arg > value):
+   #     res = res.__reversed__()
+    return res
+
+@register.filter
+def sub(arg, value ):
+    return arg-value
 
 

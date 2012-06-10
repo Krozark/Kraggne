@@ -1,7 +1,31 @@
-<ul class="menu">
-    {% for menu in object_list %}
-    <li>
-        <a href="{{menu.get_absolute_url}}">{{menu}}</a>
-    </li>
+{% load Kraggne_tags %}
+{% getmenu into menuitem %}
+
+<div class="menu">
+{% for menu in object_list %}
+{% if forloop.first %}
+<ul class="menu-0">
+{% else %}
+    {% for x in last_value|range:menu.level %}
+    <ul class="menu-{{x|sub:root.level}}">
     {% endfor %}
-</ul>
+
+    {% for x in menu.level|range:last_value %}
+    </ul></li>
+    {% endfor %}
+{% endif %}
+
+
+{% last == menu.level diff %}
+<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:menuitem %}active{% else %}inactive{% endif %} item">
+<a href="{{menu.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:menuitem %}active{% else %}inactive{% endif %} link">{{menu}}</a>
+
+
+
+{% if forloop.last %}
+    {% for x in root.level|range:menu.level %}
+    </ul></li>
+    {% endfor %}
+{% endif %}
+{% endfor %}
+</div>
