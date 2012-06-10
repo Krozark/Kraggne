@@ -23,7 +23,7 @@ Breadcrumb:
 
 
 
-Exemple
+Exemple:
 -------
 
     {% load Kraggne_tags %}
