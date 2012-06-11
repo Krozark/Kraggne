@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList, TemplateBlock
-from Kraggne.contrib.django_generic_flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm, TempateBlockForm
+from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList, TemplateBlock
+from Kraggne.contrib.flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm, TempateBlockForm
 
 class GenericFlatblockAdmin(admin.ModelAdmin):
 
@@ -44,7 +44,7 @@ class GenericFlatblockAdmin(admin.ModelAdmin):
             'related_module_name': related_object._meta.module_name,
         }
         c.update(extra_context or {})
-        self.change_form_template = 'admin/django_generic_flatblocks/change_form_forward.html'
+        self.change_form_template = 'admin/flatblocks/change_form_forward.html'
         return super(GenericFlatblockAdmin, self).change_view(request, object_id, extra_context=c)
 
 admin.site.register(GenericFlatblock, GenericFlatblockAdmin)

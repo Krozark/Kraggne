@@ -78,7 +78,7 @@ from django.contrib.contenttypes.models import ContentType
 #The choices type of the ItemPage
 def getchoices():
     CHOICES = []
-    for ct in ContentType.objects.filter(app_label="django_generic_flatblocks"):
+    for ct in ContentType.objects.filter(app_label="flatblocks"):
         m = ct.model_class()
         CHOICES.append("%s.%s" % (m.__module__, m.__name__))
     return CHOICES

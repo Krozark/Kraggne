@@ -3,8 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core import serializers
-from Kraggne.contrib.django_generic_flatblocks.fields import JSONField
-from Kraggne.contrib.django_generic_flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
+from Kraggne.contrib.flatblocks.fields import JSONField
+from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
 ### model use to link to any other model item
 class GenericFlatblock(models.Model):

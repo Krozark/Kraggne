@@ -135,7 +135,6 @@ class menuNode(Node):
         self.level_nb = level_nb
 
     def render(self, context):
-
         if not self.slug:
             try:
                 menu = context["page"]
@@ -151,7 +150,7 @@ class menuNode(Node):
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__gte=menu.level+self.level_min)
         elif self.level_min < 0:
             tmp = menu
-            menu = menu.get_ancestors(include_self=self.include_self).filter(level__gte=menu.level+self.level_min-1)[0]
+            menu = menu.get_ancestors(include_self=True).filter(level__gte=menu.level+self.level_min-1)[0]
             tree = menu.get_descendants(include_self=False).filter(is_visible=True)
             if self.include_self == False:
                 tree=tree.exclude(pk__in=tmp.get_descendants(include_self=True))

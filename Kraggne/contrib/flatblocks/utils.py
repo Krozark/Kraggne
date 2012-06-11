@@ -9,8 +9,8 @@ def GetTemplatesPath(modelname,type,template_path=None):
     return template_paths
 
 def GetBlockContent(obj,context,template_path=None):
-    template_paths = GetTemplatesPath('django_generic_flatblocks.GenericFlatblock','object',template_path)
-    template_paths.append("django_generic_flatblocks/object.html")
+    template_paths = GetTemplatesPath('flatblocks.GenericFlatblock','object',template_path)
+    template_paths.append("flatblocks/object.html")
     try:
         t = select_template(template_paths)
     except:
@@ -20,8 +20,8 @@ def GetBlockContent(obj,context,template_path=None):
 
 
 def GetListContent(obj,context,template_path=None):
-    template_paths = GetTemplatesPath('django_generic_flatblocks.GenericFlatblockList','object_list',template_path)
-    template_paths.append("django_generic_flatblocks/object_list.html")
+    template_paths = GetTemplatesPath('flatblocks.GenericFlatblockList','object_list',template_path)
+    template_paths.append("flatblocks/object_list.html")
     try:
         t = select_template(template_paths)
     except:

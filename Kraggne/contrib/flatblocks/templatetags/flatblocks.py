@@ -4,8 +4,8 @@ from django.template.loader import select_template
 from django.conf import settings
 from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
-from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList
-from Kraggne.contrib.django_generic_flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
+from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList
+from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
 register = Library()
 
