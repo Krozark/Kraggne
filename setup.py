@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Kraggen',
+    name='Kraggne',
     version='0.1',
     description='A django cms project',
     long_description=open('README.md').read(),
