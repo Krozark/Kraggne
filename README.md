@@ -22,9 +22,20 @@ Breadcrumb:
     {% breadcrumb ["slug"] with "templatename.html" as "variable" [include_self=True] %}
 
 
+Instalation:
+-----------
+     
+    in your INSTALLED_APPS add :
+        'mptt'
+        'Kraggne'
+
+    in your urls.py add :
+        (r'',            include('Kraggne.urls')),
+
 
 Exemple:
 -------
+
 
     {% load Kraggne_tags %}
 
