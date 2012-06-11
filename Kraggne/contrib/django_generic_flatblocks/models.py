@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django_generic_flatblocks.fields import JSONField
+from Kraggne.contrib.django_generic_flatblocks.fields import JSONField
 from django.core import serializers
 
 class GenericFlatblock(models.Model):

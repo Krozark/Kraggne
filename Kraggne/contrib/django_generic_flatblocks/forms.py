@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from django_generic_flatblocks.models import GenericFlatblockList, GenericFlatblock
+from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblockList, GenericFlatblock
 import json
 
 class GenericFlatblockForm(ModelForm):

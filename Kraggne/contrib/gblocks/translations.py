@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from modeltranslation.translator import translator, TranslationOptions
-from django_generic_flatblocks.contrib.gblocks.models import *
+from Kraggne.contrib.gblocks.models import *
 
 
 class TitleOptions(TranslationOptions):

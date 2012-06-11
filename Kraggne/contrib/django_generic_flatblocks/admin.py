@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList
-from django_generic_flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm
+from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList
+from Kraggne.contrib.django_generic_flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm
 
 class GenericFlatblockAdmin(admin.ModelAdmin):
 
