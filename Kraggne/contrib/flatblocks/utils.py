@@ -1,15 +1,14 @@
 from django.template.loader import select_template
 
-def GetTemplatesPath(modelname,type,template_path=None):
+def GetTemplatesPath(appname,modelname,type,template_path=None):
     template_paths = []
     if template_path:
         template_paths.append(template_path)
-    var = modelname.lower().split(".")
-    template_paths.append('%s/%s/%s.html' % (var[0],var[1],type))
+    template_paths.append('%s/%s/%s.html' % (appname,modelname,type))
     return template_paths
 
 def GetBlockContent(obj,context,template_path=None):
-    template_paths = GetTemplatesPath('flatblocks.GenericFlatblock','object',template_path)
+    template_paths = GetTemplatesPath(obj.content_type.app_label,obj.content_type.model,'object',template_path)
     template_paths.append("flatblocks/object.html")
     try:
         t = select_template(template_paths)
@@ -20,7 +19,7 @@ def GetBlockContent(obj,context,template_path=None):
 
 
 def GetListContent(obj,context,template_path=None):
-    template_paths = GetTemplatesPath('flatblocks.GenericFlatblockList','object_list',template_path)
+    template_paths = GetTemplatesPath(obj.content_type.app_label,obj.content_type.model,'object_list',template_path)
     template_paths.append("flatblocks/object_list.html")
     try:
         t = select_template(template_paths)
