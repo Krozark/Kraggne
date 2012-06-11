@@ -17,7 +17,11 @@ Instalation:
 
     in your urls.py add :
         (r'',            include('Kraggne.urls')),
-
+    the first time you run syncdb, initial data must be created:
+        rename fixtures/initial_data.json.first in fixtures/initial_data.json
+        syncdb
+        rename fixtures/initial_data.json in  fixtures/initial_data.json
+        if you dont' do this, the other time you'll make a syncdb, "main" menu will be break.
 
 Menu Gestion:
 ------------
