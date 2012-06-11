@@ -5,8 +5,24 @@ from django.conf import settings
 from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
 from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList
+from Kraggne.contrib.django_generic_flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
 register = Library()
+
+def next_bit_for(bits, key, if_none=None):
+    try:
+        return bits[bits.index(key)+1]
+    except ValueError:
+        return if_none
+
+def resolve(var, context):
+    """Resolves a variable out of context if it's not in quotes"""
+    if not var:
+        return None
+    if var[0] in ('"', "'") and var[-1] == var[0]:
+        return var[1:-1]
+    else:
+        return Variable(var).resolve(context)
 
 class GenericFlatblockBaseNode(Node):
 
@@ -17,13 +33,6 @@ class GenericFlatblockBaseNode(Node):
         self.variable_name = variable_name
         self.store_in_object = store_in_object
     
-    def GetTemplatesPath(self,context,name):
-        template_paths = []
-        if self.template_path:
-            template_paths.append(self.resolve(self.template_path, context))
-        var = self.resolve(self.modelname, context).lower().split(".")
-        template_paths.append('%s/%s/%s.html' % (var[0],var[1],name))
-        return template_paths
 
     def generate_slug(self, slug, context):
         """
@@ -35,9 +44,9 @@ class GenericFlatblockBaseNode(Node):
         """
         # If the user passed a integer as slug, use it as a primary key in
         # self.get_content_object()
-        if not ',' in slug and isinstance(self.resolve(slug, context), int):
-            return self.resolve(slug, context)
-        return slugify('_'.join([str(self.resolve(i, context)) for i in slug.split(',')]))
+        if not ',' in slug and isinstance(resolve(slug, context), int):
+            return resolve(slug, context)
+        return slugify('_'.join([str(resolve(i, context)) for i in slug.split(',')]))
 
     def generate_admin_link(self, related_object, context):
         """
@@ -54,16 +63,10 @@ class GenericFlatblockBaseNode(Node):
         else:
             return None
 
-    def resolve(self, var, context):
-        """Resolves a variable out of context if it's not in quotes"""
-        if var[0] in ('"', "'") and var[-1] == var[0]:
-            return var[1:-1]
-        else:
-            return Variable(var).resolve(context)
 
     def resolve_model_for_label(self, modelname, context):
         """resolves a model for a applabel.modelname string"""
-        applabel, modellabel = self.resolve(modelname, context).split(".")
+        applabel, modellabel = resolve(modelname, context).split(".")
         related_model = get_model(applabel, modellabel)
         return related_model
 
@@ -111,35 +114,16 @@ class GenericFlatblockNode(GenericFlatblockBaseNode):
 
         # if "into" is provided, store the related object into this variable
         if self.store_in_object:
-            into_var = self.resolve(self.store_in_object, context)
+            into_var = resolve(self.store_in_object, context)
             context[into_var] = related_object
-            context["%s_generic_object" % into_var] = generic_object
-            context["%s_admin_url" % into_var] = admin_url
             return ''
 
-        # Add the model instances to the current context
-        context['generic_object'] = generic_object
-        context['object'] = related_object
-        context['admin_url'] = admin_url
 
-
-        # Resolve the template(s)
-        template_paths = self.GetTemplatesPath(context,'object')
-        template_paths.append("django_generic_flatblocks/object.html")
-
-        try:
-            t = select_template(template_paths)
-        except:
-            if settings.TEMPLATE_DEBUG:
-                raise
-            return ''
-
-        context['object_model_name'] = self.modelname
-        content = t.render(context)
+        content= GetBlockContent(generic_object,context,resolve(self.template_path,context))
 
         # Set content as variable inside context, if variable_name is given
         if self.variable_name:
-            context[self.resolve(self.variable_name, context)] = content
+            context[resolve(self.variable_name, context)] = content
             return ''
         return content
 
@@ -150,13 +134,6 @@ def do_genericflatblock(parser, token):
     {% gblock "slug" for "appname.modelname" with "templatename.html" %}
     {% gblock "slug" for "appname.modelname" with "templatename.html" as "variable" %}
     """
-
-    def next_bit_for(bits, key, if_none=None):
-        try:
-            return bits[bits.index(key)+1]
-        except ValueError:
-            return if_none
-
 
     bits = token.contents.split()
     args = {
@@ -200,29 +177,17 @@ class GenericFlatblockListNode(GenericFlatblockBaseNode):
 
         # if "into" is provided, store the related object into this variable
         if self.store_in_object:
-            into_var = self.resolve(self.store_in_object, context)
+            into_var = resolve(self.store_in_object, context)
             context[into_var] = generic_object
             return ''
 
-        context['object'] = generic_object
 
         # Resolve the template(s)
-        template_paths = self.GetTemplatesPath(context,"object_list")
-        template_paths.append("django_generic_flatblocks/object_list.html")
-
-        try:
-            t = select_template(template_paths)
-        except:
-            if settings.TEMPLATE_DEBUG:
-                raise
-            return ''
-
-        context['object_model_name'] = self.modelname
-        content = t.render(context)
+        content = GetListContent(generic_object,context,resolve(self.template_path,context))
 
         # Set content as variable inside context, if variable_name is given
         if self.variable_name:
-            context[self.resolve(self.variable_name, context)] = content
+            context[resolve(self.variable_name, context)] = content
             return ''
         return content
 
@@ -233,13 +198,6 @@ def do_genericflatblocklist(parser, token):
     {% glist "slug" for "appname.modelname" with "templatename.html" %}
     {% glist "slug" for "appname.modelname" with "templatename.html" as "variable" %}
     """
-
-    def next_bit_for(bits, key, if_none=None):
-        try:
-            return bits[bits.index(key)+1]
-        except ValueError:
-            return if_none
-
 
     bits = token.contents.split()
     args = {
@@ -252,3 +210,29 @@ def do_genericflatblocklist(parser, token):
     return GenericFlatblockListNode(**args)
 
 register.tag('glist', do_genericflatblocklist)
+
+
+##############################################################
+################ display tag #################################
+##############################################################
+
+class DisplayNode(Node):
+
+    def __init__(self, obj, template_path):
+        self.obj = obj
+        self.template_path = template_path
+
+    def render(self,context):
+        return resolve(self.obj,context).Display(context,self.template_path)
+
+def do_display(parser, token):
+    """
+    {% display obj [with template_path ] %}
+    """
+
+    bits = token.contents.split()
+    obj = next_bit_for(bits, 'display')
+    template = next_bit_for(bits,'with')
+
+    return DisplayNode(obj,template)
+register.tag('display', do_display)

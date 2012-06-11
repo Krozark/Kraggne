@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from Kraggne.contrib.django_generic_flatblocks.fields import JSONField
 from django.core import serializers
+from Kraggne.contrib.django_generic_flatblocks.fields import JSONField
+from Kraggne.contrib.django_generic_flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
 class GenericFlatblock(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True)
@@ -30,6 +31,9 @@ class GenericFlatblock(models.Model):
     def serialize(self):
         return serializers.serialize("python", (self.content_object,),fields=self.fields)[0]
 
+    def Display(self,context,template_path=None):
+        return GetBlockContent(self,context,template_path)
+
 class GenericFlatblockList(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True)
     content_type = models.ForeignKey(ContentType)
@@ -41,6 +45,9 @@ class GenericFlatblockList(models.Model):
 
     def model(self):
         return self.content_type.model_class()
+
+    def Display(self,context,template_path=None):
+        return GetListContent(self,context,template_path)
 
     @property
     def object_list(self):
