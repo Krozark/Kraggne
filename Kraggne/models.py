@@ -17,7 +17,7 @@ class MenuItem(MPTTModel):
 
     cms_page = models.BooleanField(_('CMS page'),default=True,
             help_text=_("Rafere to a stadar or a CMS page."))
-
+    
     view = models.CharField(_('View'),max_length=255
             ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
 
@@ -47,14 +47,13 @@ class MenuItem(MPTTModel):
 from django.db.models.signals import post_save#, pre_save
 from django.dispatch import receiver
 from Kraggne.utils import MakePattern#,clearCache
-from Kraggne import urls as Kraggne_urls
 
 # rebuild url of children if it's nedeed to conserve the base url given
 @receiver(post_save, sender=MenuItem)
 def MenuItemSave(sender,**kwargs):
+   
 
-    print getchoices()
-
+    from Kraggne import urls as Kraggne_urls
     if hasattr(Kraggne_urls,'urlpatterns'):
         urls = getattr(Kraggne_urls,'urlpatterns')
         urls += MakePattern(kwargs['instance'])
