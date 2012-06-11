@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
-from django.contrib.contenttypes.models import ContentType
 
 
 ORDER_CHOICES = 20
@@ -54,6 +53,8 @@ from Kraggne import urls as Kraggne_urls
 @receiver(post_save, sender=MenuItem)
 def MenuItemSave(sender,**kwargs):
 
+    print getchoices()
+
     if hasattr(Kraggne_urls,'urlpatterns'):
         urls = getattr(Kraggne_urls,'urlpatterns')
         urls += MakePattern(kwargs['instance'])
@@ -72,15 +73,16 @@ def MenuItemSave(sender,**kwargs):
         if url != child.url:
             child.save()
 
+
+
+from django.contrib.contenttypes.models import ContentType
 #The choices type of the ItemPage
 def getchoices():
     CHOICES = []
-    for ct in ContentType.objects.filter(app_label="django_generic_flatblock"):
+    for ct in ContentType.objects.filter(app_label="django_generic_flatblocks"):
         m = ct.model_class()
         CHOICES.append("%s.%s" % (m.__module__, m.__name__))
     return CHOICES
-
-
 
 #class PageItem(models.Model):
 #    parent = models.ForeignKey(ItemMenu,null=False,blank=False,default=1,limit_choices_to = {'pk__in':ItemMenu.objects.filter(auto_create_page=True).exclude(pk=1)})
