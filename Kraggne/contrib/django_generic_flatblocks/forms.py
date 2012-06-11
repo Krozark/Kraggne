@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblockList, GenericFlatblock
+from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblockList, GenericFlatblock, TemplateBlock
 import json
 
 class GenericFlatblockForm(ModelForm):
@@ -27,7 +27,7 @@ class GenericFlatblockForm(ModelForm):
 
         if commit:
             block.save() 
-            pass
+
         return block
 
 class GenericFlatblockListForm(ModelForm):
@@ -64,6 +64,30 @@ class GenericFlatblockListForm(ModelForm):
 
         if commit:
             block.save() 
-            pass
+
+        return block
+
+from django.template.loader import select_template
+class TempateBlockForm(ModelForm):
+
+    class Meta:
+        model  = TemplateBlock
+
+    def clean_template_path(self):
+        tpl = self.cleaned_data['template_path']
+        try:
+            select_template((tpl,))
+        except Exception,e:
+            raise forms.ValidationError("Template %s not found" % e)
+
+        return tpl
+
+    def save(self, commit=True):
+        block = super(TempateBlockForm, self).save(commit=False)
+        block.template_path = self.cleaned_data['template_path']
+
+        if commit:
+            block.save() 
+
         return block
 

@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList
-from Kraggne.contrib.django_generic_flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm
+from Kraggne.contrib.django_generic_flatblocks.models import GenericFlatblock, GenericFlatblockList, TemplateBlock
+from Kraggne.contrib.django_generic_flatblocks.forms import GenericFlatblockListForm, GenericFlatblockForm, TempateBlockForm
 
 class GenericFlatblockAdmin(admin.ModelAdmin):
 
@@ -57,5 +57,13 @@ class GenericFlatblockListAdmin(admin.ModelAdmin):
     def modelname(self,obj):
         return "%s" % obj.content_type
 
-
 admin.site.register(GenericFlatblockList, GenericFlatblockListAdmin)
+
+
+class TempateBlockAdmin(admin.ModelAdmin):
+
+    list_display = ('slug','template_path')
+    prepopulated_fields = {'slug':('name',)}
+    form = TempateBlockForm
+
+admin.site.register(TemplateBlock,TempateBlockAdmin)

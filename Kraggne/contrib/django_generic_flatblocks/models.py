@@ -72,7 +72,8 @@ class GenericFlatblockList(models.Model):
         return serializers.serialize("python", (self.object_list),fields=self.fields)
 
 #### model use to get template content passing args
-class TemplateBlock(model.Model):
+class TemplateBlock(models.Model):
+    name = models.CharField(_('Name'), max_length=255, null=False,blank=False)
     slug = models.SlugField(_('slug'), max_length=255, unique=True)
     template_path = models.CharField(_('Template Path'), max_length=255, unique=True)
 
