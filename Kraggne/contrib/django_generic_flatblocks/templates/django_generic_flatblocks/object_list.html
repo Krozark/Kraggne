@@ -1,0 +1,7 @@
+<ul>
+{% for object in object.serialize %}
+    <li>
+        {% include "django_generic_flatblocks/object.inc.html" %}
+    </li>
+{% endfor %}
+</ul>
