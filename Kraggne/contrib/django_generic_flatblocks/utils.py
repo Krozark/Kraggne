@@ -29,5 +29,10 @@ def GetListContent(obj,context,template_path=None):
     context['generic_object_list'] = obj
     return t.render(context)
 
-def GetTemplateContent(obj,template_path=None):
-    pass
+def GetTemplateContent(context,template_path,**kwargs):
+    try:
+        t = select_template(template_paths)
+    except:
+        return ''
+    context.update(kwargs)
+    return t.render(context)

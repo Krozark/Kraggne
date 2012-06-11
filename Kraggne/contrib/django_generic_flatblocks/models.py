@@ -6,6 +6,7 @@ from django.core import serializers
 from Kraggne.contrib.django_generic_flatblocks.fields import JSONField
 from Kraggne.contrib.django_generic_flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
+### model use to link to any other model item
 class GenericFlatblock(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True)
     content_type = models.ForeignKey(ContentType)
@@ -34,6 +35,7 @@ class GenericFlatblock(models.Model):
     def Display(self,context,template_path=None):
         return GetBlockContent(self,context,template_path)
 
+#### model use to link any list of object
 class GenericFlatblockList(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True)
     content_type = models.ForeignKey(ContentType)
@@ -68,4 +70,15 @@ class GenericFlatblockList(models.Model):
     @property
     def serialize(self):
         return serializers.serialize("python", (self.object_list),fields=self.fields)
+
+#### model use to get template content passing args
+class TemplateBlock(model.Model):
+    slug = models.SlugField(_('slug'), max_length=255, unique=True)
+    template_path = models.CharField(_('Template Path'), max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.slug
+
+    def Display(self,context,**kwargs):
+        return GetTemplateContent(context,self.template_path,**kwargs)
 
