@@ -3,9 +3,18 @@
 from django.contrib import admin
 from Kraggne.forms import MenuItemForm
 from Kraggne.models import MenuItem, PageBlock
+from django.conf import settings
+
+if 'grappellifit' in settings.INSTALLED_APPS and 'modeltranslation' in settings.INSTALLED_APPS:
+    from grappellifit.admin import TranslationAdmin, TranslationStackedInline
+    ADMIN = TranslationAdmin
+    ADMIN_TAB = TranslationStackedInline
+else:
+    ADMIN = admin.ModelAdmin
+    ADMIN_TAB = admin.TabularInline
 
 #################### INLINES ################################
-class SubMenuItemInline(admin.TabularInline):
+class SubMenuItemInline(ADMIN_TAB):
     model = MenuItem
     extra = 1
     form = MenuItemForm
@@ -19,19 +28,19 @@ class SubMenuItemInline(admin.TabularInline):
 
 
 ############################################################
-class MenuItemAdmin(admin.ModelAdmin):
+class MenuItemAdmin(ADMIN):
     list_display = ('name','slug','order','view','url','parent','level','is_visible','cms_page','__IsAccessible__')
     list_filter = ('is_visible','cms_page')
     prepopulated_fields = {'slug':('name',)}
     form = MenuItemForm
     #inlines = [ItemPageInline,SubMenuItemInline]
-    inlines = [SubMenuItemInline]
+    #inlines = [SubMenuItemInline]
 
     def queryset(self, request):
         return MenuItem.objects.exclude(pk=1)
 admin.site.register(MenuItem, MenuItemAdmin)
 
-class PageBlockAdmin(admin.ModelAdmin):
+class PageBlockAdmin(ADMIN):
     list_display = ('__unicode__','page','content_object','is_visible',)
     list_filter = ('is_visible','page')
     #form = PageBlockForm

@@ -157,7 +157,6 @@ class menuNode(Node):
         else:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
 
-
         if self.level_nb>0:
             tree = tree.filter(level__lte=menu.level+self.level_nb)
 
