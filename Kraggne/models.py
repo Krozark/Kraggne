@@ -89,6 +89,7 @@ class PageBlock(models.Model):
     name = models.CharField(_('Item'),max_length=255)
     page = models.ForeignKey(MenuItem,blank=False,null=False,default=None)
     #content
+    # TODO with setting
     content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
     object_id = models.PositiveIntegerField(_('object id'))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
