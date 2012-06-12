@@ -32,7 +32,7 @@ class MenuItemAdmin(admin.ModelAdmin):
 admin.site.register(MenuItem, MenuItemAdmin)
 
 class PageBlockAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','page','content_object','slug','is_visible',)
+    list_display = ('__unicode__','page','content_object','is_visible',)
     list_filter = ('is_visible','page')
     #form = PageBlockForm
 admin.site.register(PageBlock, PageBlockAdmin)
