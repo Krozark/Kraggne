@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from Kraggne.forms import MenuItemForm
-from Kraggne.models import MenuItem
+from Kraggne.models import MenuItem, PageBlock
 
 #################### INLINES ################################
 class SubMenuItemInline(admin.TabularInline):
@@ -31,8 +31,8 @@ class MenuItemAdmin(admin.ModelAdmin):
         return MenuItem.objects.exclude(pk=1)
 admin.site.register(MenuItem, MenuItemAdmin)
 
-#class ItemPageAdmin(admin.ModelAdmin):
-#    list_display = ('__unicode__','parent','rank','content_type','slug','is_visible',)
-#    list_filter = ('is_visible','parent')
-#    form = ItemPageForm
-#admin.site.register(ItemPage, ItemPageAdmin)
+class PageBlockAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__','page','content_object','slug','is_visible',)
+    list_filter = ('is_visible','page')
+    #form = PageBlockForm
+admin.site.register(PageBlock, PageBlockAdmin)
