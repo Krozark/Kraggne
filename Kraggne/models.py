@@ -7,12 +7,13 @@ ORDER_CHOICES = 20
 
 class MenuItem(MPTTModel):
     name = models.CharField(_('Item'),max_length=255)
+    slug = models.SlugField(_('Slug'),unique=True,max_length=50)
+
     order = models.PositiveIntegerField(_('Display order'),
             default=0,
             choices=[(x, x) for x in range(0, ORDER_CHOICES)],
             help_text = _("The order of the item in the display nav."))
 
-    slug = models.SlugField(_('Slug'),unique=True,max_length=50)
     parent = TreeForeignKey('self',null=True,blank=True,default=1)
 
     cms_page = models.BooleanField(_('CMS page'),default=True,
@@ -21,7 +22,8 @@ class MenuItem(MPTTModel):
     view = models.CharField(_('View'),max_length=255
             ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
 
-    is_visible = models.BooleanField(_('Is Visible'),default=True)
+
+    is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
     
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
@@ -81,43 +83,32 @@ from django.contrib.contenttypes.models import ContentType
 #        CHOICES.append("%s.%s" % (m.__module__, m.__name__))
 #    return CHOICES
 
+from django.contrib.contenttypes import generic
 
-class PageBlock(model.Model):
+class PageBlock(models.Model):
     name = models.CharField(_('Item'),max_length=255)
-    page = model.ForeignKey(MenuItem,blank=False,null=False,default=None)
+    page = models.ForeignKey(MenuItem,blank=False,null=False,default=None)
     #content
-    content_type = model.ForeignKey(ContentType, 
-                choices = ContentType.objects.filter(app_label="flatblocks"))
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, 
+                choices = [(x,x) for x in ContentType.objects.filter(app_label="flatblocks")])
+    object_id = models.PositiveIntegerField(_('object id'))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     #style
-    template_path = models.CharField(_('Template Path'), max_length=255)
+    width = models.PositiveIntegerField(_('Width'),null=False,blank=False,default=100)
+    height = models.PositiveIntegerField(_('Height'),null=False,blank=False,default=100)
+    hextra_class = models.CharField(_('Hextra css class'),max_length=255,null=True,blank=True,default=None)
+    is_visible = models.BooleanField(_('Is Visible'),null=False,blank=False,default=True)
+    #position
+    position_x = models.IntegerField(_('x position'),null=False,blank=False,default=0)
+    position_y = models.IntegerField(_('y position'),null=False,blank=False,default=0)
+    template_path = models.CharField(_('Template Path'), max_length=255,help_text=_('Display usign specific template'))
 
-#class PageItem(models.Model):
-#    parent = models.ForeignKey(ItemMenu,null=False,blank=False,default=1,limit_choices_to = {'pk__in':ItemMenu.objects.filter(auto_create_page=True).exclude(pk=1)})
-#
-#    rank = models.PositiveIntegerField(_('Rank'),default=0,
-#            choices=[(x, x) for x in range(0, ORDER_CHOICES)],
-#            help_text = _("The rank of the item in the display nav."))
-#
-#    content_type = models.CharField(_('Model Type'),max_length=255,
-#            choices =[(x,x.split('.')[1]) for x in CHOICES],
-#            help_text = _("Content Type of this item"))
-#
-#    slug = models.SlugField(_('Slug'),unique=True,max_length=50,blank=True,
-#        help_text= _("If empty, this slug will be generate using the parent slug en rank"))
-#    
-#    is_visible = models.BooleanField(_('Is Visible'),default=True)
-#
-#    class Meta:
-#        ordering = ('parent__pk',)
-#        verbose_name = _("Page content")
-#
-#    def get_absolute_url(self):
-#        return self.parent.url
-#
-#    def __unicode__(self):
-#        return u'%s #%d %s' % (self.parent.name,self.rank,self.content_type)
+    class Meta:
+        ordering = ('page__lft', 'page__tree_id')
 
-    
+    def get_absolute_url(self):
+        return self.page.get_absolute_url()
+
+    def __unicode__(self):
+        return u'%s %s' % (self.page,self.name)
 
