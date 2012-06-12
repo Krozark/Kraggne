@@ -51,7 +51,6 @@ from Kraggne.utils import MakePattern#,clearCache
 # rebuild url of children if it's nedeed to conserve the base url given
 @receiver(post_save, sender=MenuItem)
 def MenuItemSave(sender,**kwargs):
-   
 
     from Kraggne import urls as Kraggne_urls
     if hasattr(Kraggne_urls,'urlpatterns'):
@@ -73,15 +72,26 @@ def MenuItemSave(sender,**kwargs):
             child.save()
 
 
-
 from django.contrib.contenttypes.models import ContentType
 #The choices type of the ItemPage
-def getchoices():
-    CHOICES = []
-    for ct in ContentType.objects.filter(app_label="flatblocks"):
-        m = ct.model_class()
-        CHOICES.append("%s.%s" % (m.__module__, m.__name__))
-    return CHOICES
+#def getchoices():
+#    CHOICES = []
+#    for ct in ContentType.objects.filter(app_label="flatblocks"):
+#        m = ct.model_class()
+#        CHOICES.append("%s.%s" % (m.__module__, m.__name__))
+#    return CHOICES
+
+
+class PageBlock(model.Model):
+    name = models.CharField(_('Item'),max_length=255)
+    page = model.ForeignKey(MenuItem,blank=False,null=False,default=None)
+    #content
+    content_type = model.ForeignKey(ContentType, 
+                choices = ContentType.objects.filter(app_label="flatblocks"))
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    #style
+    template_path = models.CharField(_('Template Path'), max_length=255)
 
 #class PageItem(models.Model):
 #    parent = models.ForeignKey(ItemMenu,null=False,blank=False,default=1,limit_choices_to = {'pk__in':ItemMenu.objects.filter(auto_create_page=True).exclude(pk=1)})

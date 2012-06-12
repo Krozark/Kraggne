@@ -75,7 +75,6 @@ class GenericFlatblockNode(GenericFlatblockBaseNode):
 
 
     def get_content_object(self, related_model, slug):
-
         # If the user passed a Integer as a slug, assume that we should fetch
         # this specific object
         if isinstance(slug, int):
@@ -104,7 +103,6 @@ class GenericFlatblockNode(GenericFlatblockBaseNode):
 
 
     def render(self, context):
-
         slug = self.generate_slug(self.slug, context)
         related_model = self.resolve_model_for_label(self.modelname, context)
 
