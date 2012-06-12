@@ -89,8 +89,7 @@ class PageBlock(models.Model):
     name = models.CharField(_('Item'),max_length=255)
     page = models.ForeignKey(MenuItem,blank=False,null=False,default=None)
     #content
-    content_type = models.ForeignKey(ContentType, 
-                choices = [(x,x) for x in ContentType.objects.filter(app_label="flatblocks")])
+    content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
     object_id = models.PositiveIntegerField(_('object id'))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     #style
@@ -101,7 +100,8 @@ class PageBlock(models.Model):
     #position
     position_x = models.IntegerField(_('x position'),null=False,blank=False,default=0)
     position_y = models.IntegerField(_('y position'),null=False,blank=False,default=0)
-    template_path = models.CharField(_('Template Path'), max_length=255,help_text=_('Display usign specific template'))
+    template_path = models.CharField(_('Template Path'), max_length=255,null=True,blank=True,
+                                     help_text=_('Display usign specific template'))
 
     class Meta:
         ordering = ('page__lft', 'page__tree_id')
