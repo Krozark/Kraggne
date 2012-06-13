@@ -4,7 +4,7 @@
         {% if menu.slug == page.slug %}
         {{menu}}
         {% else %}
-        <a href="{{menu.get_absolute_url}}">{{menu}}</a>
+        <a href="{{menu.get_absolute_url}}">{{menu}}</a> <span class="divider">/</span>
         {% endif %}
     </li>
     {% endfor %}
