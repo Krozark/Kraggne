@@ -1,7 +1,9 @@
-<ul>
+<div class="object_list">
 {% for object in generic_object_list.serialize %}
-    <li>
-        {% include "flatblocks/object.inc.html" %}
-    </li>
-{% endfor %}
+<ul>
+    {% for field,value in object.fields.items %}
+    <li>{{ field }}:{{ value }}</li>
+    {% endfor %}
 </ul>
+{% endfor %}
+</div>

@@ -28,6 +28,9 @@ class GenericFlatblock(models.Model):
             fields = [u.name for u in self.model()._meta.fields]
         return fields
 
+    def __iter__(self):
+        return self.serialize['fields'].items().__iter__()
+
     @property
     def serialize(self):
         return serializers.serialize("python", (self.content_object,),fields=self.fields)[0]
@@ -57,6 +60,9 @@ class GenericFlatblockList(models.Model):
         if self.query_args:
             return model.objects.filter(**self.query_args)
         return model.objects.all()
+
+    def __iter__(self):
+        return self.object_list.__iter__()
 
 
     @property
