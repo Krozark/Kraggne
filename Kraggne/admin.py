@@ -43,5 +43,8 @@ admin.site.register(MenuItem, MenuItemAdmin)
 class PageBlockAdmin(ADMIN):
     list_display = ('__unicode__','page','content_object','is_visible',)
     list_filter = ('is_visible','page')
+    related_lookup_fields = {
+        'generic': [['content_type', 'object_id'],],
+    }
     #form = PageBlockForm
 admin.site.register(PageBlock, PageBlockAdmin)
