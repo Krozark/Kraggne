@@ -14,7 +14,6 @@ def GetBlockContent(obj,context,template_path=None):
         t = select_template(template_paths)
     except:
         return ''
-    print template_paths
     context["generic_object"] = obj
     context["object"] = obj.content_object
     return t.render(context)

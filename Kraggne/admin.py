@@ -50,8 +50,9 @@ class PageBlockAdmin(ADMIN):
 admin.site.register(PageBlock, PageBlockAdmin)
 
 class FormBlockAdmin(ADMIN):
-    list_display = ('slug','form','page')
+    list_display = ('slug','form','page','view','url')
     list_filter = ('page','form')
+    exclude_fields = ('url',)
     form = FormBlockForm
 
 admin.site.register(FormBlock,FormBlockAdmin)

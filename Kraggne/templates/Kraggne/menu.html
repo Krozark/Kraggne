@@ -1,12 +1,12 @@
 {% load Kraggne_tags %}
 
-<div class="menu">
+<div class="nav-block">
 {% for menu in object_list %}
 {% if forloop.first %}
-<ul class="menu-0">
+<ul class="nav nav-0">
 {% else %}
     {% for x in last_value|range:menu.level %}
-    <ul class="menu-{{x|sub:root.level}}">
+    <ul class="nav nav-{{x|sub:root.level}}">
     {% endfor %}
 
     {% for x in menu.level|range:last_value %}

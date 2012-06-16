@@ -28,6 +28,9 @@ class MenuItem(MPTTModel):
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
 
+    #template_path = models.CharField(_('Template Path'), max_length=255,null=True,blank=True,
+    #                                 help_text=_('Display usign specific template'))
+
     class Meta:
         ordering = ('lft', 'tree_id')
 
@@ -109,7 +112,22 @@ class FormBlock(models.Model):
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)
     page = models.OneToOneField(MenuItem)
     form = models.CharField(_('Form'),max_length=255)
+    view = models.CharField(_('Redirect View'),max_length=255,blank=True,null=True,
+                         help_text=_('Redirect url or named view. Leave blank tu use the url of the display page'))
     url = models.CharField(_('Redirect Url'),max_length=255,blank=True,null=True)
+
+    def getFormClass(self):
+        form = self.form
+        point = form.rfind('.')
+        if point != -1:
+            app = form[:point]
+            klass = form[point+1:]
+            form= __import__(app,globals(),locals(),[klass,])
+            form=getattr(form,klass)
+        else:
+            form=__import__(form)
+        return form
+        
 
     class Meta:
         ordering = ('page__lft', 'page__tree_id')

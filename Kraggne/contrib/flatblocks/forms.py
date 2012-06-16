@@ -15,7 +15,6 @@ class GenericFlatblockForm(ModelForm):
         fields = json.loads(self.cleaned_data["exclude_fields"])
         if fields:
             model = self.cleaned_data["content_type"].model_class()
-            print model
             for u in fields:
                 if u not in model._meta.get_all_field_names():
                     raise forms.ValidationError(_("%s is not in the related model, choces are : %s" % (u,model._meta.get_all_field_names())))
@@ -39,7 +38,6 @@ class GenericFlatblockListForm(ModelForm):
         fields = json.loads(self.cleaned_data["exclude_fields"])
         if fields:
             model = self.cleaned_data["content_type"].model_class()
-            print model
             for u in fields:
                 if u not in model._meta.get_all_field_names():
                     raise forms.ValidationError(_("%s is not in the related model, choces are : %s" % (u,model._meta.get_all_field_names())))

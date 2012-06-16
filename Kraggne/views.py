@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 #from django.http import HttpResponseRedirect, HttpResponse
 #from django.core.context_processors import csrf
 
@@ -9,20 +9,56 @@ from django.utils.translation import ugettext_lazy as _
 
 from Kraggne.models import MenuItem
 
-class GenericView(TemplateView):
-    template_name = "Kraggne/genericPage.html"
 
+class GenericViewContextMixin(object):
     def get_context_data(self, **kwargs):
-        context = super(GenericView, self).get_context_data(**kwargs)
+        context = super(GenericViewContextMixin, self).get_context_data(**kwargs)
 
-        page =  kwargs.get('page',False)
+        page =  self.kwargs.get('page',False)
         if page:
             context['page'] = page
 
-            #content = ItemPage.objects.filter(parent__slug=slug).order_by('')
-            #print content
-            #context['content_blocks'] = content
         return context
+
+
+class GenericView(GenericViewContextMixin,TemplateView):
+    template_name = "Kraggne/genericPage.html"
+
+    #def __init__(self,page):
+    #    self.test = page.url
+
+from django.http import HttpResponseRedirect
+class GenericFormView(FormView):
+
+    template_name = "Kraggne/genericFormPage.html"
+
+    def get_form(self,form_class=None):
+        return self.kwargs.get('page').formblock.getFormClass()
+
+    def post(self,request,*args,**kwargs):
+        form = self.get_form()(request.POST)
+        if form.is_valid():
+            self.object = form.save()
+            page = self.kwargs['page']
+            return HttpResponseRedirect(page.formblock.url or page.url)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+        #return self.kwargs.get('page').formblock.getFormClass()
+
+    def get_context_data(self, **kwargs):
+        context = super(GenericFormView, self).get_context_data(**kwargs)
+
+        page =  self.kwargs.get('page',False)
+        for u in kwargs:
+            context[u] = kwargs[u]
+        if page:
+            context['page'] = page
+
+        self.success_url = page.formblock.url or page.url
+
+        return context
+
 
 #from django.shortcuts import render_to_response
 #def Generic(request,*args,**kwargs):

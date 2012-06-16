@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block page.title %}{{page.name}}{% endblock %}
+
+{% block project.body %}
+
+<form action="{{page.url}}" method="post">
+    {{form.as_p}}
+    <input type="submit" value="submit">
+</form>
+{% comment %}
+{% for object in content_blocks %}
+<div class="block">
+    {% with name="include/"|add:object.content_type|add:".inc.html" %}
+    {% include name %}
+    {% endwith %}
+</div>
+{% endfor %}
+{% endcomment %}
+
+{% endblock %}

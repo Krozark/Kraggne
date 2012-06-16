@@ -1,12 +1,10 @@
 from django import forms
-from django.core.urlresolvers import reverse, NoReverseMatch
 from django.core.validators import URLValidator
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
-from django.test.client import Client
 import re
 
-from Kraggne.utils import MakePattern
+from Kraggne.utils import MakePattern, clean_url
 
 from Kraggne.models import MenuItem, FormBlock
 
@@ -29,26 +27,8 @@ class MenuItemForm(forms.ModelForm):
 
         if not auto:
             if link:
-                if link[0] == "/": #a defined URL
-                    c = Client()
-                    try:
-                        resp = c.get(link)
-                        if resp.status_code == 404:
-                            raise forms.ValidationError(_(u'%s is not a local URL (does not exist)' % link))
-                        self.url = link
-                        return link
-                    except:
-                        raise forms.ValidationError(_(u'%s is not a local URL (not a valid URL)' % link))
-
-                elif link[0] != '^' : # Not a regex or site-root-relative absolute path
-                    try: # named URL or view
-                        self.url = reverse(link)
-                        return link
-                    except NoReverseMatch:
-                        raise forms.ValidationError(_('No view find to display the page, and cms_page is disable.\nPlease create a view named %s, or enable cms_page.' % link))
-                elif link[0] == '^': #regex
-                    raise forms.ValidationError(_('Regex are not suported with not CMS items. Please use named url insted'))
-            raise forms.ValidationError(_('Please supply a valid URL or URL name.'))
+               link,self.url = clean_url(link)
+            raise ValidationError(_('Please supply a valid URL or URL name.'))
 
         else: #auto
             if link:
@@ -147,18 +127,12 @@ class FormBlockForm(forms.ModelForm):
         model = FormBlock
 
 
-    def clean_url(self):
-        url = self.cleaned_data['url']
-        c = Client()
-        try:
-            resp = c.get(url)
-            if resp.status_code == 404:
-                raise forms.ValidationError(_(u'%s is not a local URL (does not exist)' % url))
-            self.url = url
-            return url
-        except:
-            raise forms.ValidationError(_(u'%s is not a local URL (not a valid URL)' % url))
-        return url
+    def clean_view(self):
+        view = self.cleaned_data['view']
+        self.url = view
+        if view:
+            view,self.url = clean_url(view)
+        return view
 
     def clean_form(self):
         form = self.cleaned_data['form']
@@ -167,10 +141,7 @@ class FormBlockForm(forms.ModelForm):
             if point != -1:
                 app = form[:point]
                 klass = form[point+1:]
-                print app
-                print klass
                 f= __import__(app,globals(),locals(),[klass,])
-                print f
                 f=getattr(f,klass)
             else:
                 f=__import__(form)
@@ -182,13 +153,17 @@ class FormBlockForm(forms.ModelForm):
         except :#ImportError:
             raise forms.ValidationError(_("%s could not be found" % form))
         return form
+    
+    def save_m2m(self):
+        pass
 
-    def save(self,commit=False):
+    def save(self,commit=True):
         form = super(FormBlockForm,self).save()
-        form.url = self.cleaned_data['url']
+        form.view = self.cleaned_data['view']
         form.form = self.cleaned_data['form']
+        form.url = self.url
 
         if commit:
-            form.save()
+            form.save(commit=True)
 
         return form
