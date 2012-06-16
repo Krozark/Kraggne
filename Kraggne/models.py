@@ -75,14 +75,6 @@ def MenuItemSave(sender,**kwargs):
 
 
 from django.contrib.contenttypes.models import ContentType
-#The choices type of the ItemPage
-#def getchoices():
-#    CHOICES = []
-#    for ct in ContentType.objects.filter(app_label="flatblocks"):
-#        m = ct.model_class()
-#        CHOICES.append("%s.%s" % (m.__module__, m.__name__))
-#    return CHOICES
-
 from django.contrib.contenttypes import generic
 
 class PageBlock(models.Model):
@@ -112,4 +104,20 @@ class PageBlock(models.Model):
 
     def __unicode__(self):
         return u'%s %s' % (self.page,self.name)
+
+class FormBlock(models.Model):
+    slug = models.SlugField(_('Slug'),unique=True,max_length=50)
+    page = models.OneToOneField(MenuItem)
+    form = models.CharField(_('Form'),max_length=255)
+    url = models.CharField(_('Redirect Url'),max_length=255,blank=True,null=True)
+
+    class Meta:
+        ordering = ('page__lft', 'page__tree_id')
+
+    def get_absolute_url(self):
+        return self.page.get_absolute_url()
+
+    def __unicode__(self):
+        return u'%s %s' % (self.page,self.slug)
+
 

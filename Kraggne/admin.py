@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from Kraggne.forms import MenuItemForm
-from Kraggne.models import MenuItem, PageBlock
+from Kraggne.forms import MenuItemForm, FormBlockForm
+from Kraggne.models import MenuItem, PageBlock, FormBlock
 from django.conf import settings
 
 if 'grappellifit' in settings.INSTALLED_APPS and 'modeltranslation' in settings.INSTALLED_APPS:
@@ -42,9 +42,16 @@ admin.site.register(MenuItem, MenuItemAdmin)
 
 class PageBlockAdmin(ADMIN):
     list_display = ('__unicode__','page','content_object','is_visible',)
-    list_filter = ('is_visible','page')
+    list_filter = ('is_visible','page','content_type')
     related_lookup_fields = {
         'generic': [['content_type', 'object_id'],],
     }
     #form = PageBlockForm
 admin.site.register(PageBlock, PageBlockAdmin)
+
+class FormBlockAdmin(ADMIN):
+    list_display = ('slug','form','page')
+    list_filter = ('page','form')
+    form = FormBlockForm
+
+admin.site.register(FormBlock,FormBlockAdmin)

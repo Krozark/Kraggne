@@ -8,7 +8,7 @@ import re
 
 from Kraggne.utils import MakePattern
 
-from Kraggne.models import MenuItem
+from Kraggne.models import MenuItem, FormBlock
 
 class MenuItemForm(forms.ModelForm):
 
@@ -140,4 +140,55 @@ class MenuItemForm(forms.ModelForm):
 #        rank = self.cleaned_data['rank']
 #
 #        return slugify("%s-%d" % (parent.slug,rank))
-#        
+#
+
+class FormBlockForm(forms.ModelForm):
+    class Meta:
+        model = FormBlock
+
+
+    def clean_url(self):
+        url = self.cleaned_data['url']
+        c = Client()
+        try:
+            resp = c.get(url)
+            if resp.status_code == 404:
+                raise forms.ValidationError(_(u'%s is not a local URL (does not exist)' % url))
+            self.url = url
+            return url
+        except:
+            raise forms.ValidationError(_(u'%s is not a local URL (not a valid URL)' % url))
+        return url
+
+    def clean_form(self):
+        form = self.cleaned_data['form']
+        try:
+            point = form.rfind('.')
+            if point != -1:
+                app = form[:point]
+                klass = form[point+1:]
+                print app
+                print klass
+                f= __import__(app,globals(),locals(),[klass,])
+                print f
+                f=getattr(f,klass)
+            else:
+                f=__import__(form)
+
+            try:
+                f.is_valid
+            except :#TypeError:
+                raise forms.ValidationError(_("%s is not a form" % form))
+        except :#ImportError:
+            raise forms.ValidationError(_("%s could not be found" % form))
+        return form
+
+    def save(self,commit=False):
+        form = super(FormBlockForm,self).save()
+        form.url = self.cleaned_data['url']
+        form.form = self.cleaned_data['form']
+
+        if commit:
+            form.save()
+
+        return form
