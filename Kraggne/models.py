@@ -9,12 +9,6 @@ class MenuItem(MPTTModel):
     name = models.CharField(_('Item'),max_length=255)
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)
 
-    order = models.PositiveIntegerField(_('Display order'),
-            default=0,
-            choices=[(x, x) for x in range(0, ORDER_CHOICES)],
-            help_text = _("The order of the item in the display nav."))
-
-    parent = TreeForeignKey('self',null=True,blank=True,default=1)
 
     cms_page = models.BooleanField(_('CMS page'),default=True,
             help_text=_("Rafere to a stadar or a CMS page."))
@@ -22,11 +16,15 @@ class MenuItem(MPTTModel):
     view = models.CharField(_('View'),max_length=255
             ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
 
+    order = models.PositiveIntegerField(_('Display order'),
+            default=0,
+            choices=[(x, x) for x in range(0, ORDER_CHOICES)],
+            help_text = _("The order of the item in the display nav."))
 
-    is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
-    
+    parent = TreeForeignKey('self',null=True,blank=True,default=1)
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
+    is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
 
     #template_path = models.CharField(_('Template Path'), max_length=255,null=True,blank=True,
     #                                 help_text=_('Display usign specific template'))

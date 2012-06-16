@@ -1,9 +1,10 @@
 from django import forms
+from django.forms import ValidationError
+
 from django.core.validators import URLValidator
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 import re
-
 from Kraggne.utils import MakePattern, clean_url
 
 from Kraggne.models import MenuItem, FormBlock
@@ -28,6 +29,7 @@ class MenuItemForm(forms.ModelForm):
         if not auto:
             if link:
                link,self.url = clean_url(link)
+               return link
             raise ValidationError(_('Please supply a valid URL or URL name.'))
 
         else: #auto
@@ -56,14 +58,14 @@ class MenuItemForm(forms.ModelForm):
             self.url = "/"+self.cleaned_data['slug']
         return ''
 
-    def clean_is_visible(self):
-        v = self.cleaned_data['is_visible']
-        link = self.cleaned_data['view'] or ''
+   # def clean_is_visible(self):
+   #     v = self.cleaned_data['is_visible']
+   #     link = self.cleaned_data['view'] or ''
 
-        if v:
-            if re.search('[^\d/\w-]',link):
-                raise forms.ValidationError(_("regex urls can't be desplayed in menu"))
-        return v
+   #     if v:
+   #         if re.search('[^\d/\w-]',link):
+   #             raise forms.ValidationError(_("regex urls can't be desplayed in menu"))
+   #     return v
 
     def clean(self):
         super(MenuItemForm, self).clean()
@@ -77,9 +79,11 @@ class MenuItemForm(forms.ModelForm):
 
     def save(self, commit=True):
         item = super(MenuItemForm, self).save(commit=False)
-        self.view = self.cleaned_data['view']
-        self.is_visible = self.cleaned_data['is_visible']
+        item.view = self.cleaned_data['view']
         item.url = self.url
+        if item.view:
+            if re.search('[^\d/\w-]',item.view):
+                item.is_visible = False
         
         ##try to register the new url
         #if hasattr(Kraggne_urls,'urlpatterns'):
