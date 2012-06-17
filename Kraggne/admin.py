@@ -20,6 +20,10 @@ class SubMenuItemInline(ADMIN_TAB):
     form = MenuItemForm
     prepopulated_fields = {'slug':('name',)}
 
+class FormBlockInline(ADMIN_TAB):
+    model = FormBlock
+    extra = 0
+    form = FormBlockForm
 
 #class ItemPageInline(admin.TabularInline):
 #    model = ItemPage
@@ -34,7 +38,7 @@ class MenuItemAdmin(ADMIN):
     prepopulated_fields = {'slug':('name',)}
     form = MenuItemForm
     #inlines = [ItemPageInline,SubMenuItemInline]
-    #inlines = [SubMenuItemInline]
+    inlines = [SubMenuItemInline,FormBlockInline]
 
     def queryset(self, request):
         return MenuItem.objects.exclude(pk=1)
