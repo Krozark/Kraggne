@@ -61,8 +61,6 @@ class GenericFormView(FormView):
         else:
             context['action_url'] = page.url
 
-
-
         return context
 
 

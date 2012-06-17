@@ -3,7 +3,7 @@
 {% block page.title %}{{page.name}}{% endblock %}
 
 {% block project.body %}
-<form action="{{action_url}}" method="post" class="form-horizontal">
+<form action="{{action_url}}#form" method="post" class="form-horizontal" id="form">
     {% csrf_token %}
     {% for field in form %}
     <div class="control-group">
