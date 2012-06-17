@@ -56,6 +56,12 @@ class GenericFormView(FormView):
             context['page'] = page
 
         self.success_url = page.formblock.url or page.url
+        if page.url[-1] != "/":
+            context['action_url'] = page.url + "/"
+        else:
+            context['action_url'] = page.url
+
+
 
         return context
 

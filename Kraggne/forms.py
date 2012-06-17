@@ -136,6 +136,8 @@ class FormBlockForm(forms.ModelForm):
         self.url = view
         if view:
             view,self.url = clean_url(view)
+        if self.url[-1] != "/":
+            self.url+="/"
         return view
 
     def clean_form(self):
