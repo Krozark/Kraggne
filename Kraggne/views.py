@@ -33,7 +33,10 @@ class GenericFormView(FormView):
     template_name = "Kraggne/genericFormPage.html"
 
     def get_form(self,form_class=None):
-        return self.kwargs.get('page').formblock.getFormClass()
+        try:
+            return self.kwargs.get('page').formblock.getFormClass()
+        except:
+            return super(GenericFormView,self).get_form(form_class)
 
     def post(self,request,*args,**kwargs):
         form = self.get_form()(request.POST)

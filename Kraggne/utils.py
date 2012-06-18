@@ -23,6 +23,7 @@ def MakePattern(menuItem):
     except:
         view = GenericView
 
+
     return patterns('',url(
                 r'^%s$' % ur,
                 view.as_view(),
@@ -59,14 +60,14 @@ def clean_url(link):
 
 #from django.core.cache import cache
 #def clearCache():
-#    try:
-#        cache._cache.clear()	# in-memory caching
-#    except AttributeError:
-#        # try filesystem caching next
-#        old = cache._cull_frequency
-#        old_max = cache._max_entries
-#        cache._max_entries = 0
-#        cache._cull_frequency = 1
-#        cache._cull()
-#        cache._cull_frequency = old
-#        cache._max_entries = old_max
+# try:
+# cache._cache.clear() # in-memory caching
+# except AttributeError:
+# # try filesystem caching next
+# old = cache._cull_frequency
+# old_max = cache._max_entries
+# cache._max_entries = 0
+# cache._cull_frequency = 1
+# cache._cull()
+# cache._cull_frequency = old
+# cache._max_entries = old_max

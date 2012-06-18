@@ -38,7 +38,7 @@ class MenuItemAdmin(ADMIN):
     prepopulated_fields = {'slug':('name',)}
     form = MenuItemForm
     #inlines = [ItemPageInline,SubMenuItemInline]
-    inlines = [SubMenuItemInline,FormBlockInline]
+    #inlines = [SubMenuItemInline,FormBlockInline]
 
     def queryset(self, request):
         return MenuItem.objects.exclude(pk=1)

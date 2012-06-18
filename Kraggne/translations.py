@@ -8,3 +8,7 @@ translator.register(MenuItem,MenuItemTrans)
 class PageBlockTrans(TranslationOptions):
     fields = ('name',)
 translator.register(PageBlock,PageBlockTrans)
+
+class FormBlockTrans(TranslationOptions):
+    fields = ()
+translator.register(FormBlock,FormBlockTrans)
