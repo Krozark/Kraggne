@@ -48,12 +48,16 @@ class MenuItemForm(forms.ModelForm):
         
         parent = self.cleaned_data['parent']
         if parent:
-            if parent.url == "/":
+            p_url = parent.url
+            if '#' in p_url:
+                p_url = p_url[:p_url.find('#')]
+
+            if p_url == "/":
                 self.url = "/"+self.cleaned_data['slug'] 
-            elif parent.url[-1] != "/":
-                self.url = parent.url +"/"+self.cleaned_data['slug']
+            elif p_url[-1] != "/":
+                self.url = p_url +"/"+self.cleaned_data['slug']
             else:
-                self.url = parent.url +self.cleaned_data['slug'] 
+                self.url = p_url +self.cleaned_data['slug'] 
         else:
             self.url = "/"+self.cleaned_data['slug']
         return ''
@@ -82,7 +86,7 @@ class MenuItemForm(forms.ModelForm):
         item.view = self.cleaned_data['view']
         item.url = self.url
         if item.view:
-            if re.search('[^\d/\w\-:_]',item.view):
+            if re.search('[^\d/\w\-:_#]',item.view):
                 item.is_visible = False
         
         ##try to register the new url

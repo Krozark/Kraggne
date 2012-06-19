@@ -49,14 +49,20 @@ def clean_url(link):
             raise ValidationError(_(u'%s is not a local URL (not a valid URL)' % link))
 
     elif link[0] != '^' : # Not a regex or site-root-relative absolute path
+        hash = ''
+        if '#' in link:
+            print "#"
+            i = link.find('#')
+            hash = link[i:]
+            link = link[:i]
         try: # named URL or view
             url = reverse(link)
-            return link,url
+            return link + hash,url + hash
         except NoReverseMatch:
-            raise ValidationError(_('No view find to reverse the url' % link))
+            raise ValidationError(_('No view find to reverse the url %s' % link))
     elif link[0] == '^': #regex
         raise ValidationError(_('Regex are not suported with redirect url. Please use named url insted'))
-    return link,url
+    return link + hash,url + hash
 
 #from django.core.cache import cache
 #def clearCache():
