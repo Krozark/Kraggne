@@ -10,11 +10,7 @@ class MenuItem(MPTTModel):
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)
 
 
-    cms_page = models.BooleanField(_('CMS page'),default=True,
-            help_text=_("Rafere to a stadar or a CMS page."))
     
-    view = models.CharField(_('View'),max_length=255
-            ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
 
     order = models.PositiveIntegerField(_('Display order'),
             default=0,
@@ -22,6 +18,11 @@ class MenuItem(MPTTModel):
             help_text = _("The order of the item in the display nav."))
 
     parent = TreeForeignKey('self',null=True,blank=True,default=1)
+
+    view = models.CharField(_('View'),max_length=255
+            ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
+    cms_page = models.BooleanField(_('CMS page'),default=False,
+            help_text=_("Rafere to a stadar or a CMS page."))
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
     is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
