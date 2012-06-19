@@ -19,10 +19,11 @@ class MenuItem(MPTTModel):
 
     parent = TreeForeignKey('self',null=True,blank=True,default=1)
 
-    view = models.CharField(_('View'),max_length=255
-            ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
     cms_page = models.BooleanField(_('CMS page'),default=False,
             help_text=_("Rafere to a stadar or a CMS page."))
+
+    view = models.CharField(_('View'),max_length=255
+            ,help_text=_("The view of the page you want to link to, as URL name or absolute URL.\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
     is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
