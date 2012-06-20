@@ -9,6 +9,19 @@ from django.utils.translation import ugettext_lazy as _
 
 from Kraggne.models import MenuItem
 
+def addSelfToContext(slug,context):
+    try:
+        context['page'] = MenuItem.objects.get(slug=slug)
+    except:
+        pass
+
+class GenericViewContextMixinSlug(object):
+    slug = ''
+    def get_context_data(self, **kwargs):
+        context = super(GenericViewContextMixinSlug, self).get_context_data(**kwargs)
+        addSelfToContext(self.slug,context)
+        return context
+
 
 class GenericViewContextMixin(object):
     def get_context_data(self, **kwargs):
