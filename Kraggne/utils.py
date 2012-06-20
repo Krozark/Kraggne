@@ -2,7 +2,6 @@
 from Kraggne.views import GenericView, GenericFormView
 from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
 from django.db.models.loading import get_model
 
 def MakePattern(menuItem):
