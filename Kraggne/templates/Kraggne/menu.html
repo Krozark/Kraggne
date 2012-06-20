@@ -14,10 +14,16 @@
     {% endfor %}
 {% endif %}
 
-
-{% last == menu.level diff %}
+{% if menu.HaveToInclude %}
+{% for it in menu.GetIncludeUrls %}
+<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">
+<a href="{{it.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} link">{{it}}</a>
+{% endfor %}
+{% else %}
 <li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">
 <a href="{{menu.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} link">{{menu}}</a>
+{% endif %}
+
 
 
 
@@ -26,5 +32,6 @@
     </ul></li>
     {% endfor %}
 {% endif %}
+{% last == menu.level diff %}
 {% endfor %}
 </div>

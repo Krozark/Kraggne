@@ -157,8 +157,7 @@ class menuNode(Node):
         else:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
 
-        if self.level_nb>0:
-            tree = tree.filter(level__lte=menu.level+self.level_nb)
+        print tree.filter(url__contains = 'include(')
 
         context['root'] = menu
 
@@ -325,5 +324,10 @@ def range(arg,value ):
 @register.filter
 def sub(arg, value ):
     return arg-value
+
+@register.filter
+def startswith(arg, val):
+    return arg.startswith(val)
+
 
 

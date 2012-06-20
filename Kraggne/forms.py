@@ -28,7 +28,7 @@ class MenuItemForm(forms.ModelForm):
 
         if not auto:
             if link:
-               link,self.url = clean_url(link)
+               link,self.url = clean_url(link,include=True)
                return link
             raise ValidationError(_('Please supply a valid URL or URL name.'))
 
@@ -86,8 +86,9 @@ class MenuItemForm(forms.ModelForm):
         item.view = self.cleaned_data['view']
         item.url = self.url
         if item.view:
-            if re.search('[^\d/\w\-:_#]',item.view):
-                item.is_visible = False
+            if not 'include(' in item.view:
+                if re.search('[^\d/\w\-:_#]',item.view):
+                    item.is_visible = False
         
         ##try to register the new url
         #if hasattr(Kraggne_urls,'urlpatterns'):

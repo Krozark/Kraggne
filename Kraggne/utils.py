@@ -2,6 +2,9 @@
 from Kraggne.views import GenericView, GenericFormView
 from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.loading import get_model
+
 def MakePattern(menuItem):
     ur = menuItem.url
 
@@ -35,7 +38,7 @@ def MakePattern(menuItem):
 from django.test.client import Client
 from django.forms import ValidationError
 from django.core.urlresolvers import reverse, NoReverseMatch
-def clean_url(link):
+def clean_url(link,include=False,hashtags = True):
     url = None
     if link[0] == "/": #a defined URL
         c = Client()
@@ -50,11 +53,27 @@ def clean_url(link):
 
     elif link[0] != '^' : # Not a regex or site-root-relative absolute path
         hash = ''
-        if '#' in link:
+        if '#' in link and hashtags:
             print "#"
             i = link.find('#')
             hash = link[i:]
             link = link[:i]
+        if link.startswith("include(") and include:
+            app = link[len('include('):]
+            app , model = app.split('.')
+            model = model.replace(')','')
+            m = get_model(app,model)
+
+            if not m:
+                raise ValidationError(_('No model find %s.%s' % (app,model)))
+            try:
+                m.get_absolute_url()
+            except TypeError:
+                return link,link
+            raise ValidationError(_('model %s.%s has no get_absolute_url(self) function' % (app,model)))
+
+
+
         try: # named URL or view
             url = reverse(link)
             return link + hash,url + hash

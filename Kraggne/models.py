@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
+from django.db.models.loading import get_model
 
 
 ORDER_CHOICES = 20
@@ -47,6 +48,18 @@ class MenuItem(MPTTModel):
 
     def __unicode__(self):
         return u'%s' % self.name
+
+    def HaveToInclude(self):
+        return self.url.startswith('include(')
+
+    def GetIncludeUrls(self):
+        app = self.url[len('include('):]
+        app , model = app.split('.')
+        model = model.replace(')','')
+        m = get_model(app,model)
+        if not m:
+            return []        
+        return m.objects.all()
 
 
 from django.db.models.signals import post_save#, pre_save
