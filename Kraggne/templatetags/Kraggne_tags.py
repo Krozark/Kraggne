@@ -327,5 +327,3 @@ def sub(arg, value ):
 def startswith(arg, val):
     return arg.startswith(val)
 
-
-

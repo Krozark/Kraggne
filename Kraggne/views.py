@@ -45,29 +45,12 @@ class GenericFormView(FormView):
 
     template_name = "Kraggne/genericFormPage.html"
 
-    #def get_form(self,form_class=None):
-    #    try:
-    #        return self.kwargs.get('page').formblock.getFormClass()
-    #    except:
-    #        return super(GenericFormView,self).get_form(form_class)
-
-    #def post(self,request,*args,**kwargs):
-    #    form = self.get_form()(request.POST)
-    #    if form.is_valid():
-    #        self.object = form.save()
-    #        page = self.kwargs['page']
-    #        return HttpResponseRedirect(page.formblock.url or page.url)
-    #    return self.render_to_response(self.get_context_data(form=form))
-
-
-        #return self.kwargs.get('page').formblock.getFormClass()
-
     def get_context_data(self, **kwargs):
         context = super(GenericFormView, self).get_context_data(**kwargs)
-
+        
         page =  self.kwargs.get('page',False)
-        for u in kwargs:
-            context[u] = kwargs[u]
+       # for u in kwargs:
+       #     context[u] = kwargs[u]
         if page:
             context['page'] = page
 

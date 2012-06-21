@@ -22,7 +22,8 @@ def MakePattern(menuItem):
     try:
         m = menuItem.formblock
         view = GenericFormView.as_view(form_class = m.getFormClass())
-    except:
+    except:# Exception,e:
+        #print e
         view = GenericView.as_view()
 
 
