@@ -157,8 +157,6 @@ class menuNode(Node):
         else:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
 
-        print tree.filter(url__contains = 'include(')
-
         context['root'] = menu
 
         if self.store_in_object:

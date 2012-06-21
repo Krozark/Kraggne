@@ -53,7 +53,6 @@ def clean_url(link,include=False,hashtags = True):
     elif link[0] != '^' : # Not a regex or site-root-relative absolute path
         hash = ''
         if '#' in link and hashtags:
-            print "#"
             i = link.find('#')
             hash = link[i:]
             link = link[:i]
