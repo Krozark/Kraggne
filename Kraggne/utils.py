@@ -20,15 +20,15 @@ def MakePattern(menuItem):
         ur= ur[:-1]
 
     try:
-        menuItem.formblock
-        view = GenericFormView
+        m = menuItem.formblock
+        view = GenericFormView.as_view(form_class = m.getFormClass())
     except:
-        view = GenericView
+        view = GenericView.as_view()
 
 
     return patterns('',url(
                 r'^%s$' % ur,
-                view.as_view(),
+                view,
                 kwargs={"page": menuItem,},
                 name="kraggne-%s" % menuItem.slug
                 ))
