@@ -12,3 +12,7 @@ translator.register(PageBlock,PageBlockTrans)
 class FormBlockTrans(TranslationOptions):
     fields = ()
 translator.register(FormBlock,FormBlockTrans)
+
+class PageTemplateTrans(TranslationOptions):
+    fields = ()
+translator.register(PageTemplate,PageTemplateTrans)
