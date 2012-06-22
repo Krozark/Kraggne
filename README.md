@@ -81,3 +81,30 @@ Exemple:
     {% breadcrumb %}
     <hr/>
     {% menu level_min=-1 level_nb=3 include_self=False %}
+
+CMS:
+===
+     
+     You will have to add to you INSTALL_APPS:
+     
+        'Kraggne.contrib.django_generic_flatblocks'
+        'Kraggne.contrib.gblocks'
+
+    in your urls.py add :
+        (r'',            include('Kraggne.urls')),
+
+     Using the admin, you can creat your menu, and chose CMS option. This option will auto creat the nex url,
+     and use a specifique view.
+     By default, the "Kraggne/genericPage.html" is use to diplay the page.
+     If you want a other, you just have to associate a template to the itemPage you want (using admin).
+     You can also add a form (one form for one page). The default template use for this view is "Kraggne/genericFormPage.html"
+     You can use a other. the for is contain in the "form" context var.
+     
+     If you need mor vars, you can add them using the PageVars model.
+     It auto add (name) and (name)_list to the context where name is the name of the nex var created.
+     You can also add filter kwargs using the query_args field.
+     
+     the same way is use with gblock an glist, but not store by the same way, and they could be use out of the cms pages.
+     
+
+
