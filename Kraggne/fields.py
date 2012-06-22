@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.forms.fields import Field
 from django.forms.util import ValidationError as FormValidationError
+from django.template import TemplateSyntaxError
 
 from django.template.loader import get_template
 import re
@@ -29,8 +30,12 @@ class TemplateFormField(Field):
         if isinstance(value, basestring):
             try :
                 get_template(value)
+            except TemplateSyntaxError,e:
+                raise FormValidationError('%s' %  e)
             except:
                 raise FormValidationError(_('Template %s does not existe' % value))
+        else:
+            raise FormValidationError(_('Not string instance' % value))
         return value             
 
 class TemplateField(models.CharField):

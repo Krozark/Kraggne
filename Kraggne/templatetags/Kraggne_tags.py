@@ -145,7 +145,7 @@ class menuNode(Node):
 
         if not menu:
             return ''
-
+        
         if self.level_min > 0:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__gte=menu.level+self.level_min)
         elif self.level_min < 0:
@@ -156,6 +156,9 @@ class menuNode(Node):
                 tree=tree.exclude(pk__in=tmp.get_descendants(include_self=True))
         else:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True)
+
+        if self.level_nb > 0:
+            tree = tree.filter(level__lte = menu.level+self.level_nb)
 
         context['root'] = menu
 
