@@ -2,7 +2,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
 from django.db.models.loading import get_model
-from Kraggne.fields import TemplateField
+from Kraggne.fields import TemplateField, ContextNameValidator
+from Kraggne.contrib.flatblocks.fields import JSONField
 
 
 ORDER_CHOICES = 20
@@ -94,33 +95,78 @@ def MenuItemSave(sender,**kwargs):
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
-class PageBlock(models.Model):
-    name = models.CharField(_('Item'),max_length=255)
-    page = models.ForeignKey(MenuItem,blank=False,null=False,default=None)
-    #content
-    # TODO with setting
-    content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
-    object_id = models.PositiveIntegerField(_('object id'))
+#class PageBlock(models.Model):
+#    name = models.CharField(_('Item'),max_length=255)
+#    page = models.ForeignKey(MenuItem,blank=False,null=False,default=None)
+#    #content
+#    # TODO with setting
+#    content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
+#    object_id = models.PositiveIntegerField(_('object id'))
+#    content_object = generic.GenericForeignKey('content_type', 'object_id')
+#    #style
+#    width = models.PositiveIntegerField(_('Width'),null=False,blank=False,default=100)
+#    height = models.PositiveIntegerField(_('Height'),null=False,blank=False,default=100)
+#    hextra_class = models.CharField(_('Hextra css class'),max_length=255,null=True,blank=True,default=None)
+#    is_visible = models.BooleanField(_('Is Visible'),null=False,blank=False,default=True)
+#    #position
+#    position_x = models.IntegerField(_('x position'),null=False,blank=False,default=0)
+#    position_y = models.IntegerField(_('y position'),null=False,blank=False,default=0)
+#    template_path = TemplateField(_('Template Path'), max_length=255,null=True,blank=True,
+#                                     help_text=_('Display usign specific template'))
+#
+#    class Meta:
+#        ordering = ('page__lft', 'page__tree_id')
+#
+#    def get_absolute_url(self):
+#        return self.page.get_absolute_url()
+#
+#    def __unicode__(self):
+#        return u'%s %s' % (self.page,self.name)
+
+class PageVar(models.Model):
+    page = models.ForeignKey(MenuItem)
+    context_name = models.CharField(_('context name'),max_length=20,validators=[ContextNameValidator])
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField(_('object id'),blank=True,null=True)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    #style
-    width = models.PositiveIntegerField(_('Width'),null=False,blank=False,default=100)
-    height = models.PositiveIntegerField(_('Height'),null=False,blank=False,default=100)
-    hextra_class = models.CharField(_('Hextra css class'),max_length=255,null=True,blank=True,default=None)
-    is_visible = models.BooleanField(_('Is Visible'),null=False,blank=False,default=True)
-    #position
-    position_x = models.IntegerField(_('x position'),null=False,blank=False,default=0)
-    position_y = models.IntegerField(_('y position'),null=False,blank=False,default=0)
-    template_path = TemplateField(_('Template Path'), max_length=255,null=True,blank=True,
-                                     help_text=_('Display usign specific template'))
+    query_args = JSONField(_('custom query args'),blank=True,null=True)
 
     class Meta:
-        ordering = ('page__lft', 'page__tree_id')
-
-    def get_absolute_url(self):
-        return self.page.get_absolute_url()
+        unique_together = (("context_name", "page"),)
 
     def __unicode__(self):
-        return u'%s %s' % (self.page,self.name)
+        return "%s" % self.context_name
+
+    def addToContext(self,context):
+        self._addObjectListToContext(context)
+        self._addObjectToContext(context)
+
+    def _addObjectToContext(self,context):
+        context['%s' % self.context_name] = self.object
+
+    def _addObjectListToContext(self,context):
+        context['%s_list' % self.context_name] = self.object_list
+        
+    def _model(self):
+        return self.content_type.model_class()
+
+    @property
+    def object(self):
+        try:
+            return self.content_object
+        except:
+            return None
+
+    @property
+    def object_list(self):
+        model = self._model()
+        if self.query_args:
+            return model.objects.filter(**self.query_args)
+        return model.objects.all()
+
+    def __iter__(self):
+        return self.object_list.__iter__()
+
 
 class FormBlock(models.Model):
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)

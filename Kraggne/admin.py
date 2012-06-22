@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from Kraggne.forms import MenuItemForm, FormBlockForm
-from Kraggne.models import MenuItem, PageBlock, FormBlock, PageTemplate
+from Kraggne.models import MenuItem,FormBlock, PageTemplate, PageVar #PageBlock,
 from django.conf import settings
 
 if 'grappellifit' in settings.INSTALLED_APPS and 'modeltranslation' in settings.INSTALLED_APPS:
@@ -44,14 +44,14 @@ class MenuItemAdmin(ADMIN):
         return MenuItem.objects.exclude(pk=1)
 admin.site.register(MenuItem, MenuItemAdmin)
 
-class PageBlockAdmin(ADMIN):
-    list_display = ('__unicode__','page','content_object','is_visible',)
-    list_filter = ('is_visible','page','content_type')
-    related_lookup_fields = {
-        'generic': [['content_type', 'object_id'],],
-    }
-    #form = PageBlockForm
-admin.site.register(PageBlock, PageBlockAdmin)
+#class PageBlockAdmin(ADMIN):
+#    list_display = ('__unicode__','page','content_object','is_visible',)
+#    list_filter = ('is_visible','page','content_type')
+#    related_lookup_fields = {
+#        'generic': [['content_type', 'object_id'],],
+#    }
+#    #form = PageBlockForm
+#admin.site.register(PageBlock, PageBlockAdmin)
 
 class FormBlockAdmin(ADMIN):
     list_display = ('slug','form','page','view','url')
@@ -65,3 +65,9 @@ class PageTemplateAdmin(ADMIN):
     list_display = ('page','slug','template_path')
     prepopulated_fields = {'slug':('page',)}
 admin.site.register(PageTemplate,PageTemplateAdmin)
+
+class PageVarAdmin(ADMIN):
+    list_display = ('page','context_name','content_type','object_id','object')
+    list_filter = ('page',)
+admin.site.register(PageVar,PageVarAdmin)
+

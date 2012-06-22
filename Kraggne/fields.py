@@ -5,6 +5,13 @@ from django.forms.fields import Field
 from django.forms.util import ValidationError as FormValidationError
 
 from django.template.loader import get_template
+import re
+
+def ContextNameValidator(value):
+    r = re.findall(r'[\w_][\d\w_]+', value)
+    if not(bool(re) and len(r) == 1):
+        raise FormValidationError(_('A-z 1-9 _ only. (with first char not 1-9)'))
+    return value
 
 class TemplateFormField(Field):
     description = "Field to store valide template path"

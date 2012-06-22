@@ -11,7 +11,10 @@ from Kraggne.models import MenuItem
 
 def addSelfToContext(slug,context):
     try:
-        context['page'] = MenuItem.objects.get(slug=slug)
+        page = MenuItem.objects.get(slug=slug)
+        context['page'] = page
+        for u in page.pagevar_set.all():
+            u.addToContext(context)
     except:
         pass
 
@@ -30,6 +33,12 @@ class GenericViewContextMixin(object):
         page =  self.kwargs.get('page',False)
         if page:
             context['page'] = page
+
+        for u in page.pagevar_set.all():
+            u.addToContext(context)
+
+        context.pop('params')
+        print context
 
         return context
 
