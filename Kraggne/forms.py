@@ -62,15 +62,6 @@ class MenuItemForm(forms.ModelForm):
             self.url = "/"+self.cleaned_data['slug']
         return ''
 
-   # def clean_is_visible(self):
-   #     v = self.cleaned_data['is_visible']
-   #     link = self.cleaned_data['view'] or ''
-
-   #     if v:
-   #         if re.search('[^\d/\w-]',link):
-   #             raise forms.ValidationError(_("regex urls can't be desplayed in menu"))
-   #     return v
-
     def clean(self):
         super(MenuItemForm, self).clean()
 

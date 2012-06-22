@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from Kraggne.forms import MenuItemForm, FormBlockForm
-from Kraggne.models import MenuItem, PageBlock, FormBlock
+from Kraggne.models import MenuItem, PageBlock, FormBlock, PageTemplate
 from django.conf import settings
 
 if 'grappellifit' in settings.INSTALLED_APPS and 'modeltranslation' in settings.INSTALLED_APPS:
@@ -60,3 +60,8 @@ class FormBlockAdmin(ADMIN):
     form = FormBlockForm
 
 admin.site.register(FormBlock,FormBlockAdmin)
+
+class PageTemplateAdmin(ADMIN):
+    list_display = ('page','slug','template_path')
+    prepopulated_fields = {'slug':('page',)}
+admin.site.register(PageTemplate,PageTemplateAdmin)

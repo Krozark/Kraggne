@@ -19,12 +19,22 @@ def MakePattern(menuItem):
     if len(ur) and ur[-1] == '$':
         ur= ur[:-1]
 
+    q={}
     try:
         m = menuItem.formblock
-        view = GenericFormView.as_view(form_class = m.getFormClass())
+        view = GenericFormView
+        q['form_class'] = m.getFormClass()
     except:# Exception,e:
         #print e
-        view = GenericView.as_view()
+        view = GenericView
+
+    try :
+        t = menuItem.pagetemplate
+        q['template_name'] = t.template_path
+    except :
+        pass
+
+    view = view.as_view(**q)
 
 
     return patterns('',url(
@@ -71,8 +81,6 @@ def clean_url(link,include=False,hashtags = True):
                 return link,link
             raise ValidationError(_('model %s.%s has no get_absolute_url(self) function' % (app,model)))
 
-
-
         try: # named URL or view
             url = reverse(link)
             return link + hash,url + hash
@@ -82,16 +90,3 @@ def clean_url(link,include=False,hashtags = True):
         raise ValidationError(_('Regex are not suported with redirect url. Please use named url insted'))
     return link + hash,url + hash
 
-#from django.core.cache import cache
-#def clearCache():
-# try:
-# cache._cache.clear() # in-memory caching
-# except AttributeError:
-# # try filesystem caching next
-# old = cache._cull_frequency
-# old_max = cache._max_entries
-# cache._max_entries = 0
-# cache._cull_frequency = 1
-# cache._cull()
-# cache._cull_frequency = old
-# cache._max_entries = old_max
