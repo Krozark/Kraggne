@@ -66,13 +66,13 @@ class MenuItem(MPTTModel):
 
 from django.db.models.signals import post_save#, pre_save
 from django.dispatch import receiver
-from Kraggne.utils import MakePattern
 
 # rebuild url of children if it's nedeed to conserve the base url given
 @receiver(post_save, sender=MenuItem)
 def MenuItemSave(sender,**kwargs):
 
     from Kraggne import urls as Kraggne_urls
+    from Kraggne.utils import MakePattern
     if hasattr(Kraggne_urls,'urlpatterns'):
         urls = getattr(Kraggne_urls,'urlpatterns')
         urls += MakePattern(kwargs['instance'])
