@@ -38,8 +38,6 @@ class GenericViewContextMixin(object):
             u.addToContext(context)
 
         context.pop('params')
-        print context
-
         return context
 
 
