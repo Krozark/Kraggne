@@ -6,18 +6,18 @@ from django.db.models.loading import get_model
 
 def MakePattern(menuItem):
     ur = menuItem.url
-
-    if ur == "/":
-        ur=""
-    else:
-        if ur[0] == "/" and len(ur)>1:
+    if len(ur) > 0:
+        if ur == "/":
+            ur=""
+        else:
+            if ur[0] == "/" and len(ur)>1:
+                ur = ur[1:]
+            if len(ur)>1 and ur[-1] != "/":
+                ur+="/"
+        if len(ur) and ur[0] == '^':
             ur = ur[1:]
-        if len(ur)>1 and ur[-1] != "/":
-            ur+="/"
-    if len(ur) and ur[0] == '^':
-        ur = ur[1:]
-    if len(ur) and ur[-1] == '$':
-        ur= ur[:-1]
+        if len(ur) and ur[-1] == '$':
+            ur= ur[:-1]
 
     q={}
     try:
@@ -56,7 +56,9 @@ def clean_url(link,include=False,hashtags = True):
             resp = c.get(link)
             if resp.status_code == 404:
                 raise ValidationError(_(u'%s is not a local URL (does not exist)' % link))
-            url = link
+            url = link.strip()
+            if len(url) == 0:
+                url ="/"
             return link,url
         except:
             raise ValidationError(_(u'%s is not a local URL (not a valid URL)' % link))
@@ -83,10 +85,14 @@ def clean_url(link,include=False,hashtags = True):
 
         try: # named URL or view
             url = reverse(link)
+            if len(url) == 0:
+                url ="/"
             return link + hash,url + hash
         except NoReverseMatch:
             raise ValidationError(_('No view find to reverse the url %s' % link))
     elif link[0] == '^': #regex
         raise ValidationError(_('Regex are not suported with redirect url. Please use named url insted'))
+    if len(url) == 0:
+        url ="/"
     return link + hash,url + hash
 
