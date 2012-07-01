@@ -101,3 +101,4 @@ def clean_url(link,include=False,hashtags = True,gettag=True):
     if len(url) == 0:
         url ="/"
     return link +get+ hash,url +get+ hash
+
