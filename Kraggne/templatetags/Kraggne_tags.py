@@ -125,7 +125,7 @@ register.tag('breadcrumb', do_breadcrumb)
 
 class menuNode(Node):
 
-    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,level_min=0,level_nb=0):
+    def __init__(self, slug,template_path=None,store_in_object=None,variable_name=None,include_self=True,level_min=0,level_nb=0,context = {}):
         self.slug = slug
         self.template_path = template_path
         self.store_in_object = store_in_object
@@ -133,6 +133,7 @@ class menuNode(Node):
         self.include_self = include_self
         self.level_min = level_min
         self.level_nb = level_nb
+        self.context = context
 
     def render(self, context):
         if not self.slug:
@@ -145,6 +146,8 @@ class menuNode(Node):
 
         if not menu:
             return ''
+
+        context.update(self.context)
         
         if self.level_min > 0:
             tree = menu.get_descendants(include_self=self.include_self).filter(is_visible=True,level__gte=menu.level+self.level_min)
@@ -207,10 +210,39 @@ def do_menu(parser, token):
         'include_self' : get_val_for(bits,'include_self',if_none=True,type=bool),
         'level_min' : get_val_for(bits,'level_min',if_none=0,type=int),
         'level_nb' : get_val_for(bits,'level_nb',if_none=0,type=int),
+        'context' : {'MENU_CLASS' : 'menu',}
     }
     return menuNode(**args)
 
 register.tag('menu', do_menu)
+
+####################################################################
+###################### Sous menu ###################################
+####################################################################
+
+def do_sousmenu(parser, token):
+    """
+    {% sousmenu ["slug"] [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] into "slug_object" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" as "variable" [include_self=False level_min=0 level_nb=1] %}
+    the level_min arg is relative to the menu pass in arg
+    level_min must be <= 0 for a good result. if >0, the result can change, and is not guarantie
+    """
+    bits = token.contents.split()
+    args = {
+        'slug': next_bit_for(bits, 'menu'),
+        'store_in_object': next_bit_for(bits, 'into'),
+        'template_path': next_bit_for(bits, 'with'),
+        'variable_name': next_bit_for(bits, 'as'),
+        'include_self' : get_val_for(bits,'include_self',if_none=False,type=bool),
+        'level_min' : get_val_for(bits,'level_min',if_none=0,type=int),
+        'level_nb' : get_val_for(bits,'level_nb',if_none=1,type=int),
+        'context' : {'MENU_CLASS' : 'sousmenu',}
+    }
+    return menuNode(**args)
+
+register.tag('sousmenu', do_sousmenu)
 
 ####################################################################
 ###################### compare #####################################
