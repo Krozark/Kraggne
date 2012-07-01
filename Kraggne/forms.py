@@ -78,7 +78,7 @@ class MenuItemForm(forms.ModelForm):
         item.url = self.url
         if item.view:
             if not 'include(' in item.view:
-                if re.search('[^\d/\w\-:_# ]',item.view):
+                if re.search('[^\d/\w\-:_#? ]',item.view):
                     item.is_visible = False
         
         ##try to register the new url
