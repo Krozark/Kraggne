@@ -29,6 +29,11 @@ Menu Gestion:
     {% menu ["slug"] into "slug_object" [include_self=True level_min=0 level_nb=0] %}
     {% menu ["slug"] with "templatename.html" [include_self=True level_min=0 level_nb=0] %}
     {% menu ["slug"] with "templatename.html" as "variable" [include_self=True level_min=0 level_nb=0] %}
+    
+    {% sousmenu ["slug"] [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] into "slug_object" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" as "variable" [include_self=False level_min=0 level_nb=1] %}
 
 
 Breadcrumb:
