@@ -48,7 +48,7 @@ def MakePattern(menuItem):
 from django.test.client import Client
 from django.forms import ValidationError
 from django.core.urlresolvers import reverse, NoReverseMatch
-def clean_url(link,include=False,hashtags = True):
+def clean_url(link,include=False,hashtags = True,gettag=True):
     url = None
     if link[0] == "/": #a defined URL
         c = Client()
@@ -69,6 +69,12 @@ def clean_url(link,include=False,hashtags = True):
             i = link.find('#')
             hash = link[i:]
             link = link[:i]
+        get = ''
+        if '?' in link and gettag:
+            i = link.find('?')
+            get = link[i:]
+            link = link[:i]
+
         if link.startswith("include(") and include:
             app = link[len('include('):]
             app , model = app.split('.')
@@ -87,12 +93,11 @@ def clean_url(link,include=False,hashtags = True):
             url = reverse(link)
             if len(url) == 0:
                 url ="/"
-            return link + hash,url + hash
+            return link +get+ hash,url+get+ hash
         except NoReverseMatch:
             raise ValidationError(_('No view find to reverse the url %s' % link))
     elif link[0] == '^': #regex
         raise ValidationError(_('Regex are not suported with redirect url. Please use named url insted'))
     if len(url) == 0:
         url ="/"
-    return link + hash,url + hash
-
+    return link +get+ hash,url +get+ hash
