@@ -77,7 +77,8 @@ Urls:
         context["page"] = current menuItem
         for all pageVars link with the item:
             context[var.context_name] = generic_object (if a pk is set)
-            context[var.context_name+'_list'] = generic_object model.all() (or .filter(**kwargs) where kwargs is the custom query args)
+            context[var.context_name+'_list'] = generic_object model.all() (or .filter(**kwargs) where 
+            kwargs is the custom query args)
             the object_list is set all the time. the object, only if the object_id is set (and existe)
             
 
