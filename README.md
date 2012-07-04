@@ -34,6 +34,12 @@ Menu Gestion:
     {% sousmenu ["slug"] into "slug_object" [include_self=False level_min=0 level_nb=1] %}
     {% sousmenu ["slug"] with "templatename.html" [include_self=False level_min=0 level_nb=1] %}
     {% sousmenu ["slug"] with "templatename.html" as "variable" [include_self=False level_min=0 level_nb=1] %}
+    
+    {% getmenu %}
+    look if context['page'] is a string, it will try to get the menuitem with this slug, and put it in context['page']
+    
+    I recomend you, to use this tag in all your template that use a other Kraggne tag, and his display with a custom view (not a CSM page).
+    Put it in the top of the page, before any Kraggne Tag/filter to disable possible TypeErrors. 
 
 
 Breadcrumb:
