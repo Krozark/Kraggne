@@ -1,7 +1,7 @@
 Kraggne
 =======
 
-Un projet de cms django
+Un projet de cms django, mais surtout un menu complet pour le moment.
 
 
 Instalation:
