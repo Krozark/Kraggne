@@ -48,6 +48,65 @@ def MakePattern(menuItem):
 from django.test.client import Client
 from django.forms import ValidationError
 from django.core.urlresolvers import reverse, NoReverseMatch
+import re
+
+def clean_include_url(link,include): #include(app.model)
+#return link
+    if link.startswith("include(") and include:
+        app = link[len('include('):]
+        app = app.split('.').replace(')','')
+        if len(app) != 2:
+            raise ValidationError(_('imposible to find "." syntax: include(app.model)'))
+
+        app,model = app[0],app[1]
+
+        m = get_model(app,model)
+
+        if not m:
+            raise ValidationError(_('No model find %s.%s' % (app,model)))
+        try:
+            m.get_absolute_url()
+        except TypeError:
+            return link,link
+        raise ValidationError(_('model %s.%s has no get_absolute_url(self) function' % (app,model)))
+    return link
+
+def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) else (app.get_objetct_from_url(**kwargs))
+#return link, modelclass, 0 if basic (slug or pk) 1 if custom (model.get_objetct_from_url(**kwargs))
+    if link.startswith("detail(") and detail:
+        url = link[len('detail('):]
+        i = url.rfind(',')
+        if i <=0:
+            raise ValidationError(_('imposible to find "," syntaxe: detail(url,app.model)'))
+        
+        app = link[i+1:].replace(')','')
+        url = link[:i].replace('"','').replace("'",'')
+        app = app.split('.')
+
+        if len(app) != 2:
+            raise ValidationError(_('imposible to find one "." in %s syntaxe: detail(url,app.model)' % '.'.join(app)))
+
+        app,model = app[0],app[1]
+
+        m = get_model(app,model)
+        if not m:
+            raise ValidationError(_('No model find %s.%s' % (app,model)))
+
+        try:
+            r = re.compile(link)
+        except Exception, e:
+            raise ValidationError(_('Please supply a valid regex URL. %s' % e))
+
+        if len(r.groupindex) == 1:
+            if not ('pk' in r.groupindex or 'slug' in r.groupindex):
+                raise ValidationError(_('Please supply a valid regex URL. with <pk> OR <slug> '))
+
+            if 'slug' in groupindex and no hasattr(m,'slug'):
+                raise ValidationError(_("'<slug> is define in URL, but your model has no attr 'slug'"))
+            return link,m,0
+        raise ValidationError(_('Please supply a valid regex URL. with <pk> or <slug>. You can also define a get_object_from_url(***kwargs) method in your model. This methode must return a object' % (app,model)))
+    return link
+
 def clean_url(link,include=False,hashtags = True,gettag=True):
     url = None
     if link[0] == "/": #a defined URL
@@ -74,22 +133,11 @@ def clean_url(link,include=False,hashtags = True,gettag=True):
             i = link.find('?')
             get = link[i:]
             link = link[:i]
-
-        if link.startswith("include(") and include:
-            app = link[len('include('):]
-            app , model = app.split('.')
-            model = model.replace(')','')
-            m = get_model(app,model)
-
-            if not m:
-                raise ValidationError(_('No model find %s.%s' % (app,model)))
-            try:
-                m.get_absolute_url()
-            except TypeError:
-                return link,link
-            raise ValidationError(_('model %s.%s has no get_absolute_url(self) function' % (app,model)))
+        
+        link = clean_include_url(link,include)
 
         try: # named URL or view
+            print link
             url = reverse(link)
             if len(url) == 0:
                 url ="/"
