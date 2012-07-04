@@ -38,8 +38,13 @@ Menu Gestion:
     {% getmenu %}
     look if context['page'] is a string, it will try to get the menuitem with this slug, and put it in context['page']
     
-    I recomend you, to use this tag in all your template that use a other Kraggne tag, and his display with a custom view (not a CSM page).
+     warning:
+     ---------
+     
+    I recomend you, to use this tag in all your template that use a other Kraggne tag,
+    and what are display using a custom (def) view or that not extend Kraggne.views.GenericViewContextMixinSlug (and not a CSM page).
     Put it in the top of the page, before any Kraggne Tag/filter to disable possible TypeErrors. 
+
 
 
 Breadcrumb:
@@ -51,6 +56,30 @@ Breadcrumb:
     {% breadcrumb ["slug"] into "slug_object" [include_self=True] %}
     {% breadcrumb ["slug"] with "templatename.html" [include_self=True] %}
     {% breadcrumb ["slug"] with "templatename.html" as "variable" [include_self=True] %}
+
+
+Custom views:
+------------
+
+     You can esily use your own view insted of CMS. But you have to extend Kraggne.views.GenericViewContextMixinSlug
+     to provide Menu/breadcrum functionement, and add a
+     slug= 'my-page-slug' that is your current page slug (set in the admin)
+
+Urls:
+-----
+
+    All  Cms MenuItem create a new named url as:
+    name = kraggne-[item-slug]
+    url = item.url
+    view = Kraggne.view.GenericView (or GenericFormView if a form is link to the item)
+    template = Kraggne/Generic[Form]Page.html (depend of the view) or the the template link to the item
+    context :
+        context["page"] = current menuItem
+        for all pageVars link with the item:
+            context[var.context_name] = generic_object (if a pk is set)
+            context[var.context_name+'_list'] = generic_object model.all() (or .filter(**kwargs) where kwargs is the custom query args)
+            the object_list is set all the time. the object, only if the object_id is set (and existe)
+            
 
 
 Generic Block (need django_generic_flatblocks): 
@@ -92,6 +121,7 @@ Exemple:
     {% breadcrumb %}
     <hr/>
     {% menu level_min=-1 level_nb=3 include_self=False %}
+
 
 CMS:
 ===
