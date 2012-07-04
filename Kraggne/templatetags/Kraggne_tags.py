@@ -63,11 +63,6 @@ class breadcumbNode(Node):
     def render(self, context):
         if not self.slug:
             try:
-                m = context.get('page')
-                if isinstance(m,str):
-                    m = GetMenuBySlug(m)
-                    if m:
-                        context["page"] = m
                 menu = context["page"]
             except:
                 return ''
@@ -143,10 +138,6 @@ class menuNode(Node):
     def render(self, context):
         if not self.slug:
             try:
-                if isinstance(context['page'],str):
-                    m = GetMenuBySlug(context['page'])
-                    if m:
-                        context["page"] = m
                 menu = context["page"]
             except:
                 return ''
@@ -317,43 +308,33 @@ register.tag('last', do_last)
 ##########################################################################
 ######################### UTILS TAGS #####################################
 ##########################################################################
-#class GetMenuNode(Node):
-#
-#    def __init__(self,store_in_object=None):
-#        self.store_in_object = store_in_object or 'page_itemmenu'
-#
-#    def render(self, context):
-#        try:
-#            slug = context["page_slug"]
-#            context[resolve(self.store_in_object,context)] = MenuItem.objects.get(slug=slug)
-#        except:
-#            pass
-#        return ''
-#
-#def do_getmenu(parser, token):
-#    """
-#    {% getmenu [into "slug_object"] %}
-#    """
-#
-#    bits = token.contents.split()
-#    args = {
-#        'store_in_object': next_bit_for(bits, 'into'),
-#    }
-#    return GetMenuNode(**args)
-#
-#register.tag('getmenu', do_getmenu)
+class GetMenuNode(Node):
+
+    def render(self, context):
+        try:
+            menu = context["page"]
+            if isinstance(menu,str):
+                menu = GetMenuBySlug(menu)
+            context["page"] = menu
+        except:
+            pass
+        return ''
+
+def do_getmenu(parser, token):
+    """
+    {% getmenu %}
+    """
+    return GetMenuNode()
+
+register.tag('getmenu', do_getmenu)
 
 
 @register.filter
 def ancestor(arg,val):
-    if isinstance(val,str):
-        val = GetMenuBySlug(val)
     return arg.is_ancestor_of(val,include_self=True)
 
 @register.filter
 def descendant(arg,val):
-    if isinstance(arg,str):
-        arg = GetMenuBySlug(arg)
     return arg.is_descendant_of(val,include_self=True)
 
 
