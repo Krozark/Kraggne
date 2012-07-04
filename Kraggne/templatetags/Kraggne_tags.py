@@ -63,6 +63,11 @@ class breadcumbNode(Node):
     def render(self, context):
         if not self.slug:
             try:
+                m = context.get('page')
+                if isinstance(m,str):
+                    m = GetMenuBySlug(m)
+                    if m:
+                        context["page"] = m
                 menu = context["page"]
             except:
                 return ''
@@ -138,12 +143,15 @@ class menuNode(Node):
     def render(self, context):
         if not self.slug:
             try:
+                if isinstance(context['page'],str):
+                    m = GetMenuBySlug(context['page'])
+                    if m:
+                        context["page"] = m
                 menu = context["page"]
             except:
                 return ''
         else:
             menu = GetMenuBySlug(resolve(self.slug,context))
-
         if not menu:
             return ''
 
@@ -338,10 +346,14 @@ register.tag('last', do_last)
 
 @register.filter
 def ancestor(arg,val):
+    if isinstance(val,str):
+        val = GetMenuBySlug(val)
     return arg.is_ancestor_of(val,include_self=True)
 
 @register.filter
 def descendant(arg,val):
+    if isinstance(arg,str):
+        arg = GetMenuBySlug(arg)
     return arg.is_descendant_of(val,include_self=True)
 
 
