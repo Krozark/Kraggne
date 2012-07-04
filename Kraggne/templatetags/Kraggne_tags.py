@@ -315,7 +315,7 @@ class GetMenuNode(Node):
             menu = context["page"]
             if isinstance(menu,str):
                 menu = GetMenuBySlug(menu)
-            context["page"] = menu
+                context["page"] = menu
         except:
             pass
         return ''
