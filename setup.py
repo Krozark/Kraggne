@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='Kraggne',
     version='0.1',
-    description='A django cms project',
+    description='A django cms project, and navigation',
     long_description=open('README.md').read(),
     author='Maxime Barbier',
     author_email='maxime.barbier1991@gmail.com',
