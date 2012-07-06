@@ -28,18 +28,20 @@ class MenuItemForm(forms.ModelForm):
 
         if not auto:
             if link:
-               link,self.url = clean_url(link,include=True)
+               link,self.url = clean_url(link,include=True,detail=True)
                return link
             raise ValidationError(_('Please supply a valid URL or URL name.'))
 
         else: #auto
             if link:
-                try:
-                    re.compile(link)
-                    self.url = link
-                    return link
-                except:
-                    raise forms.ValidationError(_("%s is not a valide Regex." % link))
+                link,self.url = clean_url(link,include=True,detail=True,existe=False)
+                return link
+                #try:
+                #    re.compile(link)
+                #    self.url = link
+                #    return link
+                #except:
+                #    raise forms.ValidationError(_("%s is not a valide Regex." % link))
                 #elif link[0] != "/":
                 #    self.url = "/"+link
                 #else:
@@ -88,7 +90,6 @@ class MenuItemForm(forms.ModelForm):
 
         if commit:
             item.save() 
-            pass
         return item
 
 

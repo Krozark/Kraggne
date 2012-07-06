@@ -4,7 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.db.models.loading import get_model
 from Kraggne.fields import TemplateField, ContextNameValidator
 from Kraggne.contrib.flatblocks.fields import JSONField
-
+from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include
 
 ORDER_CHOICES = 20
 
@@ -54,6 +54,7 @@ class MenuItem(MPTTModel):
     def HaveToInclude(self):
         return self.url.startswith('include(')
 
+        
     def GetIncludeUrls(self):
         app = self.url[len('include('):]
         app , model = app.split('.')
@@ -62,6 +63,23 @@ class MenuItem(MPTTModel):
         if not m:
             return []        
         return m.objects.all()
+
+    def HaveToDetail(self):
+        return self.view.startswith('detail(')
+
+    def get_model(self):
+        if self.HaveToInclude():
+            return self._get_for_include_model()
+        elif self.HaveToDetail():
+            return self._get_for_detail_model()
+        return None
+
+    def _get_for_include_model(self):
+        return get_model_from_include(self.view)
+
+    def _get_for_detail_model(self):
+        model,url = get_model_and_url_from_detail(self.view)
+        return model
 
 
 from django.db.models.signals import post_save#, pre_save

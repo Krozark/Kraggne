@@ -331,10 +331,14 @@ register.tag('getmenu', do_getmenu)
 
 @register.filter
 def ancestor(arg,val):
+    if not arg or not val:
+        return False
     return arg.is_ancestor_of(val,include_self=True)
 
 @register.filter
 def descendant(arg,val):
+    if not arg or not val:
+        return False
     return arg.is_descendant_of(val,include_self=True)
 
 

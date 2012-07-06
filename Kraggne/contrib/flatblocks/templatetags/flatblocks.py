@@ -1,6 +1,6 @@
 from django.template import Library, Node
 from django.template import TemplateSyntaxError, TemplateDoesNotExist, Variable
-from django.template.loader import select_template
+#from django.template.loader import select_template
 from django.conf import settings
 from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
