@@ -14,10 +14,10 @@
     {% endfor %}
 {% endif %}
 
-{% if menu.HaveToInclude %}
-{% for it in menu.GetIncludeUrls %}
-<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">
-<a href="{{it.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} link">{{it}}</a>
+{% if menu.have_to_display %}
+{% for it in menu.get_model_all %}
+<li class="item-{{menu.level|sub:root.level}} {% if object == it %}active{% else %}inactive{% endif %} item">
+<a href="{{it.get_absolute_url}}" class="link-{{menu.level}} {% if object == it %}active{% else %}inactive{% endif %} link">{{it}}</a>
 {% endfor %}
 {% else %}
 <li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">

@@ -51,26 +51,25 @@ class MenuItem(MPTTModel):
     def __unicode__(self):
         return u'%s' % self.name
 
-    def HaveToInclude(self):
+    def is_include(self):
         return self.url.startswith('include(')
 
+    def have_to_display(self):
+        return self.is_visible and (self.is_include() or self.is_detail())
         
-    def GetIncludeUrls(self):
-        app = self.url[len('include('):]
-        app , model = app.split('.')
-        model = model.replace(')','')
-        m = get_model(app,model)
+    def get_model_all(self):
+        m = self.get_model()
         if not m:
             return []        
         return m.objects.all()
 
-    def HaveToDetail(self):
+    def is_detail(self):
         return self.view.startswith('detail(')
 
     def get_model(self):
-        if self.HaveToInclude():
+        if self.is_include():
             return self._get_for_include_model()
-        elif self.HaveToDetail():
+        elif self.is_detail():
             return self._get_for_detail_model()
         return None
 

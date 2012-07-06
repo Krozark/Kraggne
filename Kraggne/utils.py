@@ -21,7 +21,7 @@ def MakePattern(menuItem):
             ur= ur[:-1]
 
     q={}
-    if menuItem.HaveToDetail():
+    if menuItem.is_detail():
         view = GenericDetailView
         q['model'] = menuItem._get_for_detail_model()
     else:
