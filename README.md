@@ -12,7 +12,7 @@ Instalation:
         'Kraggne'
 
         optional:
-        'Kraggne.contrib.django_generic_flatblocks'
+        'Kraggne.contrib.flatblocks'
         'Kraggne.contrib.gblocks'
 
     in your urls.py add :
@@ -84,7 +84,7 @@ Urls:
             
 
 
-Generic Block (need django_generic_flatblocks): 
+Generic Block (need contrib.flatblocks): 
 -------------
 
     {% load  generic_flatblocks %}
@@ -98,7 +98,7 @@ Generic Block (need django_generic_flatblocks):
     {% display generic_object %}
 
 
-Generic List (need django_generic_flatblocks):
+Generic List (need contrib.flatblocks):
 ----------------------------------------------
 
     {% load  generic_flatblocks %}
