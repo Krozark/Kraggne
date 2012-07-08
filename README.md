@@ -72,6 +72,7 @@ Urls:
     name = kraggne-[item-slug]
     url = item.url
     view = Kraggne.view.GenericView (or GenericFormView if a form is link to the item)
+    in the form it can be url,named url,detail('url',app.model),include(app.model)
     template = Kraggne/Generic[Form]Page.html (depend of the view) or the the template link to the item
     context :
         context["page"] = current menuItem
