@@ -6,6 +6,8 @@
 {% menu level_min=-1 level_nb=1 %}
 {% endblock %}
 
+{% comment %}
+{# exemple #}
 {% block project.body %}
 <h2>Menu</h2>
 {% menu "main" %}
@@ -26,4 +28,5 @@
 <h2>with display tag:</h2>
 {% display generic_object_list %}
 
+{% endblock %}
 {% endblock %}
