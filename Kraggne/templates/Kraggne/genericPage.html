@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
+{% comment %}
 {% block project.body %}
 {{block.super}}
-{% comment %}
 {% for object in content_blocks %}
 <div class="block">
     {% with name="include/"|add:object.content_type|add:".inc.html" %}
@@ -10,6 +10,6 @@
     {% endwith %}
 </div>
 {% endfor %}
-{% endcomment %}
 
 {% endblock %}
+{% endcomment %}

@@ -4,6 +4,7 @@ from django.template import TemplateSyntaxError, TemplateDoesNotExist, Variable
 from django.conf import settings
 from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
+from django.contrib.contenttypes.models import ContentType
 from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList
 from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
 
@@ -80,12 +81,15 @@ class GenericFlatblockNode(GenericFlatblockBaseNode):
         if isinstance(slug, int):
             try:
                 related_object = related_model._default_manager.get(pk=slug)
-                return None, related_object
+                generic_object,created = GenericFlatblock.objects.get_or_create(content_type = ContentType.objects.get_for_model(related_model), object_id = related_object.pk )
+                return generic_object,related_object
+
             except related_model.DoesNotExist:
                 if settings.TEMPLATE_DEBUG:
                     raise
                 related_object = related_model()
-                return None, related_object
+                generic_object,created = GenericFlatblock.objects.create(content_type = ContentType.objects.get_for_model(related_model), object_id = related_object.pk )
+                return generic_object,related_object
 
         # Otherwise, try to generate a new, related object
         try:
@@ -108,14 +112,13 @@ class GenericFlatblockNode(GenericFlatblockBaseNode):
 
         # Get the generic and related object
         generic_object, related_object = self.get_content_object(related_model, slug)
-        admin_url = self.generate_admin_link(related_object, context)
+        #admin_url = self.generate_admin_link(related_object, context)
 
         # if "into" is provided, store the related object into this variable
         if self.store_in_object:
             into_var = resolve(self.store_in_object, context)
             context[into_var] = related_object
             return ''
-
 
         content= GetBlockContent(generic_object,context,resolve(self.template_path,context))
 

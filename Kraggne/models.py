@@ -52,7 +52,10 @@ class MenuItem(MPTTModel):
         return u'%s' % self.name
 
     def is_include(self):
-        return self.url.startswith('include(')
+        try:
+            return self.url.startswith('include(')
+        except:
+            return False
 
     def have_to_display(self):
         return self.is_visible and (self.is_include() or self.is_detail())
@@ -64,7 +67,10 @@ class MenuItem(MPTTModel):
         return m.objects.all()
 
     def is_detail(self):
-        return self.view.startswith('detail(')
+        try:
+            return self.view.startswith('detail(')
+        except:
+            return False
 
     def get_model(self):
         if self.is_include():

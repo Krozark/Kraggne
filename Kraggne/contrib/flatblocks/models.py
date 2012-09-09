@@ -12,7 +12,7 @@ class GenericFlatblock(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    exclude_fields = JSONField(_('fields display in template'),blank=True,null=True)
+    exclude_fields = JSONField(_('fields not display in template'),blank=True,null=True)
 
     def __unicode__(self):
         return self.slug
@@ -23,9 +23,9 @@ class GenericFlatblock(models.Model):
     @property
     def fields(self):
         if self.exclude_fields:
-            fields = [u.name for u in self.model()._meta.fields if u.name not in self.exclude_fields]
+            fields = [u.name for u in self.model()._meta.fields if u.name not in self.exclude_fields and u.name != "id" ]
         else:
-            fields = [u.name for u in self.model()._meta.fields]
+            fields = [u.name for u in self.model()._meta.fields if u.name != "id" ]
         return fields
 
     def __iter__(self):
@@ -34,6 +34,9 @@ class GenericFlatblock(models.Model):
     @property
     def serialize(self):
         return serializers.serialize("python", (self.content_object,),fields=self.fields)[0]
+
+    def object_serialize(self):
+        return self.content_object, self.serialize()
 
     def Display(self,context,template_path=None):
         return GetBlockContent(self,context,template_path)
@@ -68,14 +71,18 @@ class GenericFlatblockList(models.Model):
     @property
     def fields(self):
         if self.exclude_fields:
-            fields = [u.name for u in self.model()._meta.fields if u.name not in self.exclude_fields]
+            fields = [u.name for u in self.model()._meta.fields if u.name not in self.exclude_fields and u.name != "id" ]
         else:
-            fields = [u.name for u in self.model()._meta.fields]
+            fields = [u.name for u in self.model()._meta.fields if u.name != "id" ]
         return fields
 
     @property
     def serialize(self):
         return serializers.serialize("python", (self.object_list),fields=self.fields)
+
+    def object_list_serialize(self):
+        for obj in self.object_list:
+            yield obj, serializers.serialize("python", (obj,),fields=self.fields)[0]
 
 #### model use to get template content passing args
 class TemplateBlock(models.Model):
