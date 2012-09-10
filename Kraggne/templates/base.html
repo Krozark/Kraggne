@@ -1,32 +1,77 @@
 {% load Kraggne_tags flatblocks %}
 
+{% comment %}
 {% block page.title %}{{page.name}}{% endblock %}
 {% block site.home_url %}/{% endblock %}
 {% block project.menu %}
 {% menu level_min=-1 level_nb=1 %}
 {% endblock %}
+{% endcomment %}
 
-{% comment %}
-{# exemple #}
-{% block project.body %}
-<h2>Menu</h2>
-{% menu "main" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<h2>breadcrumb:</h2>
-{% breadcrumb %}
+    <!-- Le styles -->
+    {% comment %}
+    <link href="{{STATIC_URL}}website/css/bootstrap/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="{{STATIC_URL}}website/css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+    {% endcomment %}
+    <!-- Le fav and touch icons -->
+    {% comment %}
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    {% endcomment %}
+  </head>
 
+  <body>
 
-<hr/>
-<h2>get block by slug:</h2>
-{% gblock "test-block" for "gblocks.Text" %}
-<h2>with display tag:</h2>
-{% display generic_object %}
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="{% block site.home_url %}{% endblock %}">{% block page.title %}{% endblock %}</a>
+          {% block project.menu %}
+          {% menu "main" %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
 
-<hr/>
-<h2>get liste by slug:</h2>
-{% glist "test-list" for "auth.user" %}
-<h2>with display tag:</h2>
-{% display generic_object_list %}
+    <div class="container">
+    {% block project.body %}
+    <h2>breadcrumb:</h2>
+    {% breadcrumb %}
+    {% endblock %}
+    </div> <!-- /container -->
 
-{% endblock %}
-{% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block site.media %}
+    {% comment %}
+    <script src="{{STATIC_URL}}website/js/jquery.js"></script>
+    <script src="{{STATIC_URL}}website/js/bootstrap.js"></script>
+    {% endcomment %}
+    {% endblock %}
+    {% block project.media %}{% endblock %}
+
+  </body>
+</html>
