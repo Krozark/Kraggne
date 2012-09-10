@@ -95,4 +95,3 @@ class TemplateBlock(models.Model):
 
     def Display(self,context,**kwargs):
         return GetTemplateContent(context,self.template_path,**kwargs)
-
