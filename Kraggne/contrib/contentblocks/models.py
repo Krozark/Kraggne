@@ -5,7 +5,7 @@ from django.contrib.contenttypes import generic
 from Kraggne.models import MenuItem
 #from django.core import serializers
 #from Kraggne.contrib.flatblocks.fields import JSONField
-#from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
+from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
 
 class PageObject(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
@@ -16,12 +16,8 @@ class PageObject(models.Model):
     def __unicode__(self):
         return u'%s' % self.content_object
 
-    @property
-    def object(self):
-        return self.content_object
-
-    def display(self,context,template_path=None):
-        pass
+    #def display(self,context,template_path=None):
+    #    return GetUnknowObjectContent(self,context,template_path)
 
     class Meta:
         ordering = ('order',)
@@ -41,8 +37,8 @@ class PageContaineur(models.Model):
     def object_list(self):
         return self.content_objects.all()
 
-    def display(self,context,template_path=None):
-        pass
+    #def display(self,context,template_path=None):
+    #    return GetUnknowObjectContent(self,context,template_path)
 
     class Meta:
         ordering = ('page','order')
