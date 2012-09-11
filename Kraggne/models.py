@@ -190,7 +190,6 @@ class PageVar(models.Model):
     def __iter__(self):
         return self.object_list.__iter__()
 
-
 class FormBlock(models.Model):
     slug = models.SlugField(_('Slug'),unique=True,max_length=50)
     page = models.OneToOneField(MenuItem)

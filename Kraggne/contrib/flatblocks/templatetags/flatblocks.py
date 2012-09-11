@@ -6,7 +6,7 @@ from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
 from django.contrib.contenttypes.models import ContentType
 from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList
-from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent
+from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent, GetUnknowObjectContent
 
 register = Library()
 
@@ -224,7 +224,10 @@ class DisplayNode(Node):
         self.template_path = template_path
 
     def render(self,context):
-        return resolve(self.obj,context).Display(context,self.template_path)
+        o = resolve(self.obj,context)
+        if hasattr(o,"display"):
+            return o.display(context,self.template_path)
+        return GetUnknowObjectContent(o,self.context,self.template_path)
 
 def do_display(parser, token):
     """

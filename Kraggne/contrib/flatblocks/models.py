@@ -38,7 +38,7 @@ class GenericFlatblock(models.Model):
     def object_serialize(self):
         return self.content_object, self.serialize()
 
-    def Display(self,context,template_path=None):
+    def display(self,context,template_path=None):
         return GetBlockContent(self,context,template_path)
 
 #### model use to link any list of object
@@ -54,7 +54,7 @@ class GenericFlatblockList(models.Model):
     def model(self):
         return self.content_type.model_class()
 
-    def Display(self,context,template_path=None):
+    def display(self,context,template_path=None):
         return GetListContent(self,context,template_path)
 
     @property
@@ -93,5 +93,5 @@ class TemplateBlock(models.Model):
     def __unicode__(self):
         return self.slug
 
-    def Display(self,context,**kwargs):
+    def display(self,context,**kwargs):
         return GetTemplateContent(context,self.template_path,**kwargs)
