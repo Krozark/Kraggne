@@ -227,7 +227,7 @@ class DisplayNode(Node):
         o = resolve(self.obj,context)
         if hasattr(o,"display"):
             return o.display(context,self.template_path)
-        return GetUnknowObjectContent(o,self.context,self.template_path)
+        return GetUnknowObjectContent(o,context,self.template_path)
 
 def do_display(parser, token):
     """
