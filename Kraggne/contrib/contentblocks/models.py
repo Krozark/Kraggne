@@ -42,3 +42,6 @@ class PageContaineur(models.Model):
 
     class Meta:
         ordering = ('page','order')
+
+######################### Alter existing model ###############################
+setattr(MenuItem,"get_containeurs",lambda self : PageContaineur.objects.filter(page = self))

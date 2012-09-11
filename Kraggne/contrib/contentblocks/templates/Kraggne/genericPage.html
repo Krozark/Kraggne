@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load flatblocks %}
+
+{% block project.body %}
+{{block.super}}
+
+{% for object in page.get_containeurs %}
+{% display object %}
+{% endfor %}
+
+
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.template.loader import select_template
+from django.template.loader import select_template, get_template
 
 def GetTemplatesPath(appname,modelname,type,template_path=None):
     template_paths = []
@@ -20,11 +20,12 @@ def GetBlockContent(obj,context,template_path=None):
 
 def GetUnknowObjectContent(obj,context,template_path=None):
     template_paths = GetTemplatesPath(obj._meta.app_label,obj._meta.object_name,'object',template_path)
+    print template_paths
     #template_paths.append("flatblocks/unknow_object.html")
     try:
         t = select_template(template_paths)
-    except:
-        return 'no template find to display %s.%s model.' % ( obj._meta.app_label,obj._meta.object_name )
+    except Exception,e:
+        return 'no template find to display %s.%s model.\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
     context["object"] = obj
     return t.render(context)
 
