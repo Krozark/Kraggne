@@ -1,9 +1,9 @@
 .kraggne-form {
     .control-group {
-        label .control-label {
+        label.control-label {
         }
         .controls {
-            .alert .alert-error {
+            .alert.alert-error {
                 .close {
                 }
             }
@@ -11,7 +11,7 @@
     }
 
     .form-actions {
-        .btn .btn-primary[type='submit'] {
+        .btn.btn-primary[type='submit'] {
         }
     }
 }
