@@ -6,9 +6,10 @@ from Kraggne.models import MenuItem
 #from django.core import serializers
 #from Kraggne.contrib.flatblocks.fields import JSONField
 from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
+from Kraggne.contrib.contentblocks.utils import get_content_choice_models
 
 class PageObject(models.Model):
-    content_type = models.ForeignKey(ContentType, limit_choices_to ={'app_label':"flatblocks"})
+    content_type = models.ForeignKey(ContentType, limit_choices_to ={'pk__in':get_content_choice_models()})
     object_id = models.PositiveIntegerField(_('object id'))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 

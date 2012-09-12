@@ -6,7 +6,7 @@ CONTENT_CHOICE_MODELS = getattr(settings, "CONTENTBLOCKS_CONTENT_CHOICE_MODELS",
     (
         {
             "app_label" : "flatblocks",
-            "model" : ("GenericFlatblockList","TemplateBlock")
+            "model" : ("genericflatblocklist","templateblock")
         },
         {"app_label" : "gblocks",},
     )
