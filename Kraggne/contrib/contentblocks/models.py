@@ -37,7 +37,29 @@ class ContaineurToObject(models.Model):
     position = models.PositiveIntegerField("position",default=0)
 
     class Meta:
-        ordering = ('page_object','page_containeur','position',)
+        ordering = ('page_containeur','position',)
+
+########################## on save ###########################################
+from django.db.models.signals import post_save#, pre_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=ContaineurToObject)
+@receiver(post_save, sender=PageContaineur)
+def sortPosition(sender,**kwargs):
+    obj = kwargs['instance']
+    kwargs = {'position' : obj.position}
+    if isinstance(obj,PageContaineur):
+        kwargs["page"] = obj.page
+    else: #ContaineurToObject
+        kwargs["page_containeur"] = obj.page_containeur
+
+    objs = obj.__class__.objects.filter(**kwargs).exclude(pk = obj.pk)
+    i= 1
+    for o in objs:
+        o.position += i
+        o.save()
+        i +=1
+    
 
 ######################### Alter existing model ###############################
 setattr(MenuItem,"get_containeurs",lambda self : PageContaineur.objects.filter(page = self))

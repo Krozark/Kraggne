@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from .models import PageObject, PageContaineur
+from .models import PageObject, PageContaineur, ContaineurToObject
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,7 +16,7 @@ else:
 
 ############################################################
 class PageContaineurAdmin(ADMIN):
-    list_display = ("__unicode__",'page','hextra_class')
+    list_display = ("__unicode__",'page','position','hextra_class')
     list_filter = ('page',)
 admin.site.register(PageContaineur,PageContaineurAdmin)
 
@@ -59,3 +59,8 @@ class PageObjectAdmin(ADMIN):
         return super(PageObjectAdmin, self).change_view(request, object_id, extra_context=c)
 
 admin.site.register(PageObject,PageObjectAdmin)
+
+
+class ContaineurToObjectAdmin(ADMIN):
+    list_display = ("page_object","page_containeur","position")
+admin.site.register(ContaineurToObject,ContaineurToObjectAdmin)
