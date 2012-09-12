@@ -16,12 +16,12 @@ else:
 
 ############################################################
 class PageContaineurAdmin(ADMIN):
-    list_display = ('page','hextra_class')
+    list_display = ("__unicode__",'page','hextra_class')
     list_filter = ('page',)
 admin.site.register(PageContaineur,PageContaineurAdmin)
 
 class PageObjectAdmin(ADMIN):
-    list_display = ('related_object_changelink', "__unicode__",'order')
+    list_display = ('related_object_changelink', "__unicode__")
     list_display_links = ('__unicode__',)
 
     def related_object_changelink(self, obj):

@@ -25,7 +25,7 @@ def GetUnknowObjectContent(obj,context,template_path=None):
     try:
         t = select_template(template_paths)
     except Exception,e:
-        return 'no template find to display %s.%s model.\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
+        return 'no template find to display %s.%s model (or not valid).\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
     context["object"] = obj
     return t.render(context)
 
