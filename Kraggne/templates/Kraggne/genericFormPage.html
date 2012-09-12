@@ -3,7 +3,7 @@
 
 {% block project.body %}
 {{block.super}}
-<form action="{{action_url}}#form" method="post" class="form-horizontal" id="form">
+<form action="{{action_url}}#form" method="post" class="kraggne-form form-horizontal" id="form">
     {% csrf_token %}
     {% for field in form %}
     <div class="control-group">

@@ -1,0 +1,9 @@
+.menu .nav-0 .item-1 {
+  margin-right: 15px; }
+  .menu .nav-0 .item-1:last-child {
+    margin-right: 0px; }
+  .menu .nav-0 .item-1 .nav {
+    display: none;
+    position: absolute; }
+.menu .nav-0 .item:hover > ul {
+  display: block; }
