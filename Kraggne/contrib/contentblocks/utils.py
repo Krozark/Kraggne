@@ -2,7 +2,6 @@
 
 from Kraggne.contrib.contentblocks.conf.settings import CONTENT_CHOICE_MODELS
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q
 
 def get_content_choice_models():
     if CONTENT_CHOICE_MODELS:
@@ -22,5 +21,4 @@ def get_content_choice_models():
         q = ContentType.objects.all()
 
     return q
-    #q = ContentType.objects.filter(**kwargs).query
     
