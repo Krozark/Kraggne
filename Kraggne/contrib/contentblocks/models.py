@@ -17,12 +17,15 @@ class PageObject(models.Model):
         return u'%s' % self.content_object
 
 class PageContaineur(models.Model):
+    slug = models.SlugField(_('slug'), max_length=255, unique=True,null=True,blank=True)
     page = models.ForeignKey(MenuItem,blank=True,null=True,default=None)
     hextra_class = models.CharField(_('Hextra css class'),max_length=255,null=True,blank=True,default=None)
     content_objects = models.ManyToManyField(PageObject,through="ContaineurToObject")
     position = models.PositiveIntegerField("position",default=0)
 
     def __unicode__(self):
+        if self.slug:
+            return u"%s" % self.slug
         return u'containeur %d for %s' % (self.position, self.page)
 
     @property
@@ -50,6 +53,8 @@ def sortPosition(sender,**kwargs):
     obj = kwargs['instance']
     kwargs = {'position' : obj.position}
     if isinstance(obj,PageContaineur):
+        if not obj.page:
+            return
         kwargs["page"] = obj.page
     else: #ContaineurToObject
         kwargs["page_containeur"] = obj.page_containeur
