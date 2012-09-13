@@ -2,3 +2,6 @@
   display: none; }
   .config * {
     display: none; }
+
+.contentblocks.admin-dragg {
+  cursor: move; }

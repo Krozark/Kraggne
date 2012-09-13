@@ -148,6 +148,16 @@ CMS:
      You can also add filter kwargs using the query_args field.
      
      the same way is use with gblock an glist, but not store by the same way, and they could be use out of the cms pages.
-     
+    
+
+css:
+====
+
+    if you want to use css:
+        cd {Kragge dir}/Kraggne/static/Kraggne
+    sass --watsh sass:css
+
+    in your htl:
+    <link href="{{STATIC_URL}}Kraggne/css/all.css" rel="stylesheet">
 
 
