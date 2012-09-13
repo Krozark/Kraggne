@@ -9,5 +9,9 @@ CONTENT_CHOICE_MODELS = getattr(settings, "CONTENTBLOCKS_CONTENT_CHOICE_MODELS",
             "model" : ("genericflatblocklist","templateblock")
         },
         {"app_label" : "gblocks",},
+        {
+            "app_label" : "contentblocks",
+            "model" : "pagecontaineur",
+        }
     )
 )
