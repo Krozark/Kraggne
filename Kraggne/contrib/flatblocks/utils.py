@@ -4,7 +4,7 @@ def GetTemplatesPath(appname,modelname,type,template_path=None):
     template_paths = []
     if template_path:
         template_paths.append(template_path)
-    template_paths.append('%s/%s/%s.html' % (appname,modelname,type))
+    template_paths.append('%s/%s/%s.html' % (appname.lower(),modelname.lower(),type))
     return template_paths
 
 def GetBlockContent(obj,context,template_path=None):

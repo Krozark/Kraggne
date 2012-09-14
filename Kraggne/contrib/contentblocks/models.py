@@ -41,7 +41,7 @@ class ContaineurToObject(models.Model):
     position = models.PositiveIntegerField("position",default=0)
 
     class Meta:
-        ordering = ('page_containeur','position',)
+        ordering = ('page_containeur',)
 
 ########################## on save ###########################################
 from django.db.models.signals import post_save#, pre_save

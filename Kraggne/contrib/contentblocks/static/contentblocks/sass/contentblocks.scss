@@ -57,15 +57,24 @@ $box-shadow : #000;
 .contentblocks.containeur {
     span.btn-add {
         @extend .right;
-        margin : 5px;
+        @extend .clearfix;
     }
+
+    border : solid #A0f 1px;
+    margin : 20px;
 
 }
 
 .contentblocks.object {
     span.btn-del {
         @extend .right;
-        margin : 5px;
+    }
+    border : solid #0F0 1px;
+    margin : 20px;
+
+    .contentblocks-blocks {
+        border : solid #f00 1px;
+        margin : 10px;
     }
 }
 

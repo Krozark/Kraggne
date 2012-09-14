@@ -12,9 +12,9 @@
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix {
+.clearfix, .contentblocks.containeur span.btn-add {
   zoom: 1; }
-  .clearfix:before, .clearfix:after {
+  .clearfix:before, .contentblocks.containeur span.btn-add:before, .clearfix:after, .contentblocks.containeur span.btn-add:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -23,7 +23,7 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after {
+  .clearfix:after, .contentblocks.containeur span.btn-add:after {
     clear: both; }
 
 .reset-box {
@@ -95,11 +95,13 @@ Inspired by http://css3please.com/
     }
 }
 */
-.contentblocks.containeur span.btn-add {
-  margin: 5px; }
+.contentblocks.containeur {
+  border: solid #000 1px;
+  margin: 20px; }
 
-.contentblocks.object span.btn-del {
-  margin: 5px; }
+.contentblocks.object {
+  border: solid #0F0 1px;
+  margin: 10px; }
 
 .admin-dragg {
   cursor: move; }
