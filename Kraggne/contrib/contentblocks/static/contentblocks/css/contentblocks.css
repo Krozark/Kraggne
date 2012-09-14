@@ -20,7 +20,7 @@ Inspired by http://css3please.com/
   margin: 0;
   padding: 0; }
 
-.right {
+.right, .contentblocks.containeur span.btn-add, .contentblocks.object span.btn-del {
   float: right; }
 
 .left {
@@ -86,6 +86,9 @@ Inspired by http://css3please.com/
 }
 */
 .contentblocks.containeur span.btn-add {
+  margin: 5px; }
+
+.contentblocks.object span.btn-del {
   margin: 5px; }
 
 .admin-dragg {

@@ -56,12 +56,17 @@ $box-shadow : #000;
 */
 .contentblocks.containeur {
     span.btn-add {
+        @extend .right;
         margin : 5px;
     }
 
 }
 
 .contentblocks.object {
+    span.btn-del {
+        @extend .right;
+        margin : 5px;
+    }
 }
 
 .admin-dragg {

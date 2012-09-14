@@ -2,6 +2,7 @@
 
 from Kraggne.contrib.contentblocks.conf.settings import CONTENT_CHOICE_MODELS
 from django.contrib.contenttypes.models import ContentType
+from django import forms
 
 def get_content_choice_models():
     if CONTENT_CHOICE_MODELS:
@@ -22,3 +23,8 @@ def get_content_choice_models():
 
     return q
     
+
+def model_to_modelform(model):
+    meta = type('Meta', (), { "model":model, })
+    modelform_class = type('modelform', (forms.ModelForm,), {"Meta": meta})
+    return modelform_class
