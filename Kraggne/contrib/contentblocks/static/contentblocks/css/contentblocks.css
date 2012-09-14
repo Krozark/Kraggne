@@ -1,7 +1,97 @@
+/*
+SCSS3 (c) 2011 Motion Média
+Inspired by http://css3please.com/
+*/
+.clearfix {
+  zoom: 1; }
+  .clearfix:before, .clearfix:after {
+    content: '.';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0; }
+  .clearfix:after {
+    clear: both; }
+
+.reset-box {
+  margin: 0;
+  padding: 0; }
+
+.right {
+  float: right; }
+
+.left {
+  float: left; }
+
+.link {
+  cursor: pointer; }
+
+.bordered, .glossy {
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  border-radius: 3px 3px 3px 3px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #656553; }
+
+.glossy {
+  background-color: #f2f2c7;
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f2f2c7', EndColorStr='#686852')";
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f2f2c7', EndColorStr='#686852');
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2c7), to(#686852));
+  background-image: -webkit-linear-gradient(top, #f2f2c7, #686852);
+  background-image: -moz-linear-gradient(top, #f2f2c7, #686852);
+  background-image: -ms-linear-gradient(top, #f2f2c7, #686852);
+  background-image: -o-linear-gradient(top, #f2f2c7, #686852);
+  background-image: linear-gradient(top bottom, #f2f2c7, #686852); }
+
+.shadow {
+  -webkit-box-shadow: 7px -4px 8px black;
+  -moz-box-shadow: 7px -4px 8px black;
+  box-shadow: 7px -4px 8px black; }
+
+/*.btn {
+    @extend .glossy;
+    color: $font_color * 0.2 !important;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px $base_color * 0.5;
+    a {
+        color : $base_color * 0.2;
+        @include transition(color);
+        &:hover {
+            color : $base_color * 0.6;
+            text-shadow: 1px 1px 1px $base_color * 0.2;
+        }
+    }
+}
+
+
+.hbtn {
+    @extend .btn;
+    @extend .link;
+    @include transition(color);
+    &:hover {
+        color: $font_color * 0.7 !important;
+        text-shadow: 1px 1px 1px $base_color *0.5;
+        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
+    }
+}
+*/
+.contentblocks.containeur span.btn-add {
+  margin: 5px; }
+
+.admin-dragg {
+  cursor: move; }
+
 .config {
   display: none; }
   .config * {
     display: none; }
-
-.contentblocks.admin-dragg {
-  cursor: move; }

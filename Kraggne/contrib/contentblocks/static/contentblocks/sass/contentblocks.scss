@@ -1,3 +1,79 @@
-@import "admin-config.inc.scss";
-@import "PageContaineur.scss";
-@import "PageObject.scss";
+@import "css3.scss";
+
+$base_color : #cacaa6;
+//$base_color : #DDDDDD;
+$font_color: #bdc190;
+$box-shadow : #000;
+
+.right { float:right; }
+.left  { float:left; }
+.link  {cursor : pointer;}
+
+.bordered {
+    @include border-radius(3px);
+    border: 1px solid $base_color * 0.5;
+}
+
+.glossy {
+    @extend .bordered;
+    @include background-gradient($base_color * 1.2, $base_color * 0.6 - #111);
+}
+
+.shadow {
+    @include box-shadow(7px,-4px,8px, $box-shadow);
+}
+
+/*.btn {
+    @extend .glossy;
+    color: $font_color * 0.2 !important;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px $base_color * 0.5;
+    a {
+        color : $base_color * 0.2;
+        @include transition(color);
+        &:hover {
+            color : $base_color * 0.6;
+            text-shadow: 1px 1px 1px $base_color * 0.2;
+        }
+    }
+}
+
+
+.hbtn {
+    @extend .btn;
+    @extend .link;
+    @include transition(color);
+    &:hover {
+        color: $font_color * 0.7 !important;
+        text-shadow: 1px 1px 1px $base_color *0.5;
+        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
+    }
+}
+*/
+.contentblocks.containeur {
+    span.btn-add {
+        margin : 5px;
+    }
+
+}
+
+.contentblocks.object {
+}
+
+.admin-dragg {
+    cursor : move;
+}
+
+.admin-drop {
+}
+
+.config {
+    display : none;
+     & * {
+        display : none;
+     }
+}
