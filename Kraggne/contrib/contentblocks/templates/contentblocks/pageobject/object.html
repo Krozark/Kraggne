@@ -1,0 +1,14 @@
+{% load flatblocks %}
+
+{% if user.is_authenticated and user.is_staff %}
+<div class="contentblocks object admin-dragg">
+    <span class="btn btn-danger btn-del">-</span>
+    {% include "contentblocks/admin-config.inc.html" with module_name="pageobject" %}
+{% endif %}
+    <div class="contentblocks-blocks {{object.content_type}}">
+        {% display object.content_object %}
+    </div>
+
+{% if user.is_authenticated and user.is_staff %}
+</div>
+{% endif %}
