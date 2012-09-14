@@ -88,6 +88,8 @@ Inspired by http://css3please.com/
 .contentblocks.containeur {
   border: solid #A0f 1px;
   margin: 20px; }
+  .contentblocks.containeur.admin-dragg {
+    padding-top: 10px; }
 
 .contentblocks.object {
   border: solid #0F0 1px;

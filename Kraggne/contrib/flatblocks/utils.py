@@ -20,7 +20,6 @@ def GetBlockContent(obj,context,template_path=None):
 
 def GetUnknowObjectContent(obj,context,template_path=None):
     template_paths = GetTemplatesPath(obj._meta.app_label,obj._meta.object_name,'object',template_path)
-    print template_paths
     #template_paths.append("flatblocks/unknow_object.html")
     try:
         t = select_template(template_paths)

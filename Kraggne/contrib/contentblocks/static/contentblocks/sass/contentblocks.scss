@@ -60,6 +60,10 @@ $box-shadow : #000;
         @extend .clearfix;
     }
 
+    &.admin-dragg {
+        padding-top : 10px;
+    }
+
     border : solid #A0f 1px;
     margin : 20px;
 
@@ -71,6 +75,9 @@ $box-shadow : #000;
     }
     border : solid #0F0 1px;
     margin : 20px;
+
+    &.admin-dragg {
+    }
 
     .contentblocks-blocks {
         border : solid #f00 1px;
