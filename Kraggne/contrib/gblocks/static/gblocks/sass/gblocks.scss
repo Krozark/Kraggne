@@ -1,8 +1,14 @@
-@import "image.scss";
-@import "text.scss";
-@import "title.scss";
-@import "link.scss";
-
 .gblocks {
     padding : 5px;
+    img.gblocks-image {
+    }
+    span.gblocks-link {
+    }
+    div.gblocks-text {
+    }
+    h2.gblocks-title {
+    }
+    a.gblocks-file {
+    }
 }
+

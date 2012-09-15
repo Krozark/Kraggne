@@ -33,7 +33,7 @@ class ImageAndLink(models.Model):
 
 class TitleAndFile(models.Model):
     title = models.CharField(_('title'), max_length=255, blank=True)
-    image = models.FileField(_('file'), upload_to='gblocks/', blank=True)
+    file = models.FileField(_('file'), upload_to='gblocks/', blank=True)
 
     def __unicode__(self):
         return "(TitleAndFileBlock) %s" % self.title
