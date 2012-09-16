@@ -1,6 +1,6 @@
-<span class="config {{app_name}}" style="display:none">
-    <span class="module_name" style="display:none">{{module_name}}</span>
-    <span class="app_name" style="display:none">{% if app_name %}{{app_name}}{% else %}contentblocks{% endif %}</span> 
-    <span class="obj_id" style="display:none">{{object.pk}}</span>
-    <span class="obj_position" style="display:none">{{object.position}}</span>
+<span class="config {{module_name}} {% if app_name %}{{app_name}}{% else %}contentblocks{% endif %}" style="display:none">
+    <span class="module_name" style="display:none" value="{{module_name}}">{{module_name}}</span>
+    <span class="app_name" style="display:none" value="{% if app_name %}{{app_name}}{% else %}contentblocks{% endif %}">{% if app_name %}{{app_name}}{% else %}contentblocks{% endif %}</span> 
+    <span class="obj_id" style="display:none" value="{{object.pk}}">{{object.pk}}</span>
+    <span class="obj_position" style="display:none" value="{{object.position}}" >{{object.position}}</span>
 </span>

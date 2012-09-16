@@ -3,9 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from Kraggne.models import MenuItem
-#from django.core import serializers
-#from Kraggne.contrib.flatblocks.fields import JSONField
-from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
 from Kraggne.contrib.contentblocks.utils import get_content_choice_models
 
 class PageObject(models.Model):

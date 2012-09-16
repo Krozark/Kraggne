@@ -5,9 +5,11 @@ from django.utils import simplejson as json
 from django.views.generic import TemplateView, FormView
 from django.db.models.loading import get_model
 from django.core.urlresolvers import reverse
+from django.template import Context
 
 from Kraggne.contrib.contentblocks.utils import get_content_choice_models,model_to_modelform
 from Kraggne.contrib.contentblocks.models import *
+from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
 
 
 def error(data=None):
@@ -22,12 +24,12 @@ class AjaxRecieverView(FormView):
     def to_hidden(self,name):
         return '<input type="hidden" value="'+self.request.POST[name]+'" name="'+name+'">'
     
-    def get(self, *args, **kwargs):
+    def get(self,request, *args, **kwargs):
         return error("get not accept")
 
-    def post(self, *args, **kwargs):
-        if not self.request.user.is_anonymous() and self.request.user.is_staff:
-            status = self.request.POST["st"]
+    def post(self,request, *args, **kwargs):
+        if not request.user.is_anonymous() and request.user.is_staff:
+            status = request.POST["st"]
 
             if not status :
                 return error("wat i'v to do?")
@@ -42,7 +44,7 @@ class AjaxRecieverView(FormView):
                     }),
                     content_type='application/json')
             elif status == "get-form":
-                model = get_content_choice_models().filter(pk=self.request.POST["contenttype_pk"])
+                model = get_content_choice_models().filter(pk=request.POST["contenttype_pk"])
                 if not model:
                     return error("no model found")
                 model = model[0].model_class()
@@ -55,29 +57,41 @@ class AjaxRecieverView(FormView):
                     content_type='application/json')
 
             elif status == "add-content":
-                containeur = PageContaineur.objects.filter(pk=int(self.request.POST["obj_id"]))
+                containeur = PageContaineur.objects.filter(pk=int(request.POST["obj_id"]))
                 if not containeur:
                     return error("where i've to put the object?")
                 containeur = containeur[0]
 
-                receive_object = get_content_choice_models().filter(pk=self.request.POST["contenttype_pk"])
+                receive_object = get_content_choice_models().filter(pk=request.POST["contenttype_pk"])
                 if not receive_object:
                     return error("no model found with this type")
                 receive_object = receive_object[0].model_class()
-                form = model_to_modelform(receive_object)(self.request.POST,self.request.FILES)
+                form = model_to_modelform(receive_object)(request.POST,request.FILES)
 
                 status = "ok"
                 hextra_data = None
 
                 if form.is_valid():
-                    #obj = form.save()
-                    #c2obj = ContaineurToObject(page_object=obj,page_containeur=containeur)
-                    print args
-                    print kwargs
-                    
+                    obj = form.save()
+                    p = PageObject(content_object=obj)
+                    c2obj = ContaineurToObject(page_object=p,page_containeur=containeur)
+                    hextra_data = {
+                        "html" : GetUnknowObjectContent(c2obj,Context(self.get_context_data(**kwargs))),
+                        "type" : "add",
+                        "containeur-id" : containeur.pk,
+                    }
+
                 else :
                     status = "error"
-                    hextra_data = self.to_hidden("app_name")+self.to_hidden("module_name")+self.to_hidden("obj_id")+self.to_hidden("st")+self.to_hidden("contenttype_pk")+form.as_p()
+                    hextra_data = {
+                        "hiddens" : self.to_hidden("app_name")+\
+                        self.to_hidden("module_name")+\
+                        self.to_hidden("obj_id")+\
+                        self.to_hidden("st")+\
+                        self.to_hidden("contenttype_pk")+\
+                        form.as_p(),
+                        "type" : "form",
+                    }
 
                 status = json.dumps({
                     "st" : status,
@@ -87,11 +101,11 @@ class AjaxRecieverView(FormView):
                                     window.top.window.formUploadCallback(%s);
                                     </script>""" % status)
 
-            model = get_model(self.request.POST["app_name"],self.request.POST["module_name"])
+            model = get_model(request.POST["app_name"],request.POST["module_name"])
 
             if not model:
                 return error("no model")
-            obj = model.objects.filter(pk=int(self.request.POST["obj_id"]))
+            obj = model.objects.filter(pk=int(request.POST["obj_id"]))
             if not obj:
                 return error("no object found")
             obj = obj[0]

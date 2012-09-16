@@ -73,9 +73,17 @@ var create_form_from_contenttype = (function(hiddens,contenttype_pk){
 var formUploadCallback = (function(result) {
     admin_dialog.dialog2("close");
     if(result.st =="ok"){
-        admin_dialog_reset("succes");
-    }else{
-        admin_dialog_reset(create_form(result.data));
+        if (result.data.type == "add"){
+            admin_dialog_reset("success");
+        }else {
+            admin_dialog_reset("unknow succes type. reload page to see the changes?");
+        }
+    }else{//error
+        if (result.data.type == "form"){
+            admin_dialog_reset(create_form(result.data));
+        }else {
+            admin_dialog_reset("unknow error");
+        }
     }
     admin_dialog.dialog2("open");
 });
