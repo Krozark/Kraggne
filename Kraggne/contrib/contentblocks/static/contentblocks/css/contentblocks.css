@@ -96,9 +96,6 @@ Inspired by http://css3please.com/
     border: solid #f00 1px;
     margin: 10px; }
 
-.admin-dragg {
-  cursor: move; }
-
 .config {
   display: none; }
   .config * {
