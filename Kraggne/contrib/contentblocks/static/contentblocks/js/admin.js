@@ -99,6 +99,7 @@ var formUploadCallback = (function(result) {
             containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+result.data.containeur_id+'"]').parent();
             aft = containeur.children(".btn.btn-add.btn-success");
             aft.after(result.data.html);
+            $(".contentblocks.containeur").sortable("refresh");
         }else {
             admin_dialog_reset("unknow succes type. reload page to see the changes?");
             admin_dialog.dialog2("open");
@@ -132,5 +133,51 @@ $(function(){
         id = conf.attr("obj_id");
         get_model_to_remove(module,app,id);
         return false;
+    });
+
+    $(".contentblocks.containeur").sortable({
+        connectWith: "div.contentblocks.containeur",
+        stop : function(event,data){
+            maj_dragg_object(data);
+        }
+    });
+});
+
+var maj_dragg_object = (function(data){
+    obj = data.item;
+    pre = obj.prev();
+    c = pre.attr("class");
+    pos = 0;
+    if(c != "config"){
+        pos = parseInt(pre.children(".config").attr("obj_position")) + 1;
+    }
+    conf = $($(obj).children(".config")[0]);
+    conf.attr("obj_position",pos);
+
+    obj.nextAll().each(function(i){
+        c = $($(this).children(".config")[0]);
+        c.attr("obj_position",++pos);
+    });
+
+    module = conf.attr("module_name");
+    app = conf.attr("app_name");
+    id = conf.attr("obj_id");
+    pos = conf.attr("obj_position");
+    parent_id = $(obj.parent().children(".config")[0]).attr("obj_id");
+    data = "app_name="+app+"&module_name="+module+"&obj_id="+id+"&obj_position="+pos+"&parent_id="+parent_id;
+    send_maj_object(data);
+});
+
+var send_maj_object = (function(data){
+    $.ajax({
+        type: 'POST',
+        url: contentblocks_ajax_receiver,
+        data: "st=obj-maj&"+data,
+        success: function(json){
+            if (json.st == "error"){
+                admin_dialog_reset(json.data);
+                admin_dialog.dialog2("open");
+            }
+        }
     });
 });

@@ -138,6 +138,23 @@ class AjaxRecieverView(FormView):
                     page_obj.delete()
                     if PageObject.objects.filter(content_type=ContentType.objects.get_for_model(obj),object_id=obj.pk).count() == 0:
                         obj.delete()
-
                 return HttpResponse('{"st":"ok","data":"Objet suprimé"}',content_type='application/json')
+
+            elif status == "obj-maj":
+                if request.POST["app_name"] != "contentblocks" or request.POST["module_name"] != "containeurtoobject":
+                    return error("impossible to delete this objet")
+
+                obj = ContaineurToObject.objects.filter(pk=int(request.POST["obj_id"]))
+                containeur = PageContaineur.objects.filter(pk=request.POST["parent_id"])[:1]
+                if not obj or not containeur:
+                    return error("no object found")
+                obj = obj[0]
+                containeur = containeur[0]
+
+                obj.page_containeur = containeur
+                obj.position = request.POST["obj_position"]
+                obj.save()
+                return HttpResponse('{"st":"ok","data":"Objet bougé"}',content_type='application/json')
+
+
         return error
