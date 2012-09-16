@@ -93,5 +93,5 @@ class TemplateBlock(models.Model):
     def __unicode__(self):
         return self.slug
 
-    def display(self,context,**kwargs):
+    def display(self,context,*args,**kwargs):
         return GetTemplateContent(context,self.template_path,**kwargs)

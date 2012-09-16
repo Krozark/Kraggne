@@ -41,7 +41,8 @@ def GetListContent(obj,context,template_path=None):
 
 def GetTemplateContent(context,template_path,**kwargs):
     try:
-        t = select_template(template_paths)
+        t = get_template(template_path)
+        print t
     except:
         return ''
     context.update(kwargs)

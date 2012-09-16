@@ -81,7 +81,11 @@ class AjaxRecieverView(FormView):
                 hextra_data = None
 
                 if form.is_valid():
-                    obj = form.save()
+                    obj = form.save(commit=False)
+                    #for field in obj._meta.fields:
+                        #TODO verifier que l'objet existe pas déja
+                    obj.save()
+                    #if isinstance(obj,PageContaineur):
                     p = PageObject(content_object=obj)
                     p.save()
                     c2obj = ContaineurToObject(page_object=p,page_containeur=containeur)
@@ -95,7 +99,7 @@ class AjaxRecieverView(FormView):
                 else :
                     status = "error"
                     hextra_data = {
-                        "hiddens" : self.to_hidden("app_name")+\
+                        "form" : self.to_hidden("app_name")+\
                         self.to_hidden("module_name")+\
                         self.to_hidden("obj_id")+\
                         self.to_hidden("st")+\

@@ -17,7 +17,7 @@ class PageContaineur(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True,null=True,blank=True)
     page = models.ForeignKey(MenuItem,blank=True,null=True,default=None)
     hextra_class = models.CharField(_('Hextra css class'),max_length=255,null=True,blank=True,default=None)
-    content_objects = models.ManyToManyField(PageObject,through="ContaineurToObject")
+    content_objects = models.ManyToManyField(PageObject,through="ContaineurToObject",blank=True)
     position = models.PositiveIntegerField("position",default=0)
 
     def __unicode__(self):

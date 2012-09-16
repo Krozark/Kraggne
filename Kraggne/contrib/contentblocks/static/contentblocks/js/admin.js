@@ -83,7 +83,7 @@ var formUploadCallback = (function(result) {
         }
     }else{//error
         if (result.data.type == "form"){
-            admin_dialog_reset(create_form(result.data));
+            admin_dialog_reset(create_form(result.data.form));
         }else {
             admin_dialog_reset("unknow error");
         }
