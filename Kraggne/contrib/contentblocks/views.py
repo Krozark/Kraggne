@@ -83,9 +83,16 @@ class AjaxRecieverView(FormView):
 
                 if form.is_valid():
                     obj = form.save(commit=False)
-                    #for field in obj._meta.fields:
+                    kwargs = {}
+                    for field in obj._meta.fields:
+                        if field.name != "id":
+                          kwargs[field.name] = getattr(obj,field.name)
+                          o = receive_object.objects.filter(**kwargs)[:1]
+                    if o:
+                        obj = o[0]
+                    else:
                         #TODO verifier que l'objet existe pas déja
-                    obj.save()
+                        obj.save()
                     #if isinstance(obj,PageContaineur):
                     p = PageObject(content_object=obj)
                     p.save()
