@@ -55,39 +55,14 @@
         admin_dialog.find(admin_content_class).html(html);
     });
 
-    var create_selector = (function(choices){
-        res = '<select id="admin-selector" name="admin-selector">';
-            for(u in choices){
-                res += '<option value="'+choices[u][0]+'">'+choices[u][1]+'</option>';
-            }
-        res += '</select>';
-        return res;
-    });
-
-    var create_hidden = (function(name,value){
-        return '<input type="hidden" value="'+value+'" name="'+name+'">'
-    });
-
     var create_form = (function(input){
         form ='<form target="admin-upload-target" action="'+contentblocks_ajax_receiver+'" method="post" id="admin-dialog-form" enctype="multipart/form-data">';
-        form += "{% csrf_token %}";
-        form +='<input type="hidden" name="page_url" value="{{ request.path }}">';
-        form += input;
-        form +='<div class="form-actions"><input class="btn btn-success" type="submit" id="admin-form-valid" value="Send"/></div>';
-        form += "</form>";
+            form += "{% csrf_token %}";
+            form +='<input type="hidden" name="page_url" value="{{ request.path }}">';
+            form += input;
+            form +='<div class="form-actions"><input class="btn btn-success" type="submit" id="admin-form-valid" value="Send"/></div>';
+            form += "</form>";
         return form;
-    });
-
-    var create_ajax_form = (function(input){
-        form = input;
-        form +='<div class="form-actions"><a class="btn btn-success" type="submit" id="admin-form-valid">Send<a/></div>';
-        return form;
-    });
-
-    var formUploadCallback = (function(result) {
-        admin_dialog.dialog2("close");
-        admin_dialog_reset(result);
-        admin_dialog.dialog2("open");
     });
 
     $(function() {
@@ -106,15 +81,6 @@
         removeOnClose: false
         });
       });
-      (function( $ ){
-          $.fn.serializeJSON=function() {
-              var json = {};
-              jQuery.map($(this).serializeArray(), function(n, i){
-                  json[n['name']] = n['value'];
-              });
-              return json;
-          };
-      })( jQuery );
 
       var contentblocks_ajax_receiver = "{% url ajax-receiver %}";
 
