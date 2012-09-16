@@ -6,17 +6,18 @@ from django.views.generic import TemplateView, FormView
 from django.db.models.loading import get_model
 from django.core.urlresolvers import reverse
 from django.template import Context
+from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 
 from Kraggne.contrib.contentblocks.utils import get_content_choice_models,model_to_modelform
 from Kraggne.contrib.contentblocks.models import *
 from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
-from django.conf import settings
 
 def error(data=None):
     if not data:
-        return HttpResponse('{"st":"error","data"="error"}',content_type='application/json')
+        return HttpResponse('{"st":"error","data":"error"}',content_type='application/json')
     else :
-        return HttpResponse('{"st":"error","data"="%s"}' % data ,content_type='application/json')
+        return HttpResponse('{"st":"error","data":"%s"}' % data ,content_type='application/json')
 
 
 class AjaxRecieverView(FormView):
@@ -115,18 +116,21 @@ class AjaxRecieverView(FormView):
                 return HttpResponse("""<script language="javascript" type="text/javascript">
                                     window.top.window.formUploadCallback(%s);
                                     </script>""" % status)
+            elif status == "del-content":
+                if request.POST["app_name"] != "contentblocks" or request.POST["module_name"] != "containeurtoobject":
+                    return error("impossible to delete this objet")
 
-            model = get_model(request.POST["app_name"],request.POST["module_name"])
+                obj = ContaineurToObject.objects.filter(pk=int(request.POST["obj_id"]))
+                if not obj:
+                    return error("no object found")
+                obj = obj[0]
+                page_obj = obj.page_object
+                obj.delete()
+                if page_obj.containeurtoobject_set.count() == 0:
+                    obj = page_obj.content_object
+                    page_obj.delete()
+                    if PageObject.objects.filter(content_type=ContentType.objects.get_for_model(obj),object_id=obj.pk).count() == 0:
+                        obj.delete()
 
-            if not model:
-                return error("no model")
-            obj = model.objects.filter(pk=int(request.POST["obj_id"]))
-            if not obj:
-                return error("no object found")
-            obj = obj[0]
-
-            print model
-            print obj
-
-            return HttpResponse("ok")
+                return HttpResponse('{"st":"ok","data":"Objet suprimé"}',content_type='application/json')
         return error
