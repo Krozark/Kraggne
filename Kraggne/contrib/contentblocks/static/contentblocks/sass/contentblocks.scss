@@ -55,13 +55,13 @@ $box-shadow : #000;
 }
 */
 .contentblocks.containeur {
+    @extend .clearfix;
     span.btn-add {
         @extend .right;
         @extend .clearfix;
     }
 
     &.admin-dragg {
-        padding-top : 10px;
     }
 
     border : solid #A0f 1px;
@@ -70,6 +70,7 @@ $box-shadow : #000;
 }
 
 .contentblocks.object {
+    @extend .clearfix;
     span.btn-del {
         @extend .right;
     }

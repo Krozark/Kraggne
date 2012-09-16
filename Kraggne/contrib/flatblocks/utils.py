@@ -1,4 +1,4 @@
-from django.template.loader import select_template, get_template
+from django.template.loader import select_template, get_template, find_template
 
 def GetTemplatesPath(appname,modelname,type,template_path=None):
     template_paths = []
@@ -31,6 +31,17 @@ def GetUnknowObjectContent(obj,context,template_path=None):
 
 def GetListContent(obj,context,template_path=None):
     template_paths = GetTemplatesPath(obj.content_type.app_label,obj.content_type.model,'object_list',template_path)
+    simple_obj_template_path = GetTemplatesPath(obj.content_type.app_label,obj.content_type.model,'object',template_path)[0]
+    try:
+        t = find_template(simple_obj_template_path)
+        print "found"
+        template_paths.append("flatblocks/object_list_by_object.html")
+        context["object_file_to_include"] = simple_obj_template_path
+    except Exception,e:
+        print e
+        print simple_obj_template_path
+        pass
+
     template_paths.append("flatblocks/object_list.html")
     try:
         t = select_template(template_paths)
