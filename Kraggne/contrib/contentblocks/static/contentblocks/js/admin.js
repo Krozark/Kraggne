@@ -57,7 +57,7 @@ var create_form_from_contenttype = (function(hiddens,contenttype_pk){
         data: "st=get-form&contenttype_pk="+contenttype_pk,
         success: function(json){
             if (json.st == "error"){
-                admin_dialog_reset("Une erreur est suvenue.");
+                admin_dialog_reset("Une erreur est survenue.");
             }else{
                 admin_dialog_reset(create_form(hiddens+json.form));
                 $("#admin-form-valid").click(function(){
@@ -74,9 +74,12 @@ var formUploadCallback = (function(result) {
     admin_dialog.dialog2("close");
     if(result.st =="ok"){
         if (result.data.type == "add"){
-            admin_dialog_reset("success");
+            containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+result.data.containeur_id+'"]').parent();
+            aft = containeur.find(".btn.btn-add.btn-success");
+            aft.after(result.data.html);
         }else {
             admin_dialog_reset("unknow succes type. reload page to see the changes?");
+            admin_dialog.dialog2("open");
         }
     }else{//error
         if (result.data.type == "form"){
@@ -84,18 +87,18 @@ var formUploadCallback = (function(result) {
         }else {
             admin_dialog_reset("unknow error");
         }
+        admin_dialog.dialog2("open");
     }
-    admin_dialog.dialog2("open");
 });
 
 $(function(){
     $.each($(".btn-add"),function(){
         // + on containeur
         $(this).click(function(){
-            conf = $(this).parent().children(".config");
-            module = conf.children(".module_name").html();
-            app = conf.children(".app_name").html();
-            id = conf.children(".obj_id").html();
+            conf = $($(this).parent().children(".config")[0]);
+            module = conf.attr("module_name");
+            app = conf.attr("app_name");
+            id = conf.attr("obj_id");
             hiddens = create_hidden("st","add-content") + create_hidden("app_name",app) + create_hidden("module_name",module) + create_hidden("obj_id",id);
 
             get_model_to_create(hiddens);

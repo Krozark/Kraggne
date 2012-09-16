@@ -10,7 +10,7 @@ from django.template import Context
 from Kraggne.contrib.contentblocks.utils import get_content_choice_models,model_to_modelform
 from Kraggne.contrib.contentblocks.models import *
 from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
-
+from django.conf import settings
 
 def error(data=None):
     if not data:
@@ -23,6 +23,15 @@ class AjaxRecieverView(FormView):
 
     def to_hidden(self,name):
         return '<input type="hidden" value="'+self.request.POST[name]+'" name="'+name+'">'
+
+    def GetUnknowObjectContent(self,obj,**kwargs):
+        return GetUnknowObjectContent(obj,
+                                      Context(self.get_context_data(
+                                          user=self.request.user,
+                                          MEDIA_URL=settings.MEDIA_URL,
+                                          STATIC_URL=settings.STATIC_URL,
+                                          **kwargs)
+                                      ))
     
     def get(self,request, *args, **kwargs):
         return error("get not accept")
@@ -74,11 +83,13 @@ class AjaxRecieverView(FormView):
                 if form.is_valid():
                     obj = form.save()
                     p = PageObject(content_object=obj)
+                    p.save()
                     c2obj = ContaineurToObject(page_object=p,page_containeur=containeur)
+                    c2obj.save()
                     hextra_data = {
-                        "html" : GetUnknowObjectContent(c2obj,Context(self.get_context_data(**kwargs))),
+                        "html" : self.GetUnknowObjectContent(c2obj,**kwargs),
                         "type" : "add",
-                        "containeur-id" : containeur.pk,
+                        "containeur_id" : containeur.pk,
                     }
 
                 else :
