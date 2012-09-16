@@ -1,20 +1,58 @@
-.menu .nav-0 .item-1 {
-  margin-right: 15px; }
-  .menu .nav-0 .item-1:last-child {
-    margin-right: 0px; }
-  .menu .nav-0 .item-1 .nav {
-    display: none;
-    position: absolute; }
-.menu .nav-0 .item:hover > ul {
-  display: block; }
+/*.menu {
+    .nav-0 { //ul
+        .item-1 { //li
+            margin-right : 15px;
+
+            &:last-child {
+                margin-right: 0px;
+            }
+
+            .link { // a
+                &.active {
+                }
+            }
+
+            .nav { //ul
+                display : none;
+                position : absolute;
+                .item { //li
+                    .link { //a
+                    }
+                }
+            }
+        }
+        .item { //li
+            &:hover {
+                & > ul { //show subnav
+                    display:block;
+                }
+            }
+        }
+    }
+}*/
+.menu {
+  margin-top: 3px; }
+  .menu .nav-0 .item:hover > ul {
+    float: right;
+    display: inline; }
+  .menu .nav-0 .item-1 {
+    float: left;
+    margin-right: 5px; }
+    .menu .nav-0 .item-1:last-child {
+      margin-right: 0px; }
+    .menu .nav-0 .item-1 .nav {
+      display: none;
+      position: absolute; }
+    .menu .nav-0 .item-1:hover > ul {
+      display: block; }
 
 /*
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, .contentblocks.containeur, .contentblocks.containeur span.btn-add, .contentblocks.object {
+.clearfix, .menu, .contentblocks.containeur, .contentblocks.containeur span.btn-add, .contentblocks.object {
   zoom: 1; }
-  .clearfix:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .contentblocks.object:before, .clearfix:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
+  .clearfix:before, .menu:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .contentblocks.object:before, .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -23,7 +61,7 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
+  .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
     clear: both; }
 
 .reset-box {
