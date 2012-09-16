@@ -1,5 +1,11 @@
+{% load gblocks %}
+
 <div class="gblocks">
     <h2 class="gblocks-title">{{ object.title }}</h2>
     <div class="gblocks-text">{{ object.text|linebreaks }}</div>
-    <a class="gblocks-file" href="{{ MEDIA_URL }}{{ object.file }}">{{object.file}}</a>
+    <a href="{{ MEDIA_URL }}{{ object.file }}" class="gblocks-file">
+        <div class="icon {{object.file|get_file_extension}}">
+            <span>{{object.file}}</span>
+        </div>
+    </a>
 </div>
