@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from Kraggne.contrib.gblocks.utils import file_cleanup
+from django.db.models.signals import post_delete
 
 class Title(models.Model):
     title = models.CharField(_('title'), max_length=255, blank=False)
@@ -21,6 +22,7 @@ class Image(models.Model):
 
     def __unicode__(self):
         return "(ImageBlock) %s" % self.image
+post_delete.connect(file_cleanup, sender=Image, dispatch_uid="Image.file_cleanup")
 
 
 class ImageAndLink(models.Model):
@@ -29,6 +31,7 @@ class ImageAndLink(models.Model):
 
     def __unicode__(self):
         return "(ImageLinkBlock) %s" % self.image
+post_delete.connect(file_cleanup, sender=ImageAndLink, dispatch_uid="ImageAndLink.file_cleanup")
 
 
 class TitleAndFile(models.Model):
@@ -37,6 +40,7 @@ class TitleAndFile(models.Model):
 
     def __unicode__(self):
         return "(TitleAndFileBlock) %s" % self.title
+post_delete.connect(file_cleanup, sender=TitleAndFile, dispatch_uid="TitleAndFile.file_cleanup")
 
 
 class TitleTextAndFile(models.Model):
@@ -46,6 +50,7 @@ class TitleTextAndFile(models.Model):
 
     def __unicode__(self):
         return "(TitleTextAndFileBlock) %s" % self.title
+post_delete.connect(file_cleanup, sender=TitleTextAndFile, dispatch_uid="TitleTextAndFile.file_cleanup")
 
 
 class TitleAndText(models.Model):
@@ -63,6 +68,7 @@ class TitleTextAndImage(models.Model):
 
     def __unicode__(self):
         return "(TitleTextAndImageBlock) %s" % self.title
+post_delete.connect(file_cleanup, sender=TitleTextAndImage, dispatch_uid="TitleTextAndImage.file_cleanup")
 
 
 class TitleLinkAndImage(models.Model):
@@ -72,6 +78,7 @@ class TitleLinkAndImage(models.Model):
 
     def __unicode__(self):
         return "(TitleLinkAndImageBlock) %s" % self.title
+post_delete.connect(file_cleanup, sender=TitleLinkAndImage, dispatch_uid="TitleLinkAndImage.file_cleanup")
 
 
 class TitleLinkTextAndImage(models.Model):
@@ -82,3 +89,4 @@ class TitleLinkTextAndImage(models.Model):
 
     def __unicode__(self):
         return "(TitleLinkTextAndImageBlock) %s" % self.title
+post_delete.connect(file_cleanup, sender=TitleLinkTextAndImage, dispatch_uid="TitleLinkTextAndImage.file_cleanup")

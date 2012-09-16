@@ -75,7 +75,7 @@ var formUploadCallback = (function(result) {
     if(result.st =="ok"){
         if (result.data.type == "add"){
             containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+result.data.containeur_id+'"]').parent();
-            aft = containeur.find(".btn.btn-add.btn-success");
+            aft = containeur.children(".btn.btn-add.btn-success");
             aft.after(result.data.html);
         }else {
             admin_dialog_reset("unknow succes type. reload page to see the changes?");
@@ -92,17 +92,15 @@ var formUploadCallback = (function(result) {
 });
 
 $(function(){
-    $.each($(".btn-add"),function(){
-        // + on containeur
-        $(this).click(function(){
-            conf = $($(this).parent().children(".config")[0]);
-            module = conf.attr("module_name");
-            app = conf.attr("app_name");
-            id = conf.attr("obj_id");
-            hiddens = create_hidden("st","add-content") + create_hidden("app_name",app) + create_hidden("module_name",module) + create_hidden("obj_id",id);
+    $(document).on("click",".btn-add",function(){
+        conf = $($(this).parent().children(".config")[0]);
+        module = conf.attr("module_name");
+        app = conf.attr("app_name");
+        id = conf.attr("obj_id");
+        hiddens = create_hidden("st","add-content") + create_hidden("app_name",app) + create_hidden("module_name",module) + create_hidden("obj_id",id);
 
-            get_model_to_create(hiddens);
-        });
+        get_model_to_create(hiddens);
+        return false;
     });
 
     $.each($(".btn-del"),function(){

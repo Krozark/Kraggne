@@ -58,3 +58,4 @@ def GetTemplateContent(context,template_path,**kwargs):
         return ''
     context.update(kwargs)
     return t.render(context)
+
