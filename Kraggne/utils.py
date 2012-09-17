@@ -81,7 +81,7 @@ def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) el
         except Exception, e:
             raise ValidationError(_('Please supply a valid regex URL. %s' % e))
 
-        if len(r.groupindex) == 1:
+        if r.groups == 1:
             if not ('pk' in r.groupindex or 'slug' in r.groupindex):
                 raise ValidationError(_('Please supply a valid regex URL. with (?P<pk>[\d]+) OR (?P<slug>[-\w]+)'))
 

@@ -87,8 +87,7 @@ Inspired by http://css3please.com/
 */
 .contentblocks.containeur {
   border: solid #A0f 1px;
-  margin: 20px;
-  min-height: 20px; }
+  margin: 20px; }
   .contentblocks.containeur .highlight {
     background-color: #b1ffaf; }
   .contentblocks.containeur .ui-sortable-helper {
@@ -100,6 +99,9 @@ Inspired by http://css3please.com/
   .contentblocks.object .contentblocks-blocks {
     border: solid #F00 1px;
     margin: 1px; }
+
+.admin-drop {
+  min-height: 30px; }
 
 .config {
   display: none; }

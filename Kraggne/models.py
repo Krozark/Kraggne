@@ -5,6 +5,7 @@ from django.db.models.loading import get_model
 from Kraggne.fields import TemplateField, ContextNameValidator
 from Kraggne.contrib.flatblocks.fields import JSONField
 from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include
+import re
 
 ORDER_CHOICES = 20
 
@@ -85,6 +86,16 @@ class MenuItem(MPTTModel):
     def _get_for_detail_model(self):
         model,url = get_model_and_url_from_detail(self.view)
         return model
+
+    def get_object_url(self,obj):
+        if hasattr(obj,"get_absolute_url"):
+            return obj.get_absolute_url()
+        try:
+            r = re.compile(self.view)
+            attr = r.groupindex.keys()[0]
+            return re.sub("(\(.*\))",u"%s" % getattr(obj,attr),self.url)
+        except:
+            return ""
 
 
 from django.db.models.signals import post_save#, pre_save

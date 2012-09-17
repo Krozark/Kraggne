@@ -72,9 +72,12 @@ class GenericDetailView(GenericView):
     def get_template_names(self):
         name = []
         if hasattr(self.model, '_meta'):
-            name = GetTemplatesPath(self.model._meta.app_label,self.model._meta.object_name,'object_detail')
+            names.append("%s/%s_detail.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+
         name.append(self.template_name)
-        print name
         return name
     
 

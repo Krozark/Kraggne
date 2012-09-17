@@ -74,7 +74,6 @@ $box-shadow : #000;
 
     border : solid #A0f 1px;
     margin : 20px;
-    min-height : 20px;
 
 }
 
@@ -100,6 +99,7 @@ $box-shadow : #000;
 }
 
 .admin-drop {
+    min-height : 30px;
 }
 
 .config {

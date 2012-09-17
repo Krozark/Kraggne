@@ -359,3 +359,7 @@ def sub(arg, value ):
 def startswith(arg, val):
     return arg.startswith(val)
 
+@register.filter
+def get_object_url(menu,obj):
+    return menu.get_object_url(obj)
+
