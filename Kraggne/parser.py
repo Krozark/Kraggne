@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.loading import get_model
+from django.forms import ValidationError
 
 def get_model_from_include(link):
     app = link[len('include('):]
@@ -10,7 +11,7 @@ def get_model_from_include(link):
 
     app,model = app[0],app[1]
 
-    return get_model(app,model)
+    return get_model(app,model),(app,model)
 
 
 def get_model_and_url_from_detail(link):
@@ -28,5 +29,5 @@ def get_model_and_url_from_detail(link):
 
     app,model = app[0],app[1]
 
-    return get_model(app,model),url
+    return get_model(app,model),url,(app,model)
 

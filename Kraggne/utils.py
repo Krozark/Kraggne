@@ -58,7 +58,7 @@ import re
 def clean_include_url(link,include): #include(app.model)
 #return link,url,status
     if link.startswith("include(") and include:
-        m = get_model_from_include(link)
+        m,(app,model) = get_model_from_include(link)
 
         if not m:
             raise ValidationError(_('No model find %s.%s' % (app,model)))
@@ -72,7 +72,7 @@ def clean_include_url(link,include): #include(app.model)
 def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) else (app.get_objetct_from_url(**kwargs))
 #return link,url,status
     if link.startswith("detail(") and detail:
-        m,url = get_model_and_url_from_detail(link)
+        m,url,(app,model) = get_model_and_url_from_detail(link)
         if not m:
             raise ValidationError(_('No model find %s.%s' % (app,model)))
 

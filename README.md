@@ -1,3 +1,8 @@
+video
+======
+
+    http://www.dailymotion.com/video/xtnmu2_kraggne-tuto-1_tech
+
 Kraggne
 =======
 
