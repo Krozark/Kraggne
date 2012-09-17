@@ -49,7 +49,7 @@ class GenericView(GenericViewContextMixin,TemplateView):
     #    self.test = page.url
 
 class GenericDetailView(GenericView):
-    template_name = "Kraggne/genericPage.html"
+    template_name = "Kraggne/genericDetailPage.html"
     model = None
 
     def get_for_object(self,**kwargs):
@@ -72,7 +72,8 @@ class GenericDetailView(GenericView):
     def get_template_names(self):
         name = []
         if hasattr(self.model, '_meta'):
-            name = GetTemplatesPath(self.model._meta.app_label,self.model._meta.object_name.lower(),'object')
+            name = GetTemplatesPath(self.model._meta.app_label,self.model._meta.object_name,'object_detail')
+        name.append(self.template_name)
         print name
         return name
     

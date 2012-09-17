@@ -58,7 +58,7 @@ import re
 def clean_include_url(link,include): #include(app.model)
 #return link,url,status
     if link.startswith("include(") and include:
-        m,(app,model) = get_model_from_include(link)
+        m, app, model = get_model_from_include(link,return_app_model=True)
 
         if not m:
             raise ValidationError(_('No model find %s.%s' % (app,model)))
@@ -72,7 +72,7 @@ def clean_include_url(link,include): #include(app.model)
 def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) else (app.get_objetct_from_url(**kwargs))
 #return link,url,status
     if link.startswith("detail(") and detail:
-        m,url,(app,model) = get_model_and_url_from_detail(link)
+        m,url,app,model = get_model_and_url_from_detail(link,return_app_model=True)
         if not m:
             raise ValidationError(_('No model find %s.%s' % (app,model)))
 
@@ -83,7 +83,7 @@ def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) el
 
         if len(r.groupindex) == 1:
             if not ('pk' in r.groupindex or 'slug' in r.groupindex):
-                raise ValidationError(_('Please supply a valid regex URL. with <pk> OR <slug> '))
+                raise ValidationError(_('Please supply a valid regex URL. with (?P<pk>[\d]+) OR (?P<slug>[-\w]+)'))
 
             if 'slug' in r.groupindex and not hasattr(m,'slug'):
                 raise ValidationError(_("'<slug> is define in URL, but your model has no attr 'slug'"))
