@@ -64,6 +64,14 @@ $box-shadow : #000;
     &.admin-dragg {
     }
 
+    .highlight {
+        background-color : #b1ffaf;
+    }
+
+    .ui-sortable-helper {
+        background-color : #f6d7ac;
+    }
+
     border : solid #A0f 1px;
     margin : 20px;
     min-height : 20px;

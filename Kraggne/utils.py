@@ -90,7 +90,7 @@ def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) el
             return link,url,True
 
         if not hasattr(m,'get_object_from_url'):
-            raise ValidationError(_('Please supply a valid regex URL. with <pk> or <slug>. You can also define a get_object_from_url(***kwargs) method in %s.%s. This methode must return a object' % (app,model)))
+            raise ValidationError(_('Please supply a valid regex URL. with <pk> or <slug>. You can also define a get_object_from_url(**kwargs) method in %s.%s if you want to use other(s) kwargs. This methode must return a object' % (app,model)))
         return link,url
     return link,link,None
 

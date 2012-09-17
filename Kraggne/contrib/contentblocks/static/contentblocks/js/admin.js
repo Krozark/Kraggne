@@ -137,6 +137,10 @@ $(function(){
 
     $(".contentblocks.containeur").sortable({
         connectWith: "div.contentblocks.containeur",
+        forceHelperSize: true,
+        forcePlaceholderSize: true,
+        opacity: 0.6,
+        placeholder: 'highlight',
         stop : function(event,data){
             maj_dragg_object(data);
         }

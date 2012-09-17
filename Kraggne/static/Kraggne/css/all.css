@@ -135,7 +135,12 @@ Inspired by http://css3please.com/
 */
 .contentblocks.containeur {
   border: solid #A0f 1px;
-  margin: 20px; }
+  margin: 20px;
+  min-height: 20px; }
+  .contentblocks.containeur .highlight {
+    background-color: #b1ffaf; }
+  .contentblocks.containeur .ui-sortable-helper {
+    background-color: #f6d7ac; }
 
 .contentblocks.object {
   border: solid #333 1px;

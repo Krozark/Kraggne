@@ -26,7 +26,7 @@ class MenuItem(MPTTModel):
             help_text=_("Rafere to a stadar or a CMS page."))
 
     view = models.CharField(_('View'),max_length=255
-            ,help_text=_("The view of the page you want to link to, as URL-name or absolute URL (/your/path).\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
+            ,help_text=_("The view of the page you want to link to, as url-name, absolute URL (/your/path), include(app.model) or detail(\"/your/path/(?P<what_you_want>[something]+)\",app.model).\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
     is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
