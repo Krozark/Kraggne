@@ -363,3 +363,42 @@ def startswith(arg, val):
 def get_object_url(menu,obj):
     return menu.get_object_url(obj)
 
+##############################################################
+################ display tag #################################
+##############################################################
+from django.template.loader import select_template, get_template, find_template
+
+class TryDisplayNode(Node):
+
+    def __init__(self, obj, template_path):
+        self.obj = obj
+        self.template_path = template_path
+
+    def render(self,context):
+        o = resolve(self.obj,context)
+        if hasattr(o,"display"):
+            return o.display(context,self.template_path)
+
+        template_paths = [template_path,]
+        if hasattr(o, '_meta'):
+            template_paths.append('%s/%s/%s.html' % (o._meta.app_label.lower(),o._meta.object_name.lower(),'object'))
+
+        try:
+            t = select_template(template_paths)
+        except Exception,e:
+            return 'no template find to display %s.%s model (or not valid).\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
+        context["object"] = obj
+        return t.render(context)
+
+
+def do_try_display(parser, token):
+    """
+    {% try_display obj [with template_path ] %}
+    """
+
+    bits = token.contents.split()
+    obj = next_bit_for(bits, 'try_display')
+    template = next_bit_for(bits,'with')
+
+    return TryDisplayNode(obj,template)
+register.tag('try_display', do_try_display)

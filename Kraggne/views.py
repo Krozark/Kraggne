@@ -70,15 +70,15 @@ class GenericDetailView(GenericView):
         return obj
 
     def get_template_names(self):
-        name = []
+        names = []
         if hasattr(self.model, '_meta'):
             names.append("%s/%s_detail.html" % (
                 self.model._meta.app_label,
                 self.model._meta.object_name.lower(),
             ))
 
-        name.append(self.template_name)
-        return name
+        names.append(self.template_name)
+        return names
     
 
     def get_context_data(self, **kwargs):

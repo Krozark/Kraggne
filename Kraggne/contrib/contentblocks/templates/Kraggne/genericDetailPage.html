@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load Kraggne_tags %}
+{% load flatblocks %}
 
 {% block project.body %}
 {{block.super}}
-{% try_display object %}
+{% display object %}
 {% endblock %}
