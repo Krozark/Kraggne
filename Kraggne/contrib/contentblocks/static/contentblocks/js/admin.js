@@ -100,11 +100,12 @@ var formUploadCallback = (function(result) {
             aft = containeur.children(".btn.btn-add.btn-success");
             aft.after(result.data.html);
             $(".contentblocks.containeur").sortable("refresh");
+            //$( ".contentblocks.admin-resizable" ).resizable("refresh");
         }else {
             admin_dialog_reset("unknow succes type. reload page to see the changes?");
             admin_dialog.dialog2("open");
         }
-    }else{//error
+    }else{//err"refresh");r
         if (result.data.type == "form"){
             admin_dialog_reset(create_form(result.data.form));
         }else {
@@ -135,8 +136,8 @@ $(function(){
         return false;
     });
 
-    $(".contentblocks.containeur").sortable({
-        connectWith: "div.contentblocks.containeur",
+    $(".contentblocks.containeur.admin-drop").sortable({
+        connectWith: ".contentblocks.containeur",
         forceHelperSize: true,
         forcePlaceholderSize: true,
         opacity: 0.6,
@@ -145,6 +146,16 @@ $(function(){
             maj_dragg_object(data);
         }
     });
+
+    /*$(".ui-resizable").sortable("disable");
+
+    $( ".contentblocks.admin-resizable" ).resizable({
+        maxWidth: 900,
+        containment: "parent",
+        stop : function(event,data){
+            maj_dragg_object(data);
+        }
+    });*/
 });
 
 var maj_dragg_object = (function(data){

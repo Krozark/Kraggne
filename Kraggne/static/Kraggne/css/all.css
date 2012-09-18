@@ -50,9 +50,9 @@
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, .menu, .contentblocks.containeur, .contentblocks.containeur span.btn-add, .contentblocks.object {
+.clearfix, .menu, .contentblocks.containeur, .contentblocks.containeur span.btn-add {
   zoom: 1; }
-  .clearfix:before, .menu:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .contentblocks.object:before, .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
+  .clearfix:before, .menu:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -61,7 +61,7 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.object:after {
+  .clearfix:after, .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after {
     clear: both; }
 
 .reset-box {
