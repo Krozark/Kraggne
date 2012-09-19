@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import os
 
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from django.views.generic import TemplateView, FormView
 from django.db.models.loading import get_model
 from django.core.urlresolvers import reverse
+from django.core.files.base import ContentFile
 from django.template import Context
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
@@ -12,6 +14,9 @@ from django.conf import settings
 from Kraggne.contrib.contentblocks.utils import get_content_choice_models,model_to_modelform
 from Kraggne.contrib.contentblocks.models import *
 from Kraggne.contrib.flatblocks.utils import GetUnknowObjectContent
+from Kraggne.contrib.contentblocks.conf.settings import IMG_EXT_CHOICE
+
+from Kraggne.contrib.gblocks.models import TitleAndFile, Image
 
 def error(data=None):
     if not data:
@@ -39,10 +44,14 @@ class AjaxRecieverView(FormView):
 
     def post(self,request, *args, **kwargs):
         if not request.user.is_anonymous() and request.user.is_staff:
-            status = request.POST["st"]
+            try:
+                status = request.POST["st"]
+            except:
+                status = request.GET["st"]
+
 
             if not status :
-                return error("wat i'v to do?")
+                return error("what i've to do?")
 
             if status =="add-req":
                 #add new item
@@ -154,7 +163,56 @@ class AjaxRecieverView(FormView):
                 obj.page_containeur = containeur
                 obj.position = request.POST["obj_position"]
                 obj.save()
-                return HttpResponse('{"st":"ok","data":"Objet bougé"}',content_type='application/json')
+                return HttpResponse(u'{"st":"ok","data":"Objet bougé"}',content_type='application/json')
 
+            elif status == "upload-file":
+                uploaded = request.read
+                filesize = int(uploaded.im_self.META["CONTENT_LENGTH"])
+                filename = uploaded.im_self.META["HTTP_X_FILE_NAME"]
 
+                containeur_id = int(self.request.GET["obj_id"])
+                print containeur_id
+
+                content = ContentFile(request.read(filesize))
+                basename, ext = os.path.splitext(str(filename))
+
+                obj = None
+                if ext.lower() in IMG_EXT_CHOICE :
+                    obj = self.create_gblocks_file(Image,"image",filename,content,containeur_id)
+                else:
+                    obj = self.create_gblocks_file(TitleAndFile,"file",filename,content,containeur_id,title=basename)
+
+                if not obj:
+                    return error("mauvaises donnee recues")
+
+                content = json.dumps({
+                    "st" : "ok",
+                    "data" : {
+                        "html" : self.GetUnknowObjectContent(obj,**kwargs),
+                        "containeur_id" : containeur_id
+                    }
+                })
+
+                return HttpResponse(content,content_type='application/json')
         return error
+
+    def create_gblocks_file(self,model,file_name_attr,path,content,containeur_id,title=None):
+        containeur = PageContaineur.objects.filter(pk=containeur_id)
+        if not containeur:
+            return None
+        containeur = containeur[0]
+
+        obj = model()
+        f = getattr(obj,file_name_attr)
+        f.save(path,content,save=True)
+        if title:
+            obj.title = title
+        obj.save()
+
+        p = PageObject(content_object=obj)
+        p.save()
+
+        c2obj = ContaineurToObject(page_object=p,page_containeur=containeur)
+        c2obj.save()
+
+        return c2obj

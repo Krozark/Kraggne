@@ -91,16 +91,20 @@ var get_model_to_remove = (function(module,app,id){
 
 });
 
+var add_to_containeur = (function(id,html){
+    containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+id+'"]').parent();
+    aft = containeur.children(".btn.btn-add.btn-success");
+    aft.after(html);
+    $(".contentblocks.containeur").sortable("refresh");
+    //$( ".contentblocks.admin-resizable" ).resizable("refresh");
+});
+
 //callback
 var formUploadCallback = (function(result) {
     admin_dialog.dialog2("close");
     if(result.st =="ok"){
         if (result.data.type == "add"){
-            containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+result.data.containeur_id+'"]').parent();
-            aft = containeur.children(".btn.btn-add.btn-success");
-            aft.after(result.data.html);
-            $(".contentblocks.containeur").sortable("refresh");
-            //$( ".contentblocks.admin-resizable" ).resizable("refresh");
+            add_to_containeur(result.data.containeur_id,result.data.html);
         }else {
             admin_dialog_reset("unknow succes type. reload page to see the changes?");
             admin_dialog.dialog2("open");
@@ -116,6 +120,39 @@ var formUploadCallback = (function(result) {
 });
 
 $(function(){
+    var uploaders = [];
+    $.each($(".contentblocks.containeur.admin-drop"),function(){
+        elem = $(this).children(".drop-zone")[0];
+        conf = $($(this).children(".config")[0]);
+
+        module = conf.attr("module_name");
+        app = conf.attr("app_name");
+        id = conf.attr("obj_id");
+        pos = conf.attr("obj_position");
+        parent_id = conf.attr("obj_id");
+        data = {"app_name" :app, "module_name":module,"obj_id":id,"parent_id":parent_id,"st" :"upload-file"};
+
+        var uploader = new qq.FileUploader({
+            element: elem,
+            params : data,
+            //uploadButtonText : "",
+            action: contentblocks_ajax_uploader,
+            customHeaders : {"X-CSRFToken" : $.cookie('csrftoken')},
+            showMessage : function(data){
+                //console.log(data);
+            },
+            onComplete: function(id,fileName,json){
+                if (json.st == "error"){
+                    admin_dialog_reset(json.data);
+                    admin_dialog.dialog2("open");
+                }else{
+                    add_to_containeur(json.data.containeur_id,json.data.html);
+                }
+            }
+        });          
+        uploaders.push(uploader);
+    });
+
     $(document).on("click",".btn-add",function(){
         conf = $($(this).parent().children(".config")[0]);
         module = conf.attr("module_name");
@@ -146,6 +183,8 @@ $(function(){
             maj_dragg_object(data);
         }
     });
+
+
 
     /*$(".ui-resizable").sortable("disable");
 

@@ -15,3 +15,13 @@ CONTENT_CHOICE_MODELS = getattr(settings, "CONTENTBLOCKS_CONTENT_CHOICE_MODELS",
         }
     )
 )
+
+IMG_EXT_CHOICE = getattr(settings, "CONTENTBLOCKS_IMG_EXT_CHOICE",
+    (
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".bmp"
+    )
+)
