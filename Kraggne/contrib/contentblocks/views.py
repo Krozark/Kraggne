@@ -154,7 +154,7 @@ class AjaxRecieverView(FormView):
                     return error("impossible to delete this objet")
 
                 obj = ContaineurToObject.objects.filter(pk=int(request.POST["obj_id"]))
-                containeur = PageContaineur.objects.filter(pk=request.POST["parent_id"])[:1]
+                containeur = PageContaineur.objects.filter(pk=int(request.POST["parent_id"]))
                 if not obj or not containeur:
                     return error("no object found")
                 obj = obj[0]

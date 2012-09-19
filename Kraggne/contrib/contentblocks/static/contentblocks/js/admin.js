@@ -202,9 +202,10 @@ var maj_dragg_object = (function(data){
     pre = obj.prev();
     c = pre.attr("class");
     pos = 0;
-    if(c != "config"){
+    if(c != "config" && c!= "drop-zone"){
         pos = parseInt(pre.children(".config").attr("obj_position")) + 1;
     }
+
     conf = $($(obj).children(".config")[0]);
     conf.attr("obj_position",pos);
 
