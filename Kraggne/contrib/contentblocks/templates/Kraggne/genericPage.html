@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load flatblocks %}
 
-{% block project.body %}
-{{block.super}}
+{% block page.body %}
 
 {% for object in page.get_containeurs %}
 {% display object %}
 {% endfor %}
 
-
 {% endblock %}
+

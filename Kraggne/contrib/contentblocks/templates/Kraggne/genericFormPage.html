@@ -2,6 +2,11 @@
 
 
 {% block page.body %}
+
+{% for object in page.get_containeurs %}
+{% display object %}
+{% endfor %}
+
 <form action="{{action_url}}#form" method="post" class="kraggne-form form-horizontal" id="form">
     {% csrf_token %}
     {% for field in form %}
@@ -22,4 +27,5 @@
         <button class="btn btn-primary" type="submit">Submit</button>
     </div>
 </form>
+
 {% endblock %}

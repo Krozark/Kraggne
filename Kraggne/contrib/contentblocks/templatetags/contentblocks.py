@@ -30,6 +30,7 @@ class PageContaineurNode(Node):
 
     def __init__(self, slug=None,store_in_object = None,template_path=None, variable_name = None):
         self.slug = slug
+
         self.store_in_object = store_in_object
         self.template_path = template_path
         self.variable_name = variable_name
@@ -51,6 +52,7 @@ class PageContaineurNode(Node):
     def get_content_object(self, slug):
         # If the user passed a Integer as a slug, assume that we should fetch
         # this specific object
+
         if not slug:
             return None
 
@@ -59,6 +61,7 @@ class PageContaineurNode(Node):
                 obj,c = PageContaineur.objects.get_or_create(pk=slug)
                 if c:
                     obj.slug = "auto-generated-%d" % slug
+                    obj.hextra_class = self.hextra_class
                     obj.save()
                 return obj
             except PageContaineur.DoesNotExist:
@@ -67,9 +70,13 @@ class PageContaineurNode(Node):
                 return None
 
         obj, c = PageContaineur.objects.get_or_create(slug=slug)
+        #if c:
+        #    obj.hextra_class = self.hextra_class
+        #    obj.save()
         return obj
 
     def render(self, context):
+
         slug = self.generate_slug(self.slug, context)
         obj = self.get_content_object(slug)
 

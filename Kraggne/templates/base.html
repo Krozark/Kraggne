@@ -1,83 +1,68 @@
-{% load Kraggne_tags %}
-
-{% comment %}
-{% block page.title %}{{page.name}}{% endblock %}
-{% block site.home_url %}/{% endblock %}
-{% block project.menu %}
-{% menu level_min=-1 level_nb=1 %}
-{% endblock %}
-{% endcomment %}
+{% load Kraggne_tags contentblocks %}
 
 <!DOCTYPE html>
+{% spaceless %}
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{{ page.name }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ page.name }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <!-- Le styles -->
-    {% comment %}
-    <link href="{{STATIC_URL}}website/css/bootstrap/bootstrap.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-    <link href="{{STATIC_URL}}website/css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
-    {% endcomment %}
-    <!-- Le fav and touch icons -->
-    {% comment %}
-    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-    {% endcomment %}
-  </head>
+        <!-- Le styles -->
+        <link href="{{STATIC_URL}}website/css/bootstrap/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        <!--link href="{{STATIC_URL}}website/css/bootstrap/bootstrap-responsive.css" rel="stylesheet"-->
 
-  <body>
+    </head>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="{% block site.home_url %}{% endblock %}">{% block page.title %}{% endblock %}</a>
-          {% block project.menu %}
-          {% menu "main" %}
-          {% endblock %}
+    <body>
+
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="{% block site.home_url %}/{% endblock %}">{% block page.title %}Home{% endblock %}</a>
+                    {% block project.menu %}
+                    {% menu "main" %}
+                    {% endblock %}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="container">
-    {% block project.body %}
-    <h2>breadcrumb:</h2>
-    {% breadcrumb %}
-    {% endblock %}
-    </div> <!-- /container -->
-    
-    <div class="footer">
-        {% block project.footer %}{% endblock %}
-    </div>
+        <div class="container">
+            {% block project.body %}
+            <h2>breadcrumb:</h2>
+            {% breadcrumb %}
+            {% containeur "sidebar:sidebar" %}
 
+            {% block page.body %}{% endblock %}
+            {% endblock %}
+        </div> <!-- /container -->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    {% block site.media %}
-    {% comment %}
-    <script src="{{STATIC_URL}}website/js/jquery.js"></script>
-    <script src="{{STATIC_URL}}website/js/bootstrap.js"></script>
-    {% endcomment %}
-    <link href="{{STATIC_URL}}Kraggne/css/all.css" rel="stylesheet">
-    {% endblock %}
-    {% block project.media %}{% endblock %}
+        {% block project.footer %}
+        {% containeur "footer:footer" %}
+        {% endblock %}
 
-  </body>
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        {% block site.media %}
+        <script src="{{STATIC_URL}}Kraggne/js/jquery.js"></script>
+        <script src="{{STATIC_URL}}Kraggne/js/bootstrap.js"></script>
+        <link href="{{STATIC_URL}}Kraggne/css/all.css" rel="stylesheet">
+
+        {% if user.is_authenticated and user.is_staff %}
+        {% include "Kraggne/admin.inc.html" %}
+        {% endif %}
+        {% endblock %}
+
+        {% block project.media %}{% endblock %}
+
+    </body>
 </html>
+{% endspaceless %}

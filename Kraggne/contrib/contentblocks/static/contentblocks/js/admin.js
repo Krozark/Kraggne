@@ -92,9 +92,8 @@ var get_model_to_remove = (function(module,app,id){
 });
 
 var add_to_containeur = (function(id,html){
-    containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+id+'"]').parent();
-    aft = containeur.children(".btn.btn-add.btn-success");
-    aft.after(html);
+    containeur = $('.config[module_name="pagecontaineur"][app_name="contentblocks"][obj_id="'+id+'"]');
+    containeur.after(html);
     $(".contentblocks.containeur").sortable("refresh");
     //$( ".contentblocks.admin-resizable" ).resizable("refresh");
 });

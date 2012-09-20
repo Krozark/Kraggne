@@ -56,6 +56,9 @@ $box-shadow : #000;
 */
 .contentblocks.containeur {
     @extend .clearfix;
+
+    margin-bottom : 10px;
+
     span.btn-add {
         @extend .right;
         @extend .clearfix;
@@ -72,42 +75,50 @@ $box-shadow : #000;
         background-color : #f6d7ac;
     }
 
-    border : solid #A0f 1px;
-    margin : 20px;
+    &.admin {
+        border : solid #A0f 1px;
+    }
+
+    .contentblocks.object {
+        @extend .clearfix;
+        span.btn-del {
+            @extend .right;
+        }
+
+
+        &.admin-dragg {
+        }
+
+        &.admin {
+            border : solid #F00 1px;
+            //margin : 10px;
+        }
+
+        .contentblocks-blocks {
+            margin : 1px;
+        }
+    }
 
     .drop-zone {
     }
 
-}
-
-.contentblocks.object {
-    @extend .clearfix;
-    span.btn-del {
-        @extend .right;
-    }
-    border : solid #333 1px;
-    margin : 10px;
-
-    &.admin-dragg {
+    .admin-dragg {
+        cursor : move;
     }
 
-    .contentblocks-blocks {
-        border : solid #F00 1px;
-        margin : 1px;
-    }
-}
-
-.admin-dragg {
-    //cursor : move;
-}
-
-.admin-drop {
-    min-height : 30px;
-}
-
-.config {
-    display : none;
-     & * {
+    .config {
         display : none;
-     }
+        & * {
+            display : none;
+        }
+    }
+
+    &.admin-drop {
+        min-height : 30px;
+    }
+
 }
+
+
+
+
