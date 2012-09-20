@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from Kraggne.contrib.contentblocks.conf.settings import CONTENT_CHOICE_MODELS
+from Kraggne.contrib.contentblocks.conf.settings import CONTENT_CHOICE_MODELS, CONTENT_FORM_MODELS
 from django.contrib.contenttypes.models import ContentType
 from django import forms
 
@@ -25,6 +25,19 @@ def get_content_choice_models():
     
 
 def model_to_modelform(model):
-    meta = type('Meta', (), { "model":model, })
-    modelform_class = type('modelform', (forms.ModelForm,), {"Meta": meta})
+    try:
+        form = CONTENT_FORM_MODELS[model._meta.app_label][model._meta.module_name]
+        point = form.rfind('.')
+        if point != -1:
+            app = form[:point]
+            klass = form[point+1:]
+            f= __import__(app,globals(),locals(),[klass,])
+            modelform_class=getattr(f,klass)
+        else:
+            modelform_class=__import__(form)
+    except:
+        meta = type('Meta', (), { "model":model, })
+        modelform_class = type('modelform', (forms.ModelForm,), {"Meta": meta})
     return modelform_class
+
+

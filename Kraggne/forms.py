@@ -92,37 +92,6 @@ class MenuItemForm(forms.ModelForm):
             item.save() 
         return item
 
-
-
-#class InlineMenuItemForm(forms.ModelForm):
-#    #queryset=ItemMenu.objects.all()
-#
-#    class Meta:
-#        model = ItemMenu
-#        fields = ('parent', 'name', 'slug', 'rank', 'is_visible')
-#
-#class ItemPageForm(forms.ModelForm):
-#    
-#    class Meta:
-#        model = ItemPage
-#
-#    def clean_parent(self):
-#        parent = self.cleaned_data['parent']
-#        if not parent.auto_create_page:
-#            raise forms.ValidationError(_("generic content are not allow to parent that don't have 'auto_create_page' activated"))
-#        return parent
-#
-#    def clean_slug(self):
-#        slug = self.cleaned_data['slug']
-#        if slug != "":
-#            return slugify(slug)
-#
-#        parent = self.cleaned_data['parent']
-#        rank = self.cleaned_data['rank']
-#
-#        return slugify("%s-%d" % (parent.slug,rank))
-#
-
 class FormBlockForm(forms.ModelForm):
     class Meta:
         model = FormBlock

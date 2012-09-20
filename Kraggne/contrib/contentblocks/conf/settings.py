@@ -16,6 +16,15 @@ CONTENT_CHOICE_MODELS = getattr(settings, "CONTENTBLOCKS_CONTENT_CHOICE_MODELS",
     )
 )
 
+CONTENT_FORM_MODELS = getattr(settings, "CONTENTBLOCKS_CONTENT_FORM_MODELS",
+{
+    "flatblocks" : {
+        "genericflatblocklist" : "Kraggne.contrib.flatblocks.forms.GenericFlatblockListForm",
+        "templateblock" : "Kraggne.contrib.flatblocks.forms.TempateBlockForm"
+    },
+})
+
+
 IMG_EXT_CHOICE = getattr(settings, "CONTENTBLOCKS_IMG_EXT_CHOICE",
     (
         ".jpg",
