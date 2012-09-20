@@ -175,6 +175,8 @@ $(function(){
 
     $(".contentblocks.containeur.admin-drop").sortable({
         connectWith: ".contentblocks.containeur",
+        //handle : "div",
+        items : ".contentblocks.object.admin-dragg",
         forceHelperSize: true,
         forcePlaceholderSize: true,
         opacity: 0.6,
@@ -202,9 +204,10 @@ var maj_dragg_object = (function(data){
     pre = obj.prev();
     c = pre.attr("class");
     pos = 0;
-    if(c != "config" && c!= "drop-zone"){
+    if(c != "config" && c!= "drop-zone" && c!= "btn btn-success btn-add"){
         pos = parseInt(pre.children(".config").attr("obj_position")) + 1;
     }
+    console.log(c);
 
     conf = $($(obj).children(".config")[0]);
     conf.attr("obj_position",pos);
