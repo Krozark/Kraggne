@@ -1,4 +1,10 @@
+@import "css3.scss";
 @import "variables.scss";
+
+.right { float:right; }
+.left  { float:left; }
+.link  {cursor : pointer;}
+
 
 html {
     body {
@@ -112,3 +118,127 @@ html {
         }
     }
 }
+
+.flatblocks-objects-list {
+    ul.flatblocks-objects {
+        li {
+        }
+    }
+}
+
+ul.flatblocks-objects {
+    li {
+    }
+}
+
+.bordered {
+    @include border-radius(3px);
+    border: 1px solid $base_color * 0.5;
+}
+
+.glossy {
+    @extend .bordered;
+    @include background-gradient($base_color * 1.2, $base_color * 0.6 - #111);
+}
+
+.shadow {
+    @include box-shadow(7px,-4px,8px, $box-shadow);
+}
+
+/*.btn {
+    @extend .glossy;
+    color: $font_color * 0.2 !important;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px $base_color * 0.5;
+    a {
+        color : $base_color * 0.2;
+        @include transition(color);
+        &:hover {
+            color : $base_color * 0.6;
+            text-shadow: 1px 1px 1px $base_color * 0.2;
+        }
+    }
+}
+
+
+.hbtn {
+    @extend .btn;
+    @extend .link;
+    @include transition(color);
+    &:hover {
+        color: $font_color * 0.7 !important;
+        text-shadow: 1px 1px 1px $base_color *0.5;
+        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
+    }
+}
+*/
+.contentblocks.containeur {
+    @extend .clearfix;
+
+    margin-bottom : 10px;
+
+    span.btn-add {
+        @extend .right;
+        @extend .clearfix;
+    }
+
+    &.admin-dragg {
+    }
+
+    .highlight {
+        background-color : #b1ffaf;
+    }
+
+    .ui-sortable-helper {
+        background-color : #f6d7ac;
+    }
+
+    &.admin {
+        border : solid #A0f 1px;
+    }
+
+    .contentblocks.object {
+        @extend .clearfix;
+        span.btn-del {
+            @extend .right;
+        }
+
+
+        &.admin-dragg {
+        }
+
+        &.admin {
+            border : solid #F00 1px;
+            //margin : 10px;
+        }
+
+        .contentblocks-blocks {
+            margin : 1px;
+        }
+    }
+
+    .drop-zone {
+    }
+
+    .admin-dragg {
+        cursor : move;
+    }
+
+    .config {
+        display : none;
+        & * {
+            display : none;
+        }
+    }
+
+    &.admin-drop {
+        min-height : 30px;
+    }
+
+}
+
+
