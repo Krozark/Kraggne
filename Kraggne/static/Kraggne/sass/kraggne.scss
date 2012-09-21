@@ -5,6 +5,51 @@
 .left  { float:left; }
 .link  {cursor : pointer;}
 
+.shadow {
+    @include box-shadow(7px,-4px,8px, $black);
+}
+
+.bordered {
+    @include border-radius(3px);
+    border: 1px solid $tableBorder;
+}
+
+.glossy {
+    @extend .bordered;
+    @include background-gradient($grayLighter, $grayLight);
+}
+
+.box {
+    @extend .glossy;
+    color: $textColor * 0.2 !important;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px $black;
+    a {
+        color : $gray;
+        @include transition(color);
+        &:hover {
+            color : $grayLight;
+            text-shadow: 1px 1px 1px $grayDarker;
+        }
+    }
+}
+
+
+.hbox {
+    @extend .box;
+    @extend .link;
+    @include transition(color);
+    &:hover {
+        color: $textColor * 0.7 !important;
+        text-shadow: 1px 1px 1px $black;
+        @include background-gradient($grayDarker,$gray);
+    }
+}
+
 
 html {
     body {
@@ -12,11 +57,14 @@ html {
             .navbar-inner {
                 .container {
                     .btn.btn-navbr {
+
                         .icon-bar {
                         }
                     }
+
                     .brand {
                     }
+
                     .menu {
                         @extend .clearfix;
                         //float : left;
@@ -42,7 +90,7 @@ html {
                                 .link {
                                     //font-size : 1.1em;
                                     &.active {
-                                        //color : $base_color + $font_color;
+                                        //color : $base_color + $textColor;
                                     }
                                 }
 
@@ -71,6 +119,7 @@ html {
         .container, .container-fluid {
             .sidebar {
             }
+
             ul .breadcrumb {
                 li {
                     span.self {
@@ -125,11 +174,18 @@ html {
                 }
 
                 &.admin {
-                    border : solid #A0f 1px;
+                    @extend .bordered;
+                    border : 1px solid  $gray;
                 }
 
                 .contentblocks.object {
                     @extend .clearfix;
+                    @include background-gradient(#f5f5f5,$white);
+                    @extend .bordered;
+
+
+                    margin-bottom : 10px;
+
                     span.btn-del {
                         @extend .right;
                     }
@@ -138,10 +194,10 @@ html {
                     &.admin-dragg {
                     }
 
-                    &.admin {
+                    /*&.admin {
                         border : solid #F00 1px;
                         //margin : 10px;
-                    }
+                    }*/
 
                     .contentblocks-blocks {
                         margin : 1px;
@@ -185,9 +241,9 @@ html {
             margin-top : 25px;
             p {
                 font-size : 0.9em;
-                color : $font_color * 0.2;
+                color : $textColor * 0.2;
                 a {
-                    color : $font_color * 0.4;
+                    color : $textColor * 0.4;
                 }
             }
 
@@ -252,55 +308,4 @@ html {
         }
     }
 }
-
-
-
-.bordered {
-    @include border-radius(3px);
-    border: 1px solid $base_color * 0.5;
-}
-
-.glossy {
-    @extend .bordered;
-    @include background-gradient($base_color * 1.2, $base_color * 0.6 - #111);
-}
-
-.shadow {
-    @include box-shadow(7px,-4px,8px, $box-shadow);
-}
-
-/*.btn {
-@extend .glossy;
-color: $font_color * 0.2 !important;
-font-variant: small-caps;
-font-weight: bold;
-font-size: 1em;
-padding: 3px 8px;
-text-decoration: none;
-text-shadow: 1px 1px 1px $base_color * 0.5;
-a {
-color : $base_color * 0.2;
-@include transition(color);
-&:hover {
-color : $base_color * 0.6;
-text-shadow: 1px 1px 1px $base_color * 0.2;
-}
-}
-}
-
-
-.hbtn {
-@extend .btn;
-@extend .link;
-@include transition(color);
-&:hover {
-color: $font_color * 0.7 !important;
-text-shadow: 1px 1px 1px $base_color *0.5;
-@include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
-}
-}
- */
-
-
-
 

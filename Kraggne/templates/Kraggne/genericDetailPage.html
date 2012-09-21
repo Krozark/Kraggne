@@ -2,5 +2,9 @@
 {% load Kraggne_tags %}
 
 {% block page.body %}
-{% try_display object %}
+<div class="contentblocks containeur">
+    <div class="contentblocks object">
+        {% try_display object %}
+    </div>
+</div>
 {% endblock %}
