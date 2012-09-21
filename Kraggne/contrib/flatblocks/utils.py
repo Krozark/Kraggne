@@ -1,5 +1,16 @@
 from django.template.loader import select_template, get_template, find_template
 
+def push_context(context,indices = ["generic_object","object","generic_object_list"]):
+    save = {}
+    for i in indices:
+        save[i] = context.get(i)
+    return save
+
+def pop_context(context,save):
+    for i in save.keys():
+        context[i] = save[i]
+    return context
+
 def GetTemplatesPath(appname,modelname,type,template_path=None):
     template_paths = []
     if template_path:
@@ -14,9 +25,14 @@ def GetBlockContent(obj,context,template_path=None):
         t = select_template(template_paths)
     except:
         return ''
+
+    save = push_context(context,["generic_object","object"])
     context["generic_object"] = obj
     context["object"] = obj.content_object
-    return t.render(context)
+    res = t.render(context)
+    context = pop_context(context,save)
+
+    return res
 
 def GetUnknowObjectContent(obj,context,template_path=None):
     template_paths = GetTemplatesPath(obj._meta.app_label,obj._meta.object_name,'object',template_path)
@@ -25,8 +41,13 @@ def GetUnknowObjectContent(obj,context,template_path=None):
         t = select_template(template_paths)
     except Exception,e:
         return 'no template find to display %s.%s model (or not valid).\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
+
+    save = push_context(context,["object",])
     context["object"] = obj
-    return t.render(context)
+    res = t.render(context)
+    context = pop_context(context,save)
+
+    return res
 
 
 def GetListContent(obj,context,template_path=None):
@@ -47,8 +68,13 @@ def GetListContent(obj,context,template_path=None):
         t = select_template(template_paths)
     except:
         return ''
+
+    save = push_context(context,["generic_object_list",])
     context['generic_object_list'] = obj
-    return t.render(context)
+    res = t.render(context)
+    context = pop_context(context,save)
+
+    return res
 
 def GetTemplateContent(context,template_path,**kwargs):
     try:
@@ -56,6 +82,11 @@ def GetTemplateContent(context,template_path,**kwargs):
         print t
     except:
         return ''
+
+    save = push_context(context,**kwargs)
     context.update(kwargs)
-    return t.render(context)
+    res = t.render(context)
+    context = pop_context(context,save)
+
+    return res
 

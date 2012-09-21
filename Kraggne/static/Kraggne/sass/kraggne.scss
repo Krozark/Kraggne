@@ -1,4 +1,103 @@
-@import "base.scss";
-@import "breadcrumb.scss";
-@import "genericFormPage.scss";
-@import "menu.scss";
+
+html {
+    body {
+        .navbar {
+            .navbar-inner {
+                .container {
+                    .btn.btn-navbr {
+                        .icon-bar {
+                        }
+                    }
+                    .brand {
+                    }
+                }
+            }
+        }
+
+        ul .breadcrumb {
+            li {
+                span.self {
+                }
+
+                a {
+                }
+
+                span.divider {
+                }
+
+            }
+        }
+        .menu {
+            @extend .clearfix;
+            //float : left;
+            margin-top : 3px;
+            .nav-0 {
+                .item {
+                    &:hover {
+                        & > ul {
+                            float : right;
+                            display:inline;
+                        }
+                    }
+                }
+                .item-1 {
+                    float : left;
+                    //@extend .left;
+                    margin-right : 5px;
+
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+
+                    .link {
+                        //font-size : 1.1em;
+                        &.active {
+                            //color : $base_color + $font_color;
+                        }
+                    }
+
+                    .nav {
+                        display : none;
+                        position : absolute;
+                        //@extend .btn;
+                        .item {
+                            .link {
+                            }
+                        }
+                    }
+                    &:hover {
+                        & > ul {
+                            display:block;
+                        }
+                    }
+                }
+            }
+        }
+
+        .container {
+            .sidebar {
+            }
+
+            .kraggne-form {
+                .control-group {
+                    label.control-label {
+                    }
+                    .controls {
+                        .alert.alert-error {
+                            .close {
+                            }
+                        }
+                    }
+                }
+
+                .form-actions {
+                    .btn.btn-primary[type='submit'] {
+                    }
+                }
+            }
+        }
+
+        .footer {
+        }
+    }
+}
