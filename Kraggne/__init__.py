@@ -19,5 +19,3 @@ for x in settings.INSTALLED_APPS:
         APPS += TO_ADD
 
 settings.INSTALLED_APPS = APPS 
-
-print settings.INSTALLED_APPS

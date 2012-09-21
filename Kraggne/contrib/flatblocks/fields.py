@@ -10,7 +10,7 @@ class JSONFormField(Field):
     def clean(self, value):
 
         if not value and not self.required:
-            return None
+            return "{}"
 
         value = super(JSONFormField, self).clean(value)
 

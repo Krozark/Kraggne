@@ -82,7 +82,6 @@ class PageContaineurNode(Node):
                     raise
                 return None
 
-        print slug
         obj, c = PageContaineur.objects.get_or_create(slug=slug)
         if c:
             obj.hextra_class = self.css_class.replace("'","").replace('"','')
