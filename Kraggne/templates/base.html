@@ -46,7 +46,9 @@
                     <h2>breadcrumb:</h2>
                     {% breadcrumb %}
 
-                    {% block page.body %}{% endblock %}
+                    {% block page.body %}
+                    {% containeur page.slug|add:"sidebar" %}
+                    {% endblock %}
                 </div>
             </div>
             {% endblock %}

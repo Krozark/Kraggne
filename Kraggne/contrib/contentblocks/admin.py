@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from .models import PageObject, PageContaineur, ContaineurToObject
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from Kraggne.contrib.contentblocks.models import PageObject, PageContaineur, ContaineurToObject
 
 if 'grappellifit' in settings.INSTALLED_APPS and 'modeltranslation' in settings.INSTALLED_APPS:
     from grappellifit.admin import TranslationAdmin, TranslationStackedInline
