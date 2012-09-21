@@ -13,6 +13,13 @@ class PageObject(models.Model):
     def __unicode__(self):
         return u'%s' % self.content_object
 
+    def app_label(self):
+        return self.content_object._meta.app_label.lower()
+
+    def model_label(self):
+        return self.content_object._meta.object_name.lower()
+
+
 class PageContaineur(models.Model):
     slug = models.SlugField(_('slug'), max_length=255, unique=True,null=True,blank=True)
     page = models.ForeignKey(MenuItem,blank=True,null=True,default=None)
