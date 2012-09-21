@@ -14,6 +14,18 @@ def next_bit_for(bits, key, if_none=None):
     except ValueError:
         return if_none
 
+def get_val_for(bits,key,if_none=None,type=bool):
+    for u in bits:
+        if u.startswith(key+"="):
+            res = u.split('=')[1]
+            if type == bool:
+                return res=='True'
+            elif type == "class":
+                return res
+            return type(res)
+    return if_none
+
+
 def resolve(var, context):
     """Resolves a variable out of context if it's not in quotes"""
     if not var:
@@ -28,12 +40,13 @@ def resolve(var, context):
 
 class PageContaineurNode(Node):
 
-    def __init__(self, slug=None,store_in_object = None,template_path=None, variable_name = None):
+    def __init__(self, slug=None,store_in_object = None,template_path=None, variable_name = None, css_class=None,page=None):
         self.slug = slug
-
         self.store_in_object = store_in_object
         self.template_path = template_path
         self.variable_name = variable_name
+        self.css_class = css_class
+        self.page = page
 
     def generate_slug(self, slug, context):
         """
@@ -69,15 +82,20 @@ class PageContaineurNode(Node):
                     raise
                 return None
 
+        print slug
         obj, c = PageContaineur.objects.get_or_create(slug=slug)
-        #if c:
-        #    obj.hextra_class = self.hextra_class
-        #    obj.save()
+        if c:
+            obj.hextra_class = self.css_class.replace("'","").replace('"','')
+            #page = MenuItem.objects.filter(pk=self.page)[:1]
+            if self.page :
+                obj.page = self.page
+            obj.save()
         return obj
 
     def render(self, context):
-
+        
         slug = self.generate_slug(self.slug, context)
+        self.page = resolve(self.page,context)
         obj = self.get_content_object(slug)
 
         if not obj:
@@ -101,10 +119,10 @@ def do_containeur(parser,token):
     """
     create or get a containeur and display  it
 
-    {% containeur "slug" %}
-    {% containeur "slug" into "slug_name" %}
-    {% containeur "slug" with "template_path" %}
-    {% containeur "slug" with "template_path" as "variable_name" %}
+    {% containeur "slug" [css_class=None] [page=None] %}
+    {% containeur "slug" into "slug_name" [css_class=None] [page=None] %}
+    {% containeur "slug" with "template_path" [css_class=None] [page=None] %}
+    {% containeur "slug" with "template_path" as "variable_name" [css_class=None] [page=None] %}
     """
 
     bits = token.contents.split()
@@ -113,6 +131,8 @@ def do_containeur(parser,token):
         'store_in_object': next_bit_for(bits, 'into'),
         'template_path': next_bit_for(bits, 'with'),
         'variable_name': next_bit_for(bits, 'as'),
+        'css_class' : get_val_for(bits,'css_class',if_none=None,type=str),
+        'page' : get_val_for(bits,'page',if_none=None,type="class")
     }
     return PageContaineurNode(**args)
 register.tag("containeur",do_containeur)

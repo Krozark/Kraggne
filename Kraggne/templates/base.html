@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span2">
-                    {% containeur "sidebar:sidebar" %}
+                    {% containeur "sidebar" css_class="sidebar" %}
                 </div>
 
                 <div class="span10">
@@ -46,8 +46,9 @@
                     <h2>breadcrumb:</h2>
                     {% breadcrumb %}
 
+                    {% containeur page.slug css_class="main" %}
+
                     {% block page.body %}
-                    {% containeur page.slug|add:"sidebar" %}
                     {% endblock %}
                 </div>
             </div>
@@ -57,7 +58,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 {% block project.footer %}
-                {% containeur "footer:footer" %}
+                {% containeur "footer" css_class="footer" %}
                 {% endblock %}
             </div>
         </div>
