@@ -161,7 +161,7 @@ class AjaxRecieverView(FormView):
                 containeur = containeur[0]
 
                 obj.page_containeur = containeur
-                obj.position = request.POST["obj_position"]
+                obj.position = int(request.POST["obj_position"])
                 obj.save()
                 return HttpResponse(u'{"st":"ok","data":"Objet bougé"}',content_type='application/json')
 
@@ -171,7 +171,6 @@ class AjaxRecieverView(FormView):
                 filename = uploaded.im_self.META["HTTP_X_FILE_NAME"]
 
                 containeur_id = int(self.request.GET["obj_id"])
-                print containeur_id
 
                 content = ContentFile(request.read(filesize))
                 basename, ext = os.path.splitext(str(filename))

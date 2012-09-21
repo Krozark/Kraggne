@@ -55,12 +55,9 @@ def GetListContent(obj,context,template_path=None):
     simple_obj_template_path = GetTemplatesPath(obj.content_type.app_label,obj.content_type.model,'object',template_path)[0]
     try:
         t = find_template(simple_obj_template_path)
-        print "found"
         template_paths.append("flatblocks/object_list_by_object.html")
         context["object_file_to_include"] = simple_obj_template_path
     except Exception,e:
-        print e
-        print simple_obj_template_path
         pass
 
     template_paths.append("flatblocks/object_list.html")
@@ -79,7 +76,6 @@ def GetListContent(obj,context,template_path=None):
 def GetTemplateContent(context,template_path,**kwargs):
     try:
         t = get_template(template_path)
-        print t
     except:
         return ''
 
