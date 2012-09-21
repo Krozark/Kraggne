@@ -261,3 +261,8 @@ css:
     <link href="{{STATIC_URL}}Kraggne/css/all.css" rel="stylesheet">
 
 
+
+Bugs:
+====
+
+    If you have som bugs with the menu, reboot the server (to destroy the cache). generaly bugs are fixed with this.

@@ -125,15 +125,15 @@ def MenuItemSave(sender,**kwargs):
         if url != child.url:
             child.save()
 
-#@receiver(post_save, sender=MenuItem)
-#def sortPosition(sender,**kwargs):
-#    obj = kwargs['instance']
-#    objs = MenuItem.objects.filter(order=obj.order,parent=obj.parent).exclude(pk = obj.pk)
-#    i= 1
-#    for o in objs:
-#        o.order += i
-#        o.save()
-#        i +=1
+@receiver(post_save, sender=MenuItem)
+def sortPosition(sender,**kwargs):
+    obj = kwargs['instance']
+    objs = MenuItem.objects.filter(order=obj.order,parent=obj.parent).exclude(pk = obj.pk)
+    i= 1
+    for o in objs:
+        o.order += i
+        o.save()
+        i +=1
 
 
 from django.contrib.contenttypes.models import ContentType
