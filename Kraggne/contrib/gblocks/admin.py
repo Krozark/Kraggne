@@ -29,7 +29,7 @@ else:
 
 admin.site.register(Title, GblockAdmin)
 admin.site.register(Text, GblockAdmin)
-admin.site.register(Image)
+admin.site.register(Image,GblockAdmin)
 admin.site.register(ImageAndLink, GblockAdmin)
 admin.site.register(TitleAndFile, GblockAdmin)
 admin.site.register(TitleTextAndFile, GblockAdmin)

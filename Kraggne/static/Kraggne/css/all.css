@@ -13,6 +13,14 @@ html body .menu {
       position: absolute; }
     html body .menu .nav-0 .item-1:hover > ul {
       display: block; }
+html body .footer {
+  text-align: center;
+  margin-top: 25px; }
+  html body .footer p {
+    font-size: 0.9em;
+    color: #25261c; }
+    html body .footer p a {
+      color: #4b4d39; }
 
 /*
 SCSS3 (c) 2011 Motion Média

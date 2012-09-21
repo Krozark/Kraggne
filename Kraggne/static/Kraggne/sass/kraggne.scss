@@ -1,3 +1,4 @@
+$font_color: #bdc190;
 
 html {
     body {
@@ -74,7 +75,7 @@ html {
             }
         }
 
-        .container {
+        .container, .container-fluid {
             .sidebar {
             }
 
@@ -98,6 +99,16 @@ html {
         }
 
         .footer {
+            text-align : center;
+            margin-top : 25px;
+            p {
+                font-size : 0.9em;
+                color : $font_color * 0.2;
+                a {
+                    color : $font_color * 0.4;
+                }
+            }
+
         }
     }
 }
