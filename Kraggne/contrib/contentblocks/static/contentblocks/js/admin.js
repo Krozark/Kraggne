@@ -206,7 +206,6 @@ var maj_dragg_object = (function(data){
     if(c != "config" && c!= "drop-zone" && c!= "btn btn-success btn-add"){
         pos = parseInt(pre.children(".config").attr("obj_position")) + 1;
     }
-    console.log(c);
 
     conf = $($(obj).children(".config")[0]);
     conf.attr("obj_position",pos);
