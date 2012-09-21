@@ -2,9 +2,9 @@
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, html body .menu, .contentblocks.containeur, .contentblocks.containeur span.btn-add, .contentblocks.containeur .contentblocks.object {
+.clearfix, html body .navbar .navbar-inner .container .menu, html body .container .contentblocks.containeur, html body .container-fluid .contentblocks.containeur, html body .container .contentblocks.containeur span.btn-add, html body .container-fluid .contentblocks.containeur span.btn-add, html body .container .contentblocks.containeur .contentblocks.object, html body .container-fluid .contentblocks.containeur .contentblocks.object {
   zoom: 1; }
-  .clearfix:before, html body .menu:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .contentblocks.containeur .contentblocks.object:before, .clearfix:after, html body .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.containeur .contentblocks.object:after {
+  .clearfix:before, html body .navbar .navbar-inner .container .menu:before, html body .container .contentblocks.containeur:before, html body .container-fluid .contentblocks.containeur:before, html body .container .contentblocks.containeur span.btn-add:before, html body .container-fluid .contentblocks.containeur span.btn-add:before, html body .container .contentblocks.containeur .contentblocks.object:before, html body .container-fluid .contentblocks.containeur .contentblocks.object:before, .clearfix:after, html body .navbar .navbar-inner .container .menu:after, html body .container .contentblocks.containeur:after, html body .container-fluid .contentblocks.containeur:after, html body .container .contentblocks.containeur span.btn-add:after, html body .container-fluid .contentblocks.containeur span.btn-add:after, html body .container .contentblocks.containeur .contentblocks.object:after, html body .container-fluid .contentblocks.containeur .contentblocks.object:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -13,14 +13,14 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, html body .menu:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.containeur .contentblocks.object:after {
+  .clearfix:after, html body .navbar .navbar-inner .container .menu:after, html body .container .contentblocks.containeur:after, html body .container-fluid .contentblocks.containeur:after, html body .container .contentblocks.containeur span.btn-add:after, html body .container-fluid .contentblocks.containeur span.btn-add:after, html body .container .contentblocks.containeur .contentblocks.object:after, html body .container-fluid .contentblocks.containeur .contentblocks.object:after {
     clear: both; }
 
 .reset-box {
   margin: 0;
   padding: 0; }
 
-.right, .contentblocks.containeur span.btn-add, .contentblocks.containeur .contentblocks.object span.btn-del {
+.right, html body .container .contentblocks.containeur span.btn-add, html body .container-fluid .contentblocks.containeur span.btn-add, html body .container .contentblocks.containeur .contentblocks.object span.btn-del, html body .container-fluid .contentblocks.containeur .contentblocks.object span.btn-del {
   float: right; }
 
 .left {
@@ -29,21 +29,41 @@ Inspired by http://css3please.com/
 .link {
   cursor: pointer; }
 
-html body .menu {
+html body .navbar .navbar-inner .container .menu {
   margin-top: 3px; }
-  html body .menu .nav-0 .item:hover > ul {
+  html body .navbar .navbar-inner .container .menu .nav-0 .item:hover > ul {
     float: right;
     display: inline; }
-  html body .menu .nav-0 .item-1 {
+  html body .navbar .navbar-inner .container .menu .nav-0 .item-1 {
     float: left;
     margin-right: 5px; }
-    html body .menu .nav-0 .item-1:last-child {
+    html body .navbar .navbar-inner .container .menu .nav-0 .item-1:last-child {
       margin-right: 0px; }
-    html body .menu .nav-0 .item-1 .nav {
+    html body .navbar .navbar-inner .container .menu .nav-0 .item-1 .nav {
       display: none;
       position: absolute; }
-    html body .menu .nav-0 .item-1:hover > ul {
+    html body .navbar .navbar-inner .container .menu .nav-0 .item-1:hover > ul {
       display: block; }
+html body .container .contentblocks.containeur, html body .container-fluid .contentblocks.containeur {
+  margin-bottom: 10px; }
+  html body .container .contentblocks.containeur .highlight, html body .container-fluid .contentblocks.containeur .highlight {
+    background-color: #b1ffaf; }
+  html body .container .contentblocks.containeur .ui-sortable-helper, html body .container-fluid .contentblocks.containeur .ui-sortable-helper {
+    background-color: #f6d7ac; }
+  html body .container .contentblocks.containeur.admin, html body .container-fluid .contentblocks.containeur.admin {
+    border: solid #A0f 1px; }
+  html body .container .contentblocks.containeur .contentblocks.object.admin, html body .container-fluid .contentblocks.containeur .contentblocks.object.admin {
+    border: solid #F00 1px; }
+  html body .container .contentblocks.containeur .contentblocks.object .contentblocks-blocks, html body .container-fluid .contentblocks.containeur .contentblocks.object .contentblocks-blocks {
+    margin: 1px; }
+  html body .container .contentblocks.containeur .admin-dragg, html body .container-fluid .contentblocks.containeur .admin-dragg {
+    cursor: move; }
+  html body .container .contentblocks.containeur .config, html body .container-fluid .contentblocks.containeur .config {
+    display: none; }
+    html body .container .contentblocks.containeur .config *, html body .container-fluid .contentblocks.containeur .config * {
+      display: none; }
+  html body .container .contentblocks.containeur.admin-drop, html body .container-fluid .contentblocks.containeur.admin-drop {
+    min-height: 30px; }
 html body .footer {
   text-align: center;
   margin-top: 25px; }
@@ -52,6 +72,87 @@ html body .footer {
     color: #25261c; }
     html body .footer p a {
       color: #4b4d39; }
+html body .gblocks {
+  padding: 5px; }
+  html body .gblocks a.gblocks-file div.icon {
+    padding: 6px 6px 10px 22px;
+    background: url(../img/docicons/unknown.png) no-repeat 0 7px transparent; }
+  html body .gblocks a.gblocks-file div.icon.aed {
+    background-image: url(../img/docicons/aed.png); }
+  html body .gblocks a.gblocks-file div.icon.ai {
+    background-image: url(../img/docicons/ai.png); }
+  html body .gblocks a.gblocks-file div.icon.aiff {
+    background-image: url(../img/docicons/aiff.png); }
+  html body .gblocks a.gblocks-file div.icon.asp {
+    background-image: url(../img/docicons/asp.png); }
+  html body .gblocks a.gblocks-file div.icon.avi {
+    background-image: url(../img/docicons/avi.png); }
+  html body .gblocks a.gblocks-file div.icon.flv {
+    background-image: url(../img/docicons/flv.png); }
+  html body .gblocks a.gblocks-file div.icon.html {
+    background-image: url(../img/docicons/html.png); }
+  html body .gblocks a.gblocks-file div.icon.indd {
+    background-image: url(../img/docicons/indd.png); }
+  html body .gblocks a.gblocks-file div.icon.js {
+    background-image: url(../img/docicons/js.png); }
+  html body .gblocks a.gblocks-file div.icon.mpeg {
+    background-image: url(../img/docicons/mpeg.png); }
+  html body .gblocks a.gblocks-file div.icon.pdf {
+    background-image: url(../img/docicons/pdf.png); }
+  html body .gblocks a.gblocks-file div.icon.php {
+    background-image: url(../img/docicons/php.png); }
+  html body .gblocks a.gblocks-file div.icon.png {
+    background-image: url(../img/docicons/png.png); }
+  html body .gblocks a.gblocks-file div.icon.ppj {
+    background-image: url(../img/docicons/ppj.png); }
+  html body .gblocks a.gblocks-file div.icon.psd {
+    background-image: url(../img/docicons/psd.png); }
+  html body .gblocks a.gblocks-file div.icon.svg {
+    background-image: url(../img/docicons/svg.png); }
+  html body .gblocks a.gblocks-file div.icon.swf {
+    background-image: url(../img/docicons/swf.png); }
+  html body .gblocks a.gblocks-file div.icon.txt {
+    background-image: url(../img/docicons/txt.png); }
+  html body .gblocks a.gblocks-file div.icon.wav {
+    background-image: url(../img/docicons/wav.png); }
+  html body .gblocks a.gblocks-file div.icon.mp3 {
+    background-image: url(../img/docicons/mp3.png); }
+  html body .gblocks a.gblocks-file div.icon.wma {
+    background-image: url(../img/docicons/wma.png); }
+  html body .gblocks a.gblocks-file div.icon.wmv {
+    background-image: url(../img/docicons/wmv.png); }
+  html body .gblocks a.gblocks-file div.icon.xml {
+    background-image: url(../img/docicons/xml.png); }
+  html body .gblocks a.gblocks-file div.icon.doc {
+    background-image: url(../img/docicons/doc.png); }
+  html body .gblocks a.gblocks-file div.icon.docx {
+    background-image: url(../img/docicons/docx.png); }
+  html body .gblocks a.gblocks-file div.icon.xls {
+    background-image: url(../img/docicons/xls.png); }
+  html body .gblocks a.gblocks-file div.icon.png {
+    background-image: url(../img/docicons/png.png); }
+  html body .gblocks a.gblocks-file div.icon.jpg {
+    background-image: url(../img/docicons/jpg.png); }
+  html body .gblocks a.gblocks-file div.icon.jpeg {
+    background-image: url(../img/docicons/jpeg.png); }
+  html body .gblocks a.gblocks-file div.icon.bmp {
+    background-image: url(../img/docicons/bmp.png); }
+  html body .gblocks a.gblocks-file div.icon.xbmp {
+    background-image: url(../img/docicons/xbmp.png); }
+  html body .gblocks a.gblocks-file div.icon.gif {
+    background-image: url(../img/docicons/gif.png); }
+  html body .gblocks a.gblocks-file div.icon.zip {
+    background-image: url(../img/docicons/zip.png); }
+  html body .gblocks a.gblocks-file div.icon.sit {
+    background-image: url(../img/docicons/sit.png); }
+  html body .gblocks a.gblocks-file div.icon.rar {
+    background-image: url(../img/docicons/rar.png); }
+  html body .gblocks a.gblocks-file div.icon.tar {
+    background-image: url(../img/docicons/tar.png); }
+  html body .gblocks a.gblocks-file div.icon.gz {
+    background-image: url(../img/docicons/gz.png); }
+  html body .gblocks a.gblocks-file div.icon.user {
+    background-image: url(../img/docicons/user.png); }
 
 .bordered, .glossy {
   -moz-border-radius: 3px 3px 3px 3px;
@@ -79,53 +180,33 @@ html body .footer {
   box-shadow: 7px -4px 8px black; }
 
 /*.btn {
-    @extend .glossy;
-    color: $font_color * 0.2 !important;
-    font-variant: small-caps;
-    font-weight: bold;
-    font-size: 1em;
-    padding: 3px 8px;
-    text-decoration: none;
-    text-shadow: 1px 1px 1px $base_color * 0.5;
-    a {
-        color : $base_color * 0.2;
-        @include transition(color);
-        &:hover {
-            color : $base_color * 0.6;
-            text-shadow: 1px 1px 1px $base_color * 0.2;
-        }
-    }
+@extend .glossy;
+color: $font_color * 0.2 !important;
+font-variant: small-caps;
+font-weight: bold;
+font-size: 1em;
+padding: 3px 8px;
+text-decoration: none;
+text-shadow: 1px 1px 1px $base_color * 0.5;
+a {
+color : $base_color * 0.2;
+@include transition(color);
+&:hover {
+color : $base_color * 0.6;
+text-shadow: 1px 1px 1px $base_color * 0.2;
+}
+}
 }
 
 
 .hbtn {
-    @extend .btn;
-    @extend .link;
-    @include transition(color);
-    &:hover {
-        color: $font_color * 0.7 !important;
-        text-shadow: 1px 1px 1px $base_color *0.5;
-        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
-    }
+@extend .btn;
+@extend .link;
+@include transition(color);
+&:hover {
+color: $font_color * 0.7 !important;
+text-shadow: 1px 1px 1px $base_color *0.5;
+@include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
 }
-*/
-.contentblocks.containeur {
-  margin-bottom: 10px; }
-  .contentblocks.containeur .highlight {
-    background-color: #b1ffaf; }
-  .contentblocks.containeur .ui-sortable-helper {
-    background-color: #f6d7ac; }
-  .contentblocks.containeur.admin {
-    border: solid #A0f 1px; }
-  .contentblocks.containeur .contentblocks.object.admin {
-    border: solid #F00 1px; }
-  .contentblocks.containeur .contentblocks.object .contentblocks-blocks {
-    margin: 1px; }
-  .contentblocks.containeur .admin-dragg {
-    cursor: move; }
-  .contentblocks.containeur .config {
-    display: none; }
-    .contentblocks.containeur .config * {
-      display: none; }
-  .contentblocks.containeur.admin-drop {
-    min-height: 30px; }
+}
+ */

@@ -17,72 +17,72 @@ html {
                     }
                     .brand {
                     }
-                }
-            }
-        }
+                    .menu {
+                        @extend .clearfix;
+                        //float : left;
+                        margin-top : 3px;
+                        .nav-0 {
+                            .item {
+                                &:hover {
+                                    & > ul {
+                                        float : right;
+                                        display:inline;
+                                    }
+                                }
+                            }
+                            .item-1 {
+                                float : left;
+                                //@extend .left;
+                                margin-right : 5px;
 
-        ul .breadcrumb {
-            li {
-                span.self {
-                }
+                                &:last-child {
+                                    margin-right: 0px;
+                                }
 
-                a {
-                }
+                                .link {
+                                    //font-size : 1.1em;
+                                    &.active {
+                                        //color : $base_color + $font_color;
+                                    }
+                                }
 
-                span.divider {
-                }
-
-            }
-        }
-        .menu {
-            @extend .clearfix;
-            //float : left;
-            margin-top : 3px;
-            .nav-0 {
-                .item {
-                    &:hover {
-                        & > ul {
-                            float : right;
-                            display:inline;
-                        }
-                    }
-                }
-                .item-1 {
-                    float : left;
-                    //@extend .left;
-                    margin-right : 5px;
-
-                    &:last-child {
-                        margin-right: 0px;
-                    }
-
-                    .link {
-                        //font-size : 1.1em;
-                        &.active {
-                            //color : $base_color + $font_color;
-                        }
-                    }
-
-                    .nav {
-                        display : none;
-                        position : absolute;
-                        //@extend .btn;
-                        .item {
-                            .link {
+                                .nav {
+                                    display : none;
+                                    position : absolute;
+                                    //@extend .btn;
+                                    .item {
+                                        .link {
+                                        }
+                                    }
+                                }
+                                &:hover {
+                                    & > ul {
+                                        display:block;
+                                    }
+                                }
                             }
                         }
                     }
-                    &:hover {
-                        & > ul {
-                            display:block;
-                        }
-                    }
                 }
             }
         }
 
+
         .container, .container-fluid {
             .sidebar {
+            }
+            ul .breadcrumb {
+                li {
+                    span.self {
+                    }
+
+                    a {
+                    }
+
+                    span.divider {
+                    }
+
+                }
             }
 
             .kraggne-form {
@@ -102,6 +102,82 @@ html {
                     }
                 }
             }
+
+            .contentblocks.containeur {
+                @extend .clearfix;
+
+                margin-bottom : 10px;
+
+                span.btn-add {
+                    @extend .right;
+                    @extend .clearfix;
+                }
+
+                &.admin-dragg {
+                }
+
+                .highlight {
+                    background-color : #b1ffaf;
+                }
+
+                .ui-sortable-helper {
+                    background-color : #f6d7ac;
+                }
+
+                &.admin {
+                    border : solid #A0f 1px;
+                }
+
+                .contentblocks.object {
+                    @extend .clearfix;
+                    span.btn-del {
+                        @extend .right;
+                    }
+
+
+                    &.admin-dragg {
+                    }
+
+                    &.admin {
+                        border : solid #F00 1px;
+                        //margin : 10px;
+                    }
+
+                    .contentblocks-blocks {
+                        margin : 1px;
+                    }
+                }
+
+                .drop-zone {
+                }
+
+                .admin-dragg {
+                    cursor : move;
+                }
+
+                .config {
+                    display : none;
+                    & * {
+                        display : none;
+                    }
+                }
+
+                &.admin-drop {
+                    min-height : 30px;
+                }
+
+            }
+            .flatblocks-objects-list {
+                ul.flatblocks-objects {
+                    li {
+                    }
+                }
+            }
+
+            ul.flatblocks-objects {
+                li {
+                }
+            }
         }
 
         .footer {
@@ -116,20 +192,68 @@ html {
             }
 
         }
-    }
-}
+        .gblocks {
+            padding : 5px;
+            img.gblocks-image {
+            }
+            span.gblocks-link {
+            }
+            div.gblocks-text {
+            }
+            h2.gblocks-title {
+            }
+            a.gblocks-file {
+                div.icon {
+                    padding: 6px 6px 10px 22px;
+                    background: url(../img/docicons/unknown.png) no-repeat 0 7px transparent;
 
-.flatblocks-objects-list {
-    ul.flatblocks-objects {
-        li {
+                    span { //filename
+                    }
+                }
+                div.icon.aed  { background-image: url(../img/docicons/aed.png); }
+                div.icon.ai   { background-image: url(../img/docicons/ai.png); }
+                div.icon.aiff { background-image: url(../img/docicons/aiff.png); }
+                div.icon.asp  { background-image: url(../img/docicons/asp.png); }
+                div.icon.avi  { background-image: url(../img/docicons/avi.png); }
+                div.icon.flv  { background-image: url(../img/docicons/flv.png); }
+                div.icon.html { background-image: url(../img/docicons/html.png); }
+                div.icon.indd { background-image: url(../img/docicons/indd.png); }
+                div.icon.js   { background-image: url(../img/docicons/js.png); }
+                div.icon.mpeg { background-image: url(../img/docicons/mpeg.png); }
+                div.icon.pdf  { background-image: url(../img/docicons/pdf.png); }
+                div.icon.php  { background-image: url(../img/docicons/php.png); }
+                div.icon.png  { background-image: url(../img/docicons/png.png); }
+                div.icon.ppj  { background-image: url(../img/docicons/ppj.png); }
+                div.icon.psd  { background-image: url(../img/docicons/psd.png); }
+                div.icon.svg  { background-image: url(../img/docicons/svg.png); }
+                div.icon.swf  { background-image: url(../img/docicons/swf.png); }
+                div.icon.txt  { background-image: url(../img/docicons/txt.png); }
+                div.icon.wav  { background-image: url(../img/docicons/wav.png); }
+                div.icon.mp3  { background-image: url(../img/docicons/mp3.png); }
+                div.icon.wma  { background-image: url(../img/docicons/wma.png); }
+                div.icon.wmv  { background-image: url(../img/docicons/wmv.png); }
+                div.icon.xml  { background-image: url(../img/docicons/xml.png); }
+                div.icon.doc  { background-image: url(../img/docicons/doc.png); }
+                div.icon.docx { background-image: url(../img/docicons/docx.png); }
+                div.icon.xls  { background-image: url(../img/docicons/xls.png); }
+                div.icon.png  { background-image: url(../img/docicons/png.png); }
+                div.icon.jpg  { background-image: url(../img/docicons/jpg.png); }
+                div.icon.jpeg { background-image: url(../img/docicons/jpeg.png); }
+                div.icon.bmp  { background-image: url(../img/docicons/bmp.png); }
+                div.icon.xbmp { background-image: url(../img/docicons/xbmp.png); }
+                div.icon.gif  { background-image: url(../img/docicons/gif.png); }
+                div.icon.zip  { background-image: url(../img/docicons/zip.png); }
+                div.icon.sit  { background-image: url(../img/docicons/sit.png); }
+                div.icon.rar  { background-image: url(../img/docicons/rar.png); }
+                div.icon.tar  { background-image: url(../img/docicons/tar.png); }
+                div.icon.gz   { background-image: url(../img/docicons/gz.png); }
+                div.icon.user { background-image: url(../img/docicons/user.png); }
+            }
         }
     }
 }
 
-ul.flatblocks-objects {
-    li {
-    }
-}
+
 
 .bordered {
     @include border-radius(3px);
@@ -146,99 +270,37 @@ ul.flatblocks-objects {
 }
 
 /*.btn {
-    @extend .glossy;
-    color: $font_color * 0.2 !important;
-    font-variant: small-caps;
-    font-weight: bold;
-    font-size: 1em;
-    padding: 3px 8px;
-    text-decoration: none;
-    text-shadow: 1px 1px 1px $base_color * 0.5;
-    a {
-        color : $base_color * 0.2;
-        @include transition(color);
-        &:hover {
-            color : $base_color * 0.6;
-            text-shadow: 1px 1px 1px $base_color * 0.2;
-        }
-    }
+@extend .glossy;
+color: $font_color * 0.2 !important;
+font-variant: small-caps;
+font-weight: bold;
+font-size: 1em;
+padding: 3px 8px;
+text-decoration: none;
+text-shadow: 1px 1px 1px $base_color * 0.5;
+a {
+color : $base_color * 0.2;
+@include transition(color);
+&:hover {
+color : $base_color * 0.6;
+text-shadow: 1px 1px 1px $base_color * 0.2;
+}
+}
 }
 
 
 .hbtn {
-    @extend .btn;
-    @extend .link;
-    @include transition(color);
-    &:hover {
-        color: $font_color * 0.7 !important;
-        text-shadow: 1px 1px 1px $base_color *0.5;
-        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
-    }
+@extend .btn;
+@extend .link;
+@include transition(color);
+&:hover {
+color: $font_color * 0.7 !important;
+text-shadow: 1px 1px 1px $base_color *0.5;
+@include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
 }
-*/
-.contentblocks.containeur {
-    @extend .clearfix;
-
-    margin-bottom : 10px;
-
-    span.btn-add {
-        @extend .right;
-        @extend .clearfix;
-    }
-
-    &.admin-dragg {
-    }
-
-    .highlight {
-        background-color : #b1ffaf;
-    }
-
-    .ui-sortable-helper {
-        background-color : #f6d7ac;
-    }
-
-    &.admin {
-        border : solid #A0f 1px;
-    }
-
-    .contentblocks.object {
-        @extend .clearfix;
-        span.btn-del {
-            @extend .right;
-        }
-
-
-        &.admin-dragg {
-        }
-
-        &.admin {
-            border : solid #F00 1px;
-            //margin : 10px;
-        }
-
-        .contentblocks-blocks {
-            margin : 1px;
-        }
-    }
-
-    .drop-zone {
-    }
-
-    .admin-dragg {
-        cursor : move;
-    }
-
-    .config {
-        display : none;
-        & * {
-            display : none;
-        }
-    }
-
-    &.admin-drop {
-        min-height : 30px;
-    }
-
 }
+ */
+
+
 
 
