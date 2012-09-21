@@ -1,107 +1,71 @@
 /*
-SCSS3 (c) 2011 Motion Média
-Inspired by http://css3please.com/
+Syntax error: File to import not found or unreadable: variables.scss.
+              Load paths:
+                .
+                sass
+        on line 2 of sass/contentblocks.scss
+
+1: @import "css3.scss";
+2: @import "variables.scss";
+3: 
+4: //$base_color : #cacaa6;
+5: //$base_color : #DDDDDD;
+6: //$font_color: #bdc190;
+7: //$box-shadow : #000;
+
+Backtrace:
+sass/contentblocks.scss:2
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/import_node.rb:120:in `import'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/import_node.rb:25:in `imported_file'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/import_node.rb:49:in `css_import?'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/import_node.rb:71:in `_perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:213:in `perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/root_node.rb:37:in `perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:341:in `perform_children'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:341:in `map'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:341:in `perform_children'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:332:in `perform!'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/root_node.rb:59:in `perform!'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:320:in `_perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/node.rb:213:in `perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/root_node.rb:37:in `perform'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/tree/root_node.rb:29:in `render'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/engine.rb:262:in `_render'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/engine.rb:233:in `render'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:311:in `update_stylesheet'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:179:in `update_stylesheets'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:172:in `each'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:172:in `update_stylesheets'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:170:in `each'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:170:in `update_stylesheets'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:256:in `watch'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/path.rb:71:in `call'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/path.rb:71:in `run_callback'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/path.rb:54:in `callback_action'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/path.rb:38:in `delete'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/state/directory.rb:27:in `deleted'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/state/directory.rb:27:in `each'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/state/directory.rb:27:in `deleted'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/state/directory.rb:14:in `refresh'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/backends/polling.rb:17:in `run'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/backends/polling.rb:17:in `each'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/backends/polling.rb:17:in `run'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/backends/polling.rb:15:in `loop'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/backends/polling.rb:15:in `run'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm/monitor.rb:24:in `run'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/vendor/fssm/lib/fssm.rb:17:in `monitor'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin/compiler.rb:237:in `watch'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin.rb:110:in `send'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/sass/plugin.rb:110:in `method_missing'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/haml/exec.rb:369:in `watch_or_update'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/haml/exec.rb:273:in `process_result'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/haml/exec.rb:41:in `parse'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/../lib/haml/exec.rb:21:in `parse!'
+/var/lib/gems/1.8/gems/haml-edge-3.1.79/bin/sass:8
+/usr/local/bin/sass:19:in `load'
+/usr/local/bin/sass:19
 */
-.clearfix, .contentblocks.containeur, .contentblocks.containeur span.btn-add, .contentblocks.containeur .contentblocks.object {
-  zoom: 1; }
-  .clearfix:before, .contentblocks.containeur:before, .contentblocks.containeur span.btn-add:before, .contentblocks.containeur .contentblocks.object:before, .clearfix:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.containeur .contentblocks.object:after {
-    content: '.';
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    font-size: 0;
-    line-height: 0;
-    width: 0;
-    height: 0; }
-  .clearfix:after, .contentblocks.containeur:after, .contentblocks.containeur span.btn-add:after, .contentblocks.containeur .contentblocks.object:after {
-    clear: both; }
-
-.reset-box {
-  margin: 0;
-  padding: 0; }
-
-.right, .contentblocks.containeur span.btn-add, .contentblocks.containeur .contentblocks.object span.btn-del {
-  float: right; }
-
-.left {
-  float: left; }
-
-.link {
-  cursor: pointer; }
-
-.bordered, .glossy {
-  -moz-border-radius: 3px 3px 3px 3px;
-  -webkit-border-radius: 3px 3px 3px 3px;
-  border-radius: 3px 3px 3px 3px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid #656553; }
-
-.glossy {
-  background-color: #f2f2c7;
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f2f2c7', EndColorStr='#686852')";
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f2f2c7', EndColorStr='#686852');
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2c7), to(#686852));
-  background-image: -webkit-linear-gradient(top, #f2f2c7, #686852);
-  background-image: -moz-linear-gradient(top, #f2f2c7, #686852);
-  background-image: -ms-linear-gradient(top, #f2f2c7, #686852);
-  background-image: -o-linear-gradient(top, #f2f2c7, #686852);
-  background-image: linear-gradient(top bottom, #f2f2c7, #686852); }
-
-.shadow {
-  -webkit-box-shadow: 7px -4px 8px black;
-  -moz-box-shadow: 7px -4px 8px black;
-  box-shadow: 7px -4px 8px black; }
-
-/*.btn {
-    @extend .glossy;
-    color: $font_color * 0.2 !important;
-    font-variant: small-caps;
-    font-weight: bold;
-    font-size: 1em;
-    padding: 3px 8px;
-    text-decoration: none;
-    text-shadow: 1px 1px 1px $base_color * 0.5;
-    a {
-        color : $base_color * 0.2;
-        @include transition(color);
-        &:hover {
-            color : $base_color * 0.6;
-            text-shadow: 1px 1px 1px $base_color * 0.2;
-        }
-    }
-}
-
-
-.hbtn {
-    @extend .btn;
-    @extend .link;
-    @include transition(color);
-    &:hover {
-        color: $font_color * 0.7 !important;
-        text-shadow: 1px 1px 1px $base_color *0.5;
-        @include background-gradient($base_color * 1.6, $base_color * 0.8 - #111);
-    }
-}
-*/
-.contentblocks.containeur {
-  margin-bottom: 10px; }
-  .contentblocks.containeur .highlight {
-    background-color: #b1ffaf; }
-  .contentblocks.containeur .ui-sortable-helper {
-    background-color: #f6d7ac; }
-  .contentblocks.containeur.admin {
-    border: solid #A0f 1px; }
-  .contentblocks.containeur .contentblocks.object.admin {
-    border: solid #F00 1px; }
-  .contentblocks.containeur .contentblocks.object .contentblocks-blocks {
-    margin: 1px; }
-  .contentblocks.containeur .admin-dragg {
-    cursor: move; }
-  .contentblocks.containeur .config {
-    display: none; }
-    .contentblocks.containeur .config * {
-      display: none; }
-  .contentblocks.containeur.admin-drop {
-    min-height: 30px; }
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: File to import not found or unreadable: variables.scss.\A               Load paths:\A                 .\A                 sass\A         on line 2 of sass/contentblocks.scss\A \A 1: @import \"css3.scss\";\A 2: @import \"variables.scss\";\A 3: \A 4: //$base_color : #cacaa6;\A 5: //$base_color : #DDDDDD;\A 6: //$font_color: #bdc190;\A 7: //$box-shadow : #000;"; }
