@@ -82,7 +82,7 @@ MenuItem:
     url = item.url
     view = Kraggne.view.GenericView (or GenericFormView if a form is link to the item or GenericDetailView (see after))
 
-    in the form it can be url,named-url,detail('url',app.model),include(app.model)
+    in the form it can be url,named-url,detail('url',app.model),include(app.model),list('url',app.model)
     note : 
         detail create a Use the GenericDetailView if 'is_visible' is True' and use the 'get_absolute_url()' (or the url regex  if not existing)
         it use also the <pk> or <slug> attribut (in url and object) to get it. If want want to get the object with a other way you can, but you have to add a get_object_from_url(**kwargs) methode where kwargs is the url parameters
@@ -99,6 +99,7 @@ MenuItem:
 
         context["form"] = The form classe associate to the view (for GenericFormView only)
         context["object"] = The object to display (GenericDetailView only)
+        context["object_list"] = The list of object to display (GenericListView only)
 
         all the template extends the base.html template
         all the content is put in the block: {% block page.body %}{% endblock %}. don't forget to add it in your base.html
