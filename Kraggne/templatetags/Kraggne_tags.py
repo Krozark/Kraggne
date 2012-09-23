@@ -107,7 +107,6 @@ class breadcumbNode(Node):
             context['object_list'] = breadcrumb
 
         content = t.render(context)
-        print save
         context = pop_context(context,save)
 
         return content
