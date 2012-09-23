@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load Kraggne_tags %}
+
+{% block page.body %}
+<div class="contentblocks containeur">
+    <div class="contentblocks object">
+        {% try_display object %}
+    </div>
+</div>
+{% endblock %}

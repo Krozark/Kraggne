@@ -35,3 +35,5 @@ def get_model_and_url_from_detail(link,return_app_model=False):
         return get_model(app,model),url,app,model
     return get_model(app,model),url
 
+def get_model_and_url_from_list(link,return_app_model=False):
+    pass

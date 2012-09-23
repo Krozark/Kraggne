@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 #from django.http import HttpResponseRedirect, HttpResponse
 #from django.core.context_processors import csrf
 
@@ -95,8 +95,6 @@ class GenericFormView(FormView):
         context = super(GenericFormView, self).get_context_data(**kwargs)
         
         page =  self.kwargs.get('page',False)
-       # for u in kwargs:
-       #     context[u] = kwargs[u]
         if page:
             context['page'] = page
 
@@ -105,6 +103,19 @@ class GenericFormView(FormView):
             context['action_url'] = page.url + "/"
         else:
             context['action_url'] = page.url
+
+        return context
+
+class GenericListView(ListView):
+
+    template_name = "Kraggne/genericListPage.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(GenericListView, self).get_context_data(**kwargs)
+
+        page =  self.kwargs.get('page',False)
+        if page:
+            context['page'] = page
 
         return context
 

@@ -4,7 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.db.models.loading import get_model
 from Kraggne.fields import TemplateField, ContextNameValidator
 from Kraggne.contrib.flatblocks.fields import JSONField
-from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include
+from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include,  get_model_and_url_from_list
 import re
 
 ORDER_CHOICES = 20
@@ -73,6 +73,13 @@ class MenuItem(MPTTModel):
         except:
             return False
 
+    def is_list(self):
+        try:
+            return self.view.startswith('list(')
+        except:
+            return False
+
+
     def get_model(self):
         if self.is_include():
             return self._get_for_include_model()
@@ -86,6 +93,13 @@ class MenuItem(MPTTModel):
     def _get_for_detail_model(self):
         model,url = get_model_and_url_from_detail(self.view)
         return model
+
+    def _get_for_list_model(self):
+        model,url = get_model_and_url_from_list(self.view)
+        return model
+
+    def _get_paginate_by(self):
+        return 10
 
     def get_object_url(self,obj):
         if hasattr(obj,"get_absolute_url"):
