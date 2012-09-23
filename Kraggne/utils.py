@@ -3,7 +3,7 @@ from Kraggne.views import GenericView, GenericFormView, GenericDetailView, Gener
 from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.loading import get_model
-from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include
+from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include,  get_model_and_url_from_list
 
 def MakePattern(menuItem):
     ur = menuItem.url
@@ -27,7 +27,7 @@ def MakePattern(menuItem):
     elif menuItem.is_list():
         view = GenericListView
         q['model'] = menuItem._get_for_list_model()
-        q['paginate_by'] = menuItem._get_paginate_by()
+        #q['paginate_by'] = menuItem._get_paginate_by()
     else:
         try:
             m = menuItem.formblock
@@ -98,7 +98,17 @@ def clean_detail_url(link,detail): #detail(url,app.model) (slug or pk in url) el
         return link,url
     return link,link,None
 
-def clean_url(link,include=False,detail=False,hashtags = True,gettag=True,existe=True):
+def clean_list_url(link,lis=True):
+    if link.startswith("list(") and lis:
+        m,url,app,model = get_model_and_url_from_list(link,return_app_model=True)
+        if not m:
+            raise ValidationError(_('No model find %s.%s' % (app,model)))
+
+        return link,url,True
+    return link,link,None
+
+
+def clean_url(link,include=False,detail=False,lis=False,hashtags = True,gettag=True,existe=True):
     url = None
     if link[0] == "/" and existe: #a defined URL
         c = Client()
@@ -141,6 +151,9 @@ def clean_url(link,include=False,detail=False,hashtags = True,gettag=True,existe
             return l+hextra , u+hextra
         l,u,s = clean_detail_url(link,detail)
         if s: #ok for detail()
+            return l+hextra , u+hextra
+        l,u,s = clean_list_url(link,lis)
+        if s: #ok for list()
             return l+hextra , u+hextra
 
         #No 'hacks'

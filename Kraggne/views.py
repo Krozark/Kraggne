@@ -109,6 +109,7 @@ class GenericFormView(FormView):
 class GenericListView(ListView):
 
     template_name = "Kraggne/genericListPage.html"
+    paginate_by = None
 
     def get_context_data(self, **kwargs):
         context = super(GenericListView, self).get_context_data(**kwargs)
@@ -117,8 +118,20 @@ class GenericListView(ListView):
         if page:
             context['page'] = page
 
+        print context
+
         return context
 
+    def get_template_names(self):
+        names = []
+        if hasattr(self.model, '_meta'):
+            names.append("%s/%s_list.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+
+        names.append(self.template_name)
+        return names
 
 #from django.shortcuts import render_to_response
 #def Generic(request,*args,**kwargs):

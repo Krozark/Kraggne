@@ -7,7 +7,16 @@ import operator
 from Kraggne.models import MenuItem
 
 register = Library()
+def push_context(context,indices = ["generic_object","object","generic_object_list"]):
+    save = {}
+    for i in indices:
+        save[i] = context.get(i)
+    return save
 
+def pop_context(context,save):
+    for i in save.keys():
+        context[i] = save[i]
+    return context
 ################################################################
 ############## COMMUN FUNCTIONS ################################
 ################################################################
@@ -89,12 +98,17 @@ class breadcumbNode(Node):
             return ''
 
         # Set content as variable inside context, if variable_name is given
+        save = {}
         if self.variable_name:
+            save = push_context(context,resolve(self.variable_name, context))
             context[resolve(self.variable_name, context)] = breadcrumb
         else:
+            save = push_context(context,["object_list",])
             context['object_list'] = breadcrumb
 
         content = t.render(context)
+        print save
+        context = pop_context(context,save)
 
         return content
 
@@ -179,12 +193,16 @@ class menuNode(Node):
             return ''
 
         # Set content as variable inside context, if variable_name is given
+        save = {}
         if self.variable_name:
+            save = push_context(context,resolve(self.variable_name, context))
             context[resolve(self.variable_name, context)] = tree
         else:
+            save = push_context(context,["object_list",])
             context['object_list'] = tree
 
         content = t.render(context)
+        context = pop_context(context,save)
         return content
 
 
@@ -376,19 +394,24 @@ class TryDisplayNode(Node):
 
     def render(self,context):
         o = resolve(self.obj,context)
+        if not o:
+            return ""
         if hasattr(o,"display"):
             return o.display(context,self.template_path)
 
-        template_paths = [template_path,]
+        template_paths = [self.template_path,]
         if hasattr(o, '_meta'):
             template_paths.append('%s/%s/%s.html' % (o._meta.app_label.lower(),o._meta.object_name.lower(),'object'))
 
         try:
             t = select_template(template_paths)
         except Exception,e:
-            return 'no template find to display %s.%s model (or not valid).\n Exception : %s' % ( obj._meta.app_label,obj._meta.object_name,e )
-        context["object"] = obj
-        return t.render(context)
+            return 'no template find to display %s.%s model (or not valid).\n Exception : %s' % ( o._meta.app_label,o._meta.object_name,e )
+        save = push_context(context,["object",])
+        context["object"] = o
+        res = t.render(context)
+        context = pop_context(context,save)
+        return res
 
 
 def do_try_display(parser, token):

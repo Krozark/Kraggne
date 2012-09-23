@@ -36,4 +36,20 @@ def get_model_and_url_from_detail(link,return_app_model=False):
     return get_model(app,model),url
 
 def get_model_and_url_from_list(link,return_app_model=False):
-    pass
+    url = link[len('list('):]
+    i = url.rfind(',')
+    if i <=0:
+        raise ValidationError(_('imposible to find "," syntaxe: list(url,app.model)'))
+
+    app = url[i+1:].replace(')','')
+    url = url[:i].replace('"','').replace("'",'')
+    app = app.split('.')
+
+    if len(app) != 2:
+        raise ValidationError(_('imposible to find one "." in %s syntaxe: list(url,app.model)' % '.'.join(app)))
+
+    app,model = app[0],app[1]
+
+    if return_app_model:
+        return get_model(app,model),url,app,model
+    return get_model(app,model),url

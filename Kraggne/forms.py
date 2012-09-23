@@ -34,7 +34,7 @@ class MenuItemForm(forms.ModelForm):
 
         else: #auto
             if link:
-                link,self.url = clean_url(link,include=True,detail=True,existe=False)
+                link,self.url = clean_url(link,include=True,detail=True,lis=True,existe=False)
                 return link
                 #try:
                 #    re.compile(link)
@@ -79,7 +79,7 @@ class MenuItemForm(forms.ModelForm):
         item.view = self.cleaned_data['view']
         item.url = self.url
         if item.view:
-            if not 'include(' in item.view and not 'detail(' in item.view:
+            if not 'include(' in item.view and not 'detail(' in item.view and not 'list(' in item.view:
                 if re.search('[^\d/\w\-:_#? ]',item.view):
                     item.is_visible = False
         

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% load Kraggne_tags %}
+{% load flatblocks %}
 
 {% block page.body %}
 <div class="contentblocks containeur">
     <div class="contentblocks object">
         {% for object in object_list %}
-        {% try_display object %}
+        {% display object %}
         {% endfor %}
     </div>
 </div>
