@@ -14,5 +14,5 @@ urlpatterns = patterns('',
    url(r'^contentblocks/', include("Kraggne.contrib.contentblocks.urls")),
 )
 
-for u in MenuItem.objects.filter(Q(cms_page = True) &  Q(is_visible=True)):
+for u in MenuItem.objects.filter(Q(cms_page = True)):
     urlpatterns += MakePattern(u)
