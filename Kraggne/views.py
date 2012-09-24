@@ -72,7 +72,7 @@ class GenericDetailView(GenericView):
     def get_template_names(self):
         names = []
         if hasattr(self.model, '_meta'):
-            names.append("%s/%s_detail.html" % (
+            names.append("%s/%s/detail.html" % (
                 self.model._meta.app_label,
                 self.model._meta.object_name.lower(),
             ))
@@ -123,7 +123,7 @@ class GenericListView(ListView):
     def get_template_names(self):
         names = []
         if hasattr(self.model, '_meta'):
-            names.append("%s/%s_list.html" % (
+            names.append("%s/%s/list.html" % (
                 self.model._meta.app_label,
                 self.model._meta.object_name.lower(),
             ))

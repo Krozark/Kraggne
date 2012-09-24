@@ -87,7 +87,7 @@ MenuItem:
         detail create a Use the GenericDetailView if 'is_visible' is True' and use the 'get_absolute_url()' (or the url regex  if not existing)
         it use also the <pk> or <slug> attribut (in url and object) to get it. If want want to get the object with a other way you can, but you have to add a get_object_from_url(**kwargs) methode where kwargs is the url parameters
 
-    template = Kraggne/Generic[Form/Detail]Page.html (depend of the view) by default. You can customise it creating a templatevar link to the item (but you have to reboot the django server [i'm not able to destroy the cache], sorry :/ )
+    template = Kraggne/Generic[Form/Detail]Page.html (depend of the view) by default. You can customise it creating a templatevar link to the item (but you have to reboot the django server [i'm not able to destroy the cache], sorry :/ ) or by creat a [app]/[model]/[object/list/detail].html template
 
     context :
         context["page"] = current menuItem
