@@ -118,8 +118,6 @@ class GenericListView(ListView):
         if page:
             context['page'] = page
 
-        print context
-
         return context
 
     def get_template_names(self):
