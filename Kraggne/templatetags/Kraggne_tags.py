@@ -441,7 +441,12 @@ class PaginationNode(Node):
             return ""
 
         res =""
-        get = "&get"
+        get = ""
+        request = context["request"]
+        for u in request.GET.keys():
+            if u != "page":
+                get+="&%s=%s" % (u,request.GET[u])
+
         current = page_obj.number
         m = page_obj.paginator.num_pages
         
@@ -465,7 +470,6 @@ class PaginationNode(Node):
 
             if current < m:
                 #on met un lien vers les pages autour (apres)
-                print current,m
                 i = 1
                 while ( i <= self.NUM_PAGE_CENTRE and current + i < m):
                     res+=self.link(current+i,get=get)

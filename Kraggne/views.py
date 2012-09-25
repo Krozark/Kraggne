@@ -110,7 +110,7 @@ class GenericFormView(FormView):
 class GenericListView(ListView):
 
     template_name = "Kraggne/genericListPage.html"
-    paginate_by = 2
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(GenericListView, self).get_context_data(**kwargs)
@@ -141,7 +141,8 @@ class GenericListView(ListView):
 
 
     def get_paginate_by(self, queryset):
-        m = self.model
+        if hasattr(self.model, 'paginate_by'):
+            return self.model.paginate_by
         return self.paginate_by
 
     def get_template_names(self):
