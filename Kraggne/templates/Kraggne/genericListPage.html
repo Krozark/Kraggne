@@ -2,6 +2,9 @@
 {% load Kraggne_tags %}
 
 {% block page.body %}
+
+{% include "Kraggne/pagination.inc.html" %}
+
 <div class="contentblocks containeur">
     <div class="contentblocks object">
         {% for object in object_list %}
