@@ -27,7 +27,6 @@ def MakePattern(menuItem):
     elif menuItem.is_list():
         view = GenericListView
         q['model'] = menuItem._get_for_list_model()
-        #q['paginate_by'] = menuItem._get_paginate_by()
     else:
         try:
             m = menuItem.formblock

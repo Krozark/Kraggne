@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from Kraggne.models import MenuItem
 from Kraggne.contrib.flatblocks.utils import GetTemplatesPath
+from django.http import Http404
 
 def addSelfToContext(slug,context):
     try:
@@ -109,7 +110,7 @@ class GenericFormView(FormView):
 class GenericListView(ListView):
 
     template_name = "Kraggne/genericListPage.html"
-    paginate_by = None
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(GenericListView, self).get_context_data(**kwargs)
@@ -119,6 +120,29 @@ class GenericListView(ListView):
             context['page'] = page
 
         return context
+
+    def paginate_queryset(self, queryset, page_size):
+        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
+        page = self.request.GET.get('page') or 1
+        try:
+            page_number = int(page)
+        except ValueError:
+            if page == 'last':
+                page_number = paginator.num_pages
+            else:
+                raise Http404(_(u"Page is not 'last', nor can it be converted to an int."))
+        try:
+            page = paginator.page(page_number)
+            return (paginator, page, page.object_list, page.has_other_pages())
+        except InvalidPage:
+            raise Http404(_(u'Invalid page (%(page_number)s)') % {
+                'page_number': page_number
+            })
+
+
+    def get_paginate_by(self, queryset):
+        m = self.model
+        return self.paginate_by
 
     def get_template_names(self):
         names = []
