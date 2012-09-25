@@ -78,6 +78,7 @@ class breadcumbNode(Node):
         else:
             menu = GetMenuBySlug(resolve(self.slug,context))
 
+
         if not menu:
             return ''
 
@@ -108,7 +109,6 @@ class breadcumbNode(Node):
 
         content = t.render(context)
         context = pop_context(context,save)
-
         return content
 
 
@@ -424,3 +424,62 @@ def do_try_display(parser, token):
 
     return TryDisplayNode(obj,template)
 register.tag('try_display', do_try_display)
+
+################################### pagination ################################
+class PaginationNode(Node):
+    NUM_PAGE_CENTRE = 2
+
+    def link (self,num,active=False,get=""):
+        if active:
+            return "&nbsp;<a class='active' href='?page="+str(num)+get+"'>"+str(num)+"</a>"
+        else:
+            return "&nbsp;<a class='link' href='?page="+str(num)+get+"'>"+str(num)+"</a>"
+
+    def render(self,context):
+        page_obj = resolve("page_obj",context)
+        if not page_obj:
+            return ""
+
+        res =""
+        get = "&get"
+        current = page_obj.number
+        m = page_obj.paginator.num_pages
+        
+        if m >1:
+            if current >1:
+                res+='<a href="?page='+str(current-1)+'" class="prev">&laquo;</a>'
+
+                res += self.link(1,get=get)
+
+                if (current - self.NUM_PAGE_CENTRE > 2):
+                    res += "&nbsp;..."
+
+                i = 1
+                c = ""
+                while ( i <= self.NUM_PAGE_CENTRE and current -i >1):
+                    c =self.link(current-i,get=get)+ c
+                    i+=1
+                res +=c
+
+            res+=self.link(current,active=True,get=get)
+
+            if current < m:
+                #on met un lien vers les pages autour (apres)
+                print current,m
+                i = 1
+                while ( i <= self.NUM_PAGE_CENTRE and current + i < m):
+                    res+=self.link(current+i,get=get)
+                    i+=1
+                    #on met les liens vers les ...
+                if ( current+ self.NUM_PAGE_CENTRE < m):
+                    res+="&nbsp;..."
+                res+=self.link(m,get=get)
+                res+='<a href="?page='+str(current+1)+get+'" class="next">&raquo;</a>'
+        return res
+
+
+def do_pagination(parser,token):
+    return PaginationNode()
+register.tag("pagination",do_pagination)
+
+
