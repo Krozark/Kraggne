@@ -45,7 +45,6 @@ Menu Gestion:
      ---------
      
     I recomend you, to use this tag in all your template that use a other Kraggne tag (for exemple in your base.html),
-    if you use a custom (class) view or that extend Kraggne.views.GenericViewContextMixin (or GenericView/GenericFormView/GenericDetailView/GenericListView) by adding the slug attr (slug refer to the MenuItem.slug link).
     Put it in the top of the page, before any Kraggne Tag/filter to disable possible TypeErrors. 
 
 
@@ -64,9 +63,14 @@ Breadcrumb:
 Custom views:
 ------------
 
-     You can esily use your own view insted of CMS. But you have to extend Kraggne.views.GenericViewContextMixinSlug
+     You can esily use your own view insted of CMS. But you have to extend Kraggne.views.GenericViewContextMixin
      to provide Menu/breadcrumb functionement, and add a
      slug= 'my-page-slug' that is your current page slug (set in the admin)
+
+     if you use a custom class view that extend Kraggne.views.GenericViewContextMixin (or GenericView/GenericFormView/GenericDetailView/GenericListView) add the slug attr (slug refer to the MenuItem.slug link) to get the correct menuItem in context.
+
+     If you creat a model and you want to display a list of it (with list(url,app.model)[see MenuItem] or with a view extend GenericListView), you can add it a "paginate_by" attr to your model if you want to paginate it (default = 10) set None to disable pagination.
+     you can use {% pagination %} tag to display the pagination block ({% load Kraggne_tags %}).
 
 Models
 ======
