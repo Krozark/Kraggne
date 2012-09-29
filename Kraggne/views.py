@@ -23,7 +23,6 @@ def addSelfToContext(slug,context):
 class GenericViewContextMixinSlug(object):
     slug = ''
     def get_context_data(self, **kwargs):
-        print "#######################"
         context = super(GenericViewContextMixinSlug, self).get_context_data(**kwargs)
         addSelfToContext(self.slug,context)
         return context
@@ -34,8 +33,6 @@ class GenericViewContextMixin(GenericViewContextMixinSlug):
         context = super(GenericViewContextMixin, self).get_context_data(**kwargs)
 
         page =  self.kwargs.get('page',False)
-        print "##########################"
-        print context
         if page:
             context['page'] = page
         else:
