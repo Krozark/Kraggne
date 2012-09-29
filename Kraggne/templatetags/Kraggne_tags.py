@@ -5,6 +5,7 @@ from django.template.loader import select_template
 import operator
 
 from Kraggne.models import MenuItem
+from django.db.models import Q
 
 register = Library()
 def push_context(context,indices = ["generic_object","object","generic_object_list"]):
@@ -82,7 +83,7 @@ class breadcumbNode(Node):
         if not menu:
             return ''
 
-        breadcrumb = menu.get_ancestors(include_self=self.include_self).filter(is_visible = True)
+        breadcrumb = menu.get_ancestors(include_self=self.include_self).filter(Q(is_visible = True) | Q(pk=menu.pk))
 
         if self.store_in_object:
             context[resolve(self.store_in_object,context)] = breadcrumb
