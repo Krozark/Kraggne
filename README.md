@@ -44,8 +44,8 @@ Menu Gestion:
      warning:
      ---------
      
-    I recomend you, to use this tag in all your template that use a other Kraggne tag,
-    and what are display using a custom (def) view or that not extend Kraggne.views.GenericViewContextMixinSlug (and not a CSM page).
+    I recomend you, to use this tag in all your template that use a other Kraggne tag (for exemple in your base.html),
+    if you use a custom (class) view or that extend Kraggne.views.GenericViewContextMixin (or GenericView/GenericFormView/GenericDetailView/GenericListView) by adding the slug attr (slug refer to the MenuItem.slug link).
     Put it in the top of the page, before any Kraggne Tag/filter to disable possible TypeErrors. 
 
 
