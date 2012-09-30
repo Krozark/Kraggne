@@ -1,7 +1,6 @@
 {% extends "base.html" %}
+{% load contentblocks %}
 
-{% comment %}
-{% block project.body %}
-{{block.super}}
+{% block page.body %}
+{% containeur page.pk  %}
 {% endblock %}
-{% endcomment %}

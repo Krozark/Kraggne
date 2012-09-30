@@ -11,3 +11,10 @@ def get_file_extension(f):
     basename, ext = os.path.splitext(str(f))
     return ext.replace('.', '').lower()
 
+@register.filter()
+def get_file_name(f):
+    path, name = os.path.split(str(f))
+    return name
+
+
+

@@ -476,7 +476,7 @@ class PaginationNode(Node):
                     res+=self.link(current+i,get=get)
                     i+=1
                     #on met les liens vers les ...
-                if ( current+ self.NUM_PAGE_CENTRE < m):
+                if ( current+ self.NUM_PAGE_CENTRE +1< m):
                     res+="&nbsp;..."
                 res+=self.link(m,get=get)
                 res+='<a href="?page='+str(current+1)+get+'" class="next">&raquo;</a>'

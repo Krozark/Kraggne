@@ -1,137 +1,13 @@
-/*
-SCSS3 (c) 2011 Motion Média
-Inspired by http://css3please.com/
-*/
-.clearfix, html body .navbar .navbar-inner .container .menu, html body .container .contentblocks.containeur, html body .container-fluid .contentblocks.containeur, html body .container .contentblocks.containeur span.btn-add, html body .container-fluid .contentblocks.containeur span.btn-add, html body .container .contentblocks.containeur .contentblocks.object, html body .container-fluid .contentblocks.containeur .contentblocks.object {
-  zoom: 1; }
-  .clearfix:before, html body .navbar .navbar-inner .container .menu:before, html body .container .contentblocks.containeur:before, html body .container-fluid .contentblocks.containeur:before, html body .container .contentblocks.containeur span.btn-add:before, html body .container-fluid .contentblocks.containeur span.btn-add:before, html body .container .contentblocks.containeur .contentblocks.object:before, html body .container-fluid .contentblocks.containeur .contentblocks.object:before, .clearfix:after, html body .navbar .navbar-inner .container .menu:after, html body .container .contentblocks.containeur:after, html body .container-fluid .contentblocks.containeur:after, html body .container .contentblocks.containeur span.btn-add:after, html body .container-fluid .contentblocks.containeur span.btn-add:after, html body .container .contentblocks.containeur .contentblocks.object:after, html body .container-fluid .contentblocks.containeur .contentblocks.object:after {
-    content: '.';
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    font-size: 0;
-    line-height: 0;
-    width: 0;
-    height: 0; }
-  .clearfix:after, html body .navbar .navbar-inner .container .menu:after, html body .container .contentblocks.containeur:after, html body .container-fluid .contentblocks.containeur:after, html body .container .contentblocks.containeur span.btn-add:after, html body .container-fluid .contentblocks.containeur span.btn-add:after, html body .container .contentblocks.containeur .contentblocks.object:after, html body .container-fluid .contentblocks.containeur .contentblocks.object:after {
-    clear: both; }
-
-.reset-box {
-  margin: 0;
-  padding: 0; }
 
 .right, html body .container .contentblocks.containeur span.btn-add, html body .container-fluid .contentblocks.containeur span.btn-add, html body .container .contentblocks.containeur .contentblocks.object span.btn-del, html body .container-fluid .contentblocks.containeur .contentblocks.object span.btn-del {
   float: right; }
 
-.left {
-  float: left; }
-
-.link, .hbox {
-  cursor: pointer; }
-
-.shadow {
-  -webkit-box-shadow: 7px -4px 8px black;
-  -moz-box-shadow: 7px -4px 8px black;
-  box-shadow: 7px -4px 8px black; }
-
-.bordered, .glossy, .box, .hbox, html body .container .contentblocks.containeur.admin, html body .container-fluid .contentblocks.containeur.admin, html body .container .contentblocks.containeur .contentblocks.object, html body .container-fluid .contentblocks.containeur .contentblocks.object {
-  -moz-border-radius: 3px 3px 3px 3px;
-  -webkit-border-radius: 3px 3px 3px 3px;
-  border-radius: 3px 3px 3px 3px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid #dddddd; }
-
-.glossy, .box, .hbox {
-  background-color: #eeeeee;
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#999999')";
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#999999');
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#999999));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #999999);
-  background-image: -moz-linear-gradient(top, #eeeeee, #999999);
-  background-image: -ms-linear-gradient(top, #eeeeee, #999999);
-  background-image: -o-linear-gradient(top, #eeeeee, #999999);
-  background-image: linear-gradient(top bottom, #eeeeee, #999999); }
-
-.box, .hbox {
-  color: #0a0a0a !important;
-  font-variant: small-caps;
-  font-weight: bold;
-  font-size: 1em;
-  padding: 3px 8px;
-  text-decoration: none;
-  text-shadow: 1px 1px 1px black; }
-  .box a, .hbox a {
-    color: #555555;
-    -webkit-transition: color 0.3s ease-out;
-    -moz-transition: color 0.3s ease-out;
-    -ms-transition: color 0.3s ease-out;
-    -o-transition: color 0.3s ease-out;
-    transition: color 0.3s ease-out; }
-    .box a:hover, .hbox a:hover {
-      color: #999999;
-      text-shadow: 1px 1px 1px #222222; }
-
-.hbox {
-  -webkit-transition: color 0.3s ease-out;
-  -moz-transition: color 0.3s ease-out;
-  -ms-transition: color 0.3s ease-out;
-  -o-transition: color 0.3s ease-out;
-  transition: color 0.3s ease-out; }
-  .hbox:hover {
-    color: #232323 !important;
-    text-shadow: 1px 1px 1px black;
-    background-color: #222222;
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#222222', EndColorStr='#555555')";
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#222222', EndColorStr='#555555');
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#222222), to(#555555));
-    background-image: -webkit-linear-gradient(top, #222222, #555555);
-    background-image: -moz-linear-gradient(top, #222222, #555555);
-    background-image: -ms-linear-gradient(top, #222222, #555555);
-    background-image: -o-linear-gradient(top, #222222, #555555);
-    background-image: linear-gradient(top bottom, #222222, #555555); }
-
-html body .navbar .navbar-inner .container .menu {
-  margin-top: 3px; }
-  html body .navbar .navbar-inner .container .menu .nav-0 .item:hover > ul {
-    float: right;
-    display: inline; }
-  html body .navbar .navbar-inner .container .menu .nav-0 .item-1 {
-    float: left;
-    margin-right: 5px; }
-    html body .navbar .navbar-inner .container .menu .nav-0 .item-1:last-child {
-      margin-right: 0px; }
-    html body .navbar .navbar-inner .container .menu .nav-0 .item-1 .nav {
-      display: none;
-      position: absolute; }
-    html body .navbar .navbar-inner .container .menu .nav-0 .item-1:hover > ul {
-      display: block; }
-html body .container .contentblocks.containeur, html body .container-fluid .contentblocks.containeur {
-  margin-bottom: 10px; }
   html body .container .contentblocks.containeur .highlight, html body .container-fluid .contentblocks.containeur .highlight {
     background-color: #b1ffaf; }
   html body .container .contentblocks.containeur .ui-sortable-helper, html body .container-fluid .contentblocks.containeur .ui-sortable-helper {
     background-color: #f6d7ac; }
   html body .container .contentblocks.containeur.admin, html body .container-fluid .contentblocks.containeur.admin {
     border: 1px solid #0064cd; }
-  html body .container .contentblocks.containeur .contentblocks.object, html body .container-fluid .contentblocks.containeur .contentblocks.object {
-    background-color: #f5f5f5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5', EndColorStr='white')";
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5', EndColorStr='white');
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(white));
-    background-image: -webkit-linear-gradient(top, #f5f5f5, white);
-    background-image: -moz-linear-gradient(top, #f5f5f5, white);
-    background-image: -ms-linear-gradient(top, #f5f5f5, white);
-    background-image: -o-linear-gradient(top, #f5f5f5, white);
-    background-image: linear-gradient(top bottom, #f5f5f5, white);
-    margin-bottom: 10px;
-    /*&.admin {
-        border : solid #F00 1px;
-        //margin : 10px;
-    }*/ }
-    html body .container .contentblocks.containeur .contentblocks.object .contentblocks-blocks, html body .container-fluid .contentblocks.containeur .contentblocks.object .contentblocks-blocks {
-      margin: 1px; }
   html body .container .contentblocks.containeur .admin-dragg, html body .container-fluid .contentblocks.containeur .admin-dragg {
     cursor: move; }
   html body .container .contentblocks.containeur .config, html body .container-fluid .contentblocks.containeur .config {
@@ -140,14 +16,6 @@ html body .container .contentblocks.containeur, html body .container-fluid .cont
       display: none; }
   html body .container .contentblocks.containeur.admin-drop, html body .container-fluid .contentblocks.containeur.admin-drop {
     min-height: 30px; }
-html body .footer {
-  text-align: center;
-  margin-top: 25px; }
-  html body .footer p {
-    font-size: 0.9em;
-    color: #0a0a0a; }
-    html body .footer p a {
-      color: #141414; }
 html body .gblocks {
   padding: 5px; }
   html body .gblocks a.gblocks-file div.icon {
