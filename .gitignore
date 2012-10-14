@@ -1,4 +1,5 @@
 *.log
 *.pot
 *.pyc
+*.scssc
 local_settings.py
