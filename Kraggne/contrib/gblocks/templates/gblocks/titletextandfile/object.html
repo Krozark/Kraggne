@@ -5,7 +5,7 @@
     <div class="gblocks-text">{{ object.text|linebreaks }}</div>
     <a href="{{ MEDIA_URL }}{{ object.file }}" class="gblocks-file">
         <div class="icon {{object.file|get_file_extension}}">
-            <span>{{object.file}}</span>
+            <span>{{object.file|get_file_name}}</span>
         </div>
     </a>
 </div>

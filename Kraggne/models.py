@@ -98,9 +98,6 @@ class MenuItem(MPTTModel):
         model,url = get_model_and_url_from_list(self.view)
         return model
 
-    def _get_paginate_by(self):
-        return 10
-
     def get_object_url(self,obj):
         if hasattr(obj,"get_absolute_url"):
             return obj.get_absolute_url()

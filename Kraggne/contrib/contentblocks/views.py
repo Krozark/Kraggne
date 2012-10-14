@@ -36,6 +36,7 @@ class AjaxRecieverView(FormView):
                                           user=self.request.user,
                                           MEDIA_URL=settings.MEDIA_URL,
                                           STATIC_URL=settings.STATIC_URL,
+                                          request=self.request,
                                           **kwargs)
                                       ))
     

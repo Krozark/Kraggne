@@ -5,6 +5,7 @@ from django.template.loader import select_template
 import operator
 
 from Kraggne.models import MenuItem
+from django.db.models import Q
 
 register = Library()
 def push_context(context,indices = ["generic_object","object","generic_object_list"]):
@@ -82,7 +83,7 @@ class breadcumbNode(Node):
         if not menu:
             return ''
 
-        breadcrumb = menu.get_ancestors(include_self=self.include_self).filter(is_visible = True)
+        breadcrumb = menu.get_ancestors(include_self=self.include_self).filter(Q(is_visible = True) | Q(pk=menu.pk))
 
         if self.store_in_object:
             context[resolve(self.store_in_object,context)] = breadcrumb
@@ -475,7 +476,7 @@ class PaginationNode(Node):
                     res+=self.link(current+i,get=get)
                     i+=1
                     #on met les liens vers les ...
-                if ( current+ self.NUM_PAGE_CENTRE < m):
+                if ( current+ self.NUM_PAGE_CENTRE +1< m):
                     res+="&nbsp;..."
                 res+=self.link(m,get=get)
                 res+='<a href="?page='+str(current+1)+get+'" class="next">&raquo;</a>'

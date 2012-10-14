@@ -84,7 +84,8 @@ class PageContaineurNode(Node):
 
         obj, c = PageContaineur.objects.get_or_create(slug=slug)
         if c:
-            obj.hextra_class = self.css_class.replace("'","").replace('"','')
+            if self.css_class:
+                obj.hextra_class = self.css_class.replace("'","").replace('"','')
             #page = MenuItem.objects.filter(pk=self.page)[:1]
             if self.page :
                 obj.page = self.page

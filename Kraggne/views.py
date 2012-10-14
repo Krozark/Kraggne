@@ -28,18 +28,24 @@ class GenericViewContextMixinSlug(object):
         return context
 
 
-class GenericViewContextMixin(object):
+class GenericViewContextMixin(GenericViewContextMixinSlug):
     def get_context_data(self, **kwargs):
         context = super(GenericViewContextMixin, self).get_context_data(**kwargs)
 
         page =  self.kwargs.get('page',False)
         if page:
             context['page'] = page
+        else:
+            return context
 
         for u in page.pagevar_set.all():
             u.addToContext(context)
 
-        context.pop('params')
+        try:
+            context.pop('params')
+        except:
+            pass
+
         return context
 
 
@@ -88,7 +94,7 @@ class GenericDetailView(GenericView):
         return context
 
 from django.http import HttpResponseRedirect
-class GenericFormView(FormView):
+class GenericFormView(GenericViewContextMixin,FormView):
 
     template_name = "Kraggne/genericFormPage.html"
 
@@ -107,7 +113,7 @@ class GenericFormView(FormView):
 
         return context
 
-class GenericListView(ListView):
+class GenericListView(GenericViewContextMixin,ListView):
 
     template_name = "Kraggne/genericListPage.html"
     paginate_by = 10
