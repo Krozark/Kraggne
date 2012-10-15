@@ -91,6 +91,10 @@ class GenericDetailView(GenericView):
     def get_context_data(self, **kwargs):
         context = super(GenericDetailView, self).get_context_data(**kwargs)
         context['object'] = self.get_for_object(**kwargs)
+        try:
+            context["object_model_name"] = "%s.%s" % (self.model._meta.app_label.lower(),self.model._meta.object_name.lower())
+        except:
+            pass
         return context
 
 from django.http import HttpResponseRedirect
@@ -124,6 +128,11 @@ class GenericListView(GenericViewContextMixin,ListView):
         page =  self.kwargs.get('page',False)
         if page:
             context['page'] = page
+
+        try:
+            context["object_model_name"] = "%s.%s" % (self.model._meta.app_label.lower(),self.model._meta.object_name.lower())
+        except:
+            pass
 
         return context
 
