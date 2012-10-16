@@ -140,6 +140,10 @@ Block
         [app]/[model]/object.html (were app and model retere to object._meta.app_label.lower() and object._meta.model.lower() )
         flatblocks/object.html (generic, display all the items, but surly not as you want)
 
+    note : it's possible to display a m2m using : {% displaym2m object.m2m_relation [with "path/to/template"]%}
+        default template :
+            app/model/m2m.html if existe
+            else use {% display object %} (see jute befor) for display each object in the list
 
 
 List
@@ -219,6 +223,7 @@ Containeur To Object:
     <div class="contentblocks object">
         {% display object.page_object %} (see PageObject to see css)
     </div>
+
 
 
 page Object:
