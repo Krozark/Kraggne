@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.contenttypes.models import ContentType
 from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList
 from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent, GetUnknowObjectContent, Getm2mContent
+from django.core import serializers
 
 register = Library()
 
@@ -224,6 +225,8 @@ class DisplayNode(Node):
 
     def render(self,context):
         o = resolve(self.obj,context)
+        if not o:
+            return ""
         if hasattr(o,"display"):
             return o.display(context,self.template_path)
         return GetUnknowObjectContent(o,context,self.template_path)
@@ -248,6 +251,8 @@ class Displaym2mNode(Node):
 
     def render(self,context):
         o = resolve(self.obj,context)
+        if not o:
+            return ""
         return Getm2mContent(o,context,self.template_path)
 
 def do_displaym2m(parser, token):
@@ -262,3 +267,7 @@ def do_displaym2m(parser, token):
     return Displaym2mNode(obj,template)
 register.tag('displaym2m', do_displaym2m)
 
+@register.filter
+def serialize(obj):
+    return serializers.serialize("python", (obj,),fields = [u.name for u in obj._meta.fields if u.name != "id"])[0]["fields"].items()
+    
