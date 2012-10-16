@@ -6,7 +6,7 @@ from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
 from django.contrib.contenttypes.models import ContentType
 from Kraggne.contrib.flatblocks.models import GenericFlatblock, GenericFlatblockList
-from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent, GetUnknowObjectContent
+from Kraggne.contrib.flatblocks.utils import GetBlockContent, GetListContent, GetTemplateContent, GetUnknowObjectContent, Getm2mContent
 
 register = Library()
 
@@ -216,7 +216,6 @@ register.tag('glist', do_genericflatblocklist)
 ##############################################################
 ################ display tag #################################
 ##############################################################
-
 class DisplayNode(Node):
 
     def __init__(self, obj, template_path):
@@ -240,3 +239,26 @@ def do_display(parser, token):
 
     return DisplayNode(obj,template)
 register.tag('display', do_display)
+
+class Displaym2mNode(Node):
+
+    def __init__(self, obj, template_path):
+        self.obj = obj
+        self.template_path = template_path
+
+    def render(self,context):
+        o = resolve(self.obj,context)
+        return Getm2mContent(o,context,self.template_path)
+
+def do_displaym2m(parser, token):
+    """
+    {% displaym2m obj [with template_path ] %}
+    """
+
+    bits = token.contents.split()
+    obj = next_bit_for(bits, 'displaym2m')
+    template = next_bit_for(bits,'with')
+
+    return Displaym2mNode(obj,template)
+register.tag('displaym2m', do_displaym2m)
+
