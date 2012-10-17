@@ -33,8 +33,8 @@ class FormBlockInline(ADMIN_TAB):
 
 ############################################################
 class MenuItemAdmin(ADMIN):
-    list_display = ('name','slug','order','view','url','parent','level','is_visible','cms_page')
-    list_filter = ('is_visible','cms_page')
+    list_display = ('name','slug','order','view','url','parent','level','is_visible','cms_page','login_required','login_required_to_see')
+    list_filter = ('is_visible','cms_page','login_required',"login_required_to_see")
     prepopulated_fields = {'slug':('name',)}
     form = MenuItemForm
     #inlines = [ItemPageInline,SubMenuItemInline]

@@ -3,6 +3,7 @@ from Kraggne.views import GenericView, GenericFormView, GenericDetailView, Gener
 from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.loading import get_model
+from django.contrib.auth.decorators import login_required
 from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include,  get_model_and_url_from_list
 
 def MakePattern(menuItem):
@@ -42,7 +43,10 @@ def MakePattern(menuItem):
     except :
         pass
 
-    view = view.as_view(**q)
+    if menuItem.login_required:
+        view = login_required(view.as_view(**q))
+    else:
+        view = view.as_view(**q)
 
 
     return patterns('',url(
