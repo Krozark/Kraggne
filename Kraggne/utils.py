@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from Kraggne.views import GenericView, GenericFormView, GenericDetailView, GenericListView
+import Kraggne.views as _view
+#import GenericView, GenericFormView, GenericDetailView, GenericListView
 from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.loading import get_model
@@ -22,20 +23,25 @@ def MakePattern(menuItem):
             ur= ur[:-1]
 
     q={}
+    c = "Generic"
     if menuItem.is_detail():
-        view = GenericDetailView
+        #view = _view.GenericDetailView
         q['model'] = menuItem._get_for_detail_model()
+        c += "Detail"
     elif menuItem.is_list():
-        view = GenericListView
+        #view = _view.GenericListView
         q['model'] = menuItem._get_for_list_model()
-    else:
-        try:
-            m = menuItem.formblock
-            view = GenericFormView
-            q['form_class'] = m.getFormClass()
-        except:# Exception,e:
-            #print e
-            view = GenericView
+        c += "List"
+    try:
+        m = menuItem.formblock
+        q['form_class'] = m.getFormClass()
+        c+= "Form"
+    except:# Exception,e:
+        pass
+
+    c += "View"
+
+    view = getattr(_view,c)
 
     try :
         t = menuItem.pagetemplate

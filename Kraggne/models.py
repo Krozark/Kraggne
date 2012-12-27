@@ -31,6 +31,8 @@ class MenuItem(MPTTModel):
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
     is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
+    login_required =  models.BooleanField(_('login required'),default=False)
+    login_required_to_see =  models.BooleanField(_('login required to see'),default=False)
 
     #template_path = models.CharField(_('Template Path'), max_length=255,null=True,blank=True,
     #                                 help_text=_('Display usign specific template'))

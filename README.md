@@ -6,7 +6,7 @@ video
 Kraggne
 =======
 
-Un projet de cms django, mais n,empèche pas de tout codder "à la main" et prpose meme des fonctions pour aller plus vite.
+Un projet de cms django, mais n'empèche pas de tout coder "à la main" et prpose des fonctions pour aller plus vite.
 
 
 Instalation:
@@ -63,11 +63,9 @@ Breadcrumb:
 Custom views:
 ------------
 
-     You can esily use your own view insted of CMS. But you have to extend Kraggne.views.GenericViewContextMixin
-     to provide Menu/breadcrumb functionement, and add a
-     slug= 'my-page-slug' that is your current page slug (set in the admin)
+     You can easily use your own view insted of CMS. But you have to extend Kraggne.views.GenericViewContextMixin to provide Menu/breadcrumb functionement, and add a slug= 'my-page-slug' that is your current page slug (set in the admin)
 
-     if you use a custom class view that extend Kraggne.views.GenericViewContextMixin (or GenericView/GenericFormView/GenericDetailView/GenericListView) add the slug attr (slug refer to the MenuItem.slug link) to get the correct menuItem in context.
+     if you use a custom class view that extend Kraggne.views.GenericViewContextMixin (or GenericView/GenericFormView/GenericDetailView/GenericListView/GenericListFormView) add the slug attr (slug refer to the MenuItem.slug link) to get the correct menuItem in context.
 
      If you creat a model and you want to display a list of it (with list(url,app.model)[see MenuItem] or with a view extend GenericListView), you can add it a "paginate_by" attr to your model if you want to paginate it (default = 10) set None to disable pagination.
      you can use {% pagination %} tag to display the pagination block ({% load Kraggne_tags %}).
@@ -91,7 +89,7 @@ MenuItem:
         detail create a Use the GenericDetailView if 'is_visible' is True' and use the 'get_absolute_url()' (or the url regex  if not existing)
         it use also the <pk> or <slug> attribut (in url and object) to get it. If want want to get the object with a other way you can, but you have to add a get_object_from_url(**kwargs) methode where kwargs is the url parameters
 
-    template = Kraggne/Generic[Form/Detail]Page.html (depend of the view) by default. You can customise it creating a templatevar link to the item (but you have to reboot the django server [i'm not able to destroy the cache], sorry :/ ) or by creat a [app]/[model]/[object/list/detail].html template
+    template = Kraggne/Generic[List/Detail/FormList]Page.html (depend of the view) by default. You can customise it creating a templatevar link to the item (but you have to reboot the django server [i'm not able to destroy the cache], sorry :/ ) or by creat a [app]/[model]/[object/list/detail/formlist].html template. In the case of FormView, [app]/[model]/[list/formlist] are enable
 
     context :
         context["page"] = current menuItem
@@ -101,13 +99,26 @@ MenuItem:
             kwargs is the custom query args)
             the object_list is set all the time. the object, only if the object_id is set (and existe)
 
-        context["form"] = The form classe associate to the view (for GenericFormView only)
+        context["form"] = The form classe associate to the view (for Generic[List]FormView only)
         context["object"] = The object to display (GenericDetailView only)
-        context["object_list"] = The list of object to display (GenericListView only)
+        context["object_list"] = The list of object to display (Generic[Form]ListView only)
 
         all the template extends the base.html template
         all the content is put in the block: {% block page.body %}{% endblock %}. don't forget to add it in your base.html
 
+
+    List,Detail,Form and ListForm are actualy possible to auto create just usign the admin.
+
+
+    Generic[List]FormView can be use with a django ModelForm or a BasForm.
+    The success_url can be set, or will be calculated as following:
+        with ModelForm:
+            get_absolute_url of the new object if existe
+        else:
+            use the url set in the for link with the page if existe, else use the page url
+        in all case #form is add at the end of the url (set in the template, so you can delete it by customize the template)
+
+    if use with a ModelForm,the form.save have this param : comit=True[,request=request]. The request param is a optional, if you want to add som attr manualy (object.user for exemple)
             
 
 Blocks of content (contrib.gblocks)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic.edit import ProcessFormView, FormMixin
+from django import forms
 #from django.http import HttpResponseRedirect, HttpResponse
 #from django.core.context_processors import csrf
 
@@ -101,6 +103,23 @@ from django.http import HttpResponseRedirect
 class GenericFormView(GenericViewContextMixin,FormView):
 
     template_name = "Kraggne/genericFormPage.html"
+    #success_url = None
+
+    def get_success_url(self):
+        if self.slug:
+            page = MenuItem.objects.filter(slug=self.slug)[:1]
+            if page:
+                try:
+                    return page[0].formblock.url
+                except:
+                    return page[0].url
+
+        if self.page:
+            try:
+                return self.page.formblock.url
+            except:
+                return self.page.url
+        return None
 
     def get_context_data(self, **kwargs):
         context = super(GenericFormView, self).get_context_data(**kwargs)
@@ -109,7 +128,7 @@ class GenericFormView(GenericViewContextMixin,FormView):
         if page:
             context['page'] = page
 
-        self.success_url = page.formblock.url or page.url
+        #self.success_url = page.formblock.url or page.url
         if page.url[-1] != "/":
             context['action_url'] = page.url + "/"
         else:
@@ -170,6 +189,76 @@ class GenericListView(GenericViewContextMixin,ListView):
 
         names.append(self.template_name)
         return names
+
+class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
+    template_name = "Kraggne/genericFormPage.html"
+
+    def get_context_data(self,form=None,**kwargs):
+        context = GenericListView.get_context_data(self,**kwargs)
+        
+        if not form:
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+        context["form"] = form
+
+        page = context["page"]
+        if page.url[-1] != "/":
+            context['action_url'] = page.url + "/"
+        else:
+            context['action_url'] = page.url
+
+        return context
+
+    def post(self,request,*args,**kwarg):
+        self.page = kwarg.pop('page')
+        return ProcessFormView.post(self,request,*args,**kwarg)
+
+    def is_model_form(self):
+        return issubclass(self.get_form_class(),forms.ModelForm)
+
+    def get_success_url(self):
+        if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
+            return self.object.get_absolute_url()
+        if self.slug:
+            page = MenuItem.objects.filter(slug=self.slug)[:1]
+            if page:
+                try:
+                    return page[0].formblock.url
+                except:
+                    return page[0].url
+
+        if self.page:
+            try:
+                return self.page.formblock.url
+            except:
+                return self.page.url
+        return None
+
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the form.
+        """
+        kwargs = FormMixin.get_form_kwargs(self)
+        if hasattr(self,'object'):
+            kwargs.update({'instance': self.object})
+        return kwargs
+
+
+    def form_valid(self,form):
+        if self.is_model_form():
+            try:
+                self.object = form.save(commit=True,request=self.request)
+            except TypeError:
+                self.object = form.save(commit=True)
+            #if hasattr(self.object,'save_model'):
+            #    self.object.save_model(self.request,form,False):
+        return FormMixin.form_valid(self,form)
+
+    def form_invalid(self,form):
+        self.object_list = self.get_queryset()
+        return self.render_to_response(self.get_context_data(form=form,object_list=self.object_list))
+
+
 
 #from django.shortcuts import render_to_response
 #def Generic(request,*args,**kwargs):

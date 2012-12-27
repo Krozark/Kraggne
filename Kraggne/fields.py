@@ -52,7 +52,7 @@ class TemplateField(models.CharField):
     #def to_python(self,value):
     #    return value             
 
-    def get_db_prep_value(self, value, connection, prepared=False):
+    def get_db_prep_value(self, value, connection=None, prepared=False):
         return value
 
     def value_to_string(self, obj):
