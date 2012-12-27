@@ -1,0 +1,6 @@
+{% load flatblocks %}
+<ul class="flatblocks-object">
+{% for field, value in object|serialize %}
+    <li>{{ field }}:{{ value }}</li>
+{% endfor %}
+</ul>
