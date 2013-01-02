@@ -2,6 +2,7 @@ video
 ======
 
     http://www.dailymotion.com/video/xtnmu2_kraggne-tuto-1_tech
+    http://www.dailymotion.com/video/xtq7m6_kraggne-dragg-drop-tuto-2_tech#.UOQvkfkWWC0
 
 Kraggne
 =======
