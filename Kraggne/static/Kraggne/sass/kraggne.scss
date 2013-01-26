@@ -19,6 +19,25 @@
     @include background-gradient($grayLighter, $grayLight);
 }
 
+.btn {
+    @extend .glossy;
+    color: $text_color * 0.2 !important;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px $base_color * 0.5;
+    a {
+        color : $base_color * 0.2;
+        @include transition(color);
+        &:hover {
+            color : $base_color * 0.6;
+            text-shadow: 1px 1px 1px $base_color * 0.2;
+        }
+    }
+}
+
 .box {
     @extend .glossy;
     color: $textColor * 0.2 !important;
@@ -166,11 +185,11 @@ html {
                 }
 
                 .highlight {
-                    background-color : #b1ffaf;
+                    background-color : $base_color * 0.4;
                 }
 
                 .ui-sortable-helper {
-                    background-color : #f6d7ac;
+                    background-color : $base_color * 0.6;
                 }
 
                 &.admin {
