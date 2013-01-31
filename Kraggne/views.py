@@ -105,7 +105,26 @@ class GenericFormView(GenericViewContextMixin,FormView):
     template_name = "Kraggne/genericFormPage.html"
     #success_url = None
 
+    #def __init__(self,*args,**kwargs):
+    #    print args
+    #    print kwargs
+    #    super(GenericFormView,self).__init__(*args,**kwargs)
+
+    def is_model_form(self):
+        return issubclass(self.get_form_class(),forms.ModelForm)
+
+    def get_form(self, form_class):
+        form = form_class(**self.get_form_kwargs())
+        if hasattr(form,"request"):
+            form.request = self.request
+        return form
+
+
     def get_success_url(self):
+        if self.success_url:
+            return self.success_url
+        if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
+            return self.object.get_absolute_url()
         if self.slug:
             page = MenuItem.objects.filter(slug=self.slug)[:1]
             if page:
@@ -127,6 +146,9 @@ class GenericFormView(GenericViewContextMixin,FormView):
         page =  self.kwargs.get('page',False)
         if page:
             context['page'] = page
+        else:
+            page = MenuItem.objects.get(slug=self.slug)
+
 
         #self.success_url = page.formblock.url or page.url
         if page.url[-1] != "/":
@@ -135,6 +157,21 @@ class GenericFormView(GenericViewContextMixin,FormView):
             context['action_url'] = page.url
 
         return context
+
+    def get_form_kwargs(self):
+        kwargs = FormMixin.get_form_kwargs(self)
+        if hasattr(self,'object'):
+            kwargs.update({'instance': self.object})
+        return kwargs
+
+    def form_valid(self,form):
+        if self.is_model_form():
+            try:
+                self.object = form.save(commit=True,request=self.request)
+            except TypeError:
+                self.object = form.save(commit=True)
+        return FormMixin.form_valid(self,form)
+
 
 class GenericListView(GenericViewContextMixin,ListView):
 
@@ -191,7 +228,7 @@ class GenericListView(GenericViewContextMixin,ListView):
         return names
 
 class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
-    template_name = "Kraggne/genericFormPage.html"
+    template_name = "Kraggne/genericListFormPage.html"
 
     def get_context_data(self,form=None,**kwargs):
         context = GenericListView.get_context_data(self,**kwargs)
@@ -215,6 +252,21 @@ class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
 
     def is_model_form(self):
         return issubclass(self.get_form_class(),forms.ModelForm)
+
+    def get_template_names(self):
+        names = []
+        if hasattr(self.model, '_meta'):
+            names.append("%s/%s/formlist.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+            names.append("%s/%s/list.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+
+        names.append(self.template_name)
+        return names
 
     def get_success_url(self):
         if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
