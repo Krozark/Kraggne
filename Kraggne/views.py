@@ -311,6 +311,91 @@ class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
         return self.render_to_response(self.get_context_data(form=form,object_list=self.object_list))
 
 
+class GenericDetailFormView(GenericDetailView,FormMixin,ProcessFormView):
+    template_name = "Kraggne/genericDetailFormPage.html"
+
+    def get_context_data(self,form=None,**kwargs):
+        context = GenericDetailView.get_context_data(self,**kwargs)
+
+        if not form:
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+        context["form"] = form
+
+        context['action_url'] = ""
+        return context
+
+    def post(self,request,*args,**kwarg):
+        self.page = kwarg.pop('page')
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form,**kwarg)
+        else:
+            return self.form_invalid(form,**kwarg)
+        
+    def is_model_form(self):
+        return issubclass(self.get_form_class(),forms.ModelForm)
+
+    def get_template_names(self):
+        names = []
+        if hasattr(self.model, '_meta'):
+            names.append("%s/%s/formdetail.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+            names.append("%s/%s/detail.html" % (
+                self.model._meta.app_label,
+                self.model._meta.object_name.lower(),
+            ))
+
+        names.append(self.template_name)
+        return names
+
+    def get_success_url(self):
+        if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
+            return self.object.get_absolute_url()
+        if self.slug:
+            page = MenuItem.objects.filter(slug=self.slug)[:1]
+            if page:
+                try:
+                    return page[0].formblock.url
+                except:
+                    return page[0].url
+
+        if self.page:
+            try:
+                return self.page.formblock.url
+            except:
+                return self.page.url
+        return None
+
+   # def get_form_kwargs(self):
+   #     """
+   #     Returns the keyword arguments for instanciating the form.
+   #     """
+   #     kwargs = FormMixin.get_form_kwargs(self)
+   #     if hasattr(self,'object'):
+   #         kwargs.update({'instance': self.object})
+   #     return kwargs
+
+
+    def form_valid(self,form,**kwargs):
+        cur_obj = self.get_for_object(**kwargs)
+        form.current_object = cur_obj
+        if self.is_model_form():
+            try:
+                self.object = form.save(commit=True,request=self.request)
+            except TypeError:
+                self.object = form.save(commit=True)
+            #if hasattr(self.object,'save_model'):
+            #    self.object.save_model(self.request,form,False):
+        return FormMixin.form_valid(self,form)
+
+    def form_invalid(self,form,**kwargs):
+        return self.render_to_response(self.get_context_data(**kwargs))
+
 
 #from django.shortcuts import render_to_response
 #def Generic(request,*args,**kwargs):
