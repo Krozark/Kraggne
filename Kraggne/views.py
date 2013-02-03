@@ -78,6 +78,7 @@ class GenericDetailView(GenericView):
                 obj = r and r[0] or None
         return obj
 
+
     def get_template_names(self):
         names = []
         if hasattr(self.model, '_meta'):
@@ -120,11 +121,27 @@ class GenericFormView(GenericViewContextMixin,FormView):
         return form
 
 
+    def post(self,request,*args,**kwarg):
+        try:
+            self.page = kwarg.pop('page')
+        except:
+            pass
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form,**kwarg)
+        else:
+            return self.form_invalid(form,**kwarg)
+
+
     def get_success_url(self):
         if self.success_url:
             return self.success_url
         if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
             return self.object.get_absolute_url()
+
+        print self.slug
         if self.slug:
             page = MenuItem.objects.filter(slug=self.slug)[:1]
             if page:
@@ -138,7 +155,7 @@ class GenericFormView(GenericViewContextMixin,FormView):
                 return self.page.formblock.url
             except:
                 return self.page.url
-        return None
+        return ""
 
     def get_context_data(self, **kwargs):
         context = super(GenericFormView, self).get_context_data(**kwargs)
@@ -398,5 +415,6 @@ class GenericDetailFormView(GenericDetailView,FormMixin,ProcessFormView):
 
 
 #from django.shortcuts import render_to_response
-#def Generic(request,*args,**kwargs):
+#def Generic(request,*args,**kwargs)
+#form.current_object = cur_obj:
 #    return ''
