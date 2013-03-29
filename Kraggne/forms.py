@@ -79,7 +79,7 @@ class MenuItemForm(forms.ModelForm):
         item.view = self.cleaned_data['view']
         item.url = self.url
         if item.view:
-            if not 'include(' in item.view and not 'detail(' in item.view and not 'list(' in item.view and not any([item.view.startswith(s) for s in ('http://', 'https://')]):
+            if not 'include(' in item.view and not 'detail(' in item.view and not 'list(' in item.view:
                 if re.search('[^\d/\w\-:_#? ]',item.view):
                     item.is_visible = False
         

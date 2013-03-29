@@ -1,6 +1,6 @@
 {% load gblocks %}
-
-<div class="gblocks">
+{% extends "gblocks/base.html" %}
+{% block gblock.content %}
     <h2 class="gblocks-title">{{ object.title }}</h2>
     <div class="gblocks-text">{{ object.text|linebreaks }}</div>
     <a href="{{ MEDIA_URL }}{{ object.file }}" class="gblocks-file">
@@ -8,4 +8,4 @@
             <span>{{object.file|get_file_name}}</span>
         </div>
     </a>
-</div>
+{% endblock %}

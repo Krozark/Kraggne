@@ -1,3 +1,4 @@
-<div class="gblocks">
-    <img class="gblocks-image" src="{{ MEDIA_URL }}{{ object.image }}" alt=""/>
-</div>
+{% extends "gblocks/base.html" %}
+{% block gblock.content %}
+<img class="gblocks-image" src="{{ MEDIA_URL }}{{ object.image }}" alt=""/>
+{% endblock %}
