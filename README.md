@@ -149,7 +149,7 @@ Block
 
     the default templates used are (in order):
         [template_path]
-        [app]/[model]/object.html (were app and model retere to object._meta.app_label.lower() and object._meta.model.lower() )
+        [app]/[model]/object.html (were app and model refere to object._meta.app_label.lower() and object._meta.model.lower() )
         flatblocks/object.html (generic, display all the items, but surly not as you want)
 
     note : it's possible to display a m2m using : {% displaym2m object.m2m_relation [with "path/to/template"]%}
