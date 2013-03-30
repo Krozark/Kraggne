@@ -14,8 +14,12 @@ Instalation:
 -----------
      
     in your INSTALLED_APPS add :
-        'mptt'
-        'Kraggne'
+        'mptt',
+        'Kraggne',
+        'Kraggne.contrib.contentblocks',
+        'Kraggne.contrib.flatblocks',
+        'Kraggne.contrib.gblocks',
+
 
     in your urls.py add :
         (r'',            include('Kraggne.urls')),
@@ -108,10 +112,10 @@ MenuItem:
         all the content is put in the block: {% block page.body %}{% endblock %}. don't forget to add it in your base.html
 
 
-    List,Detail,Form and ListForm are actualy possible to auto create just usign the admin.
+    List,Detail,Form,ListForm and DetailForm are actualy possible to auto create just usign the admin.
 
 
-    Generic[List]FormView can be use with a django ModelForm or a BasForm.
+    Generic[List/Detail]FormView can be use with a django ModelForm or a BasForm.
     The success_url can be set, or will be calculated as following:
         with ModelForm:
             get_absolute_url of the new object if existe
@@ -120,6 +124,15 @@ MenuItem:
         in all case #form is add at the end of the url (set in the template, so you can delete it by customize the template)
 
     if use with a ModelForm,the form.save have this param : comit=True[,request=request]. The request param is a optional, if you want to add som attr manualy (object.user for exemple)
+
+    You can custom the display html of all form:
+    Kraggne/form.html
+
+    For a specifique form :
+    [module]/forms/[Form class name].html
+
+    For a model form:
+    [app]/[model]/form.html
             
 
 Blocks of content (contrib.gblocks)
@@ -288,3 +301,182 @@ Bugs:
 ====
 
     If you have som bugs with the menu, reboot the server (to destroy the cache). generaly bugs are fixed with this.
+
+
+Resum:
+======
+
+Install:
+
+
+To display:
+-----------
+
+    {% load Kraggne_tags %}
+
+    init(add page var to context far other tags) : {% getmenu %}
+
+    breadcrumb: {% breadcrumb ["slug"] [include_self=True] %}
+    {% breadcrumb ["slug"] into "slug_object" [include_self=True] %}
+    {% breadcrumb ["slug"] with "templatename.html" [include_self=True] %}
+    {% breadcrumb ["slug"] with "templatename.html" as "variable" [include_self=True] %}
+
+    Menu: {% menu ["slug"] [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] into "slug_object" [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] with "templatename.html" [include_self=True level_min=0 level_nb=0] %}
+    {% menu ["slug"] with "templatename.html" as "variable" [include_self=True level_min=0 level_nb=0] %}
+
+    Submenu : {% sousmenu ["slug"] [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] into "slug_object" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" [include_self=False level_min=0 level_nb=1] %}
+    {% sousmenu ["slug"] with "templatename.html" as "variable" [include_self=False level_min=0 level_nb=1] %}
+
+    in a forloop
+    {% last == obj2 var %}
+    {% last != obj2 var %}
+    {% last <= obj2 var %}
+    {% last < obj2 var %}
+    {% last >= obj2 var %}
+    {% last > obj2 var %}
+
+    Model: {% try_display obj [with template_path ] %} => prefer use {% display my_model_instance %}
+    Form : {% displayform form_instance %}
+
+    Pagination :{% pagination %}
+
+
+    {% load flatblocks %}
+    create a instance of model in template: (use {% display object %} with default template
+    {% gblock "slug" for "appname.modelname" %}
+    {% gblock "slug" for "appname.modelname" into "slug_object" %}
+    {% gblock "slug" for "appname.modelname" with "templatename.html" %}
+    {% gblock "slug" for "appname.modelname" with "templatename.html" as "variable" %}
+
+    get a list of a specifique model: (internaly use {% display object %} on each object with default template
+    {% glist "slug" for "appname.modelname" %}
+    {% glist "slug" for "appname.modelname" into "slug_object" %}
+    {% glist "slug" for "appname.modelname" with "templatename.html" %}
+    {% glist "slug" for "appname.modelname" with "templatename.html" as "variable" %}
+
+
+    Model : {% display my_model_instance %}
+    ManyToMany : {% displaym2m object.m2m %}
+
+
+    {% load contentblocks %}
+    create or get a containeur and display  it (use {% display object %} on each)
+
+    {% containeur "slug" [css_class=None] [page=None] %}
+    {% containeur "slug" into "slug_name" [css_class=None] [page=None] %}
+    {% containeur "slug" with "template_path" [css_class=None] [page=None] %}
+    {% containeur "slug" with "template_path" as "variable_name" [css_class=None] [page=None] %}
+
+    default use: {% containeur page.slug %}
+
+
+    {% load gblocks %}
+    {{filename|get_file_extension}}
+    {{filename|get_file_name}}
+
+
+
+To custom the display:
+----------------------
+
+[app],[model] and [classname] are always in lower case
+
+    Model : 
+        overwrite [app]/[model]/object.html => use with {% display object %}
+        the self.display() methode          => use with {% display object %} if existe
+        flatblocks/unknow_object.html       => default (display all the field of the object)
+
+    ManyToMany :
+        overwrite [app]/[model]/m2m.html   => use with {% displaym2m object.m2m %}
+        flatblocks/m2m.html                => default that use internaly {% display object %} for each in the query
+
+    List(glist):
+        overwrite [app]/[model]/object_list.html => all object in same template
+        overwrite [app]/[model]/object.html      => for each object
+        Kraggne/flatblocks/object_list.html      => default (all)
+
+    Form:
+        [app]/form/[classname].html        => use with {% displayform form %}
+        Kraggne/form.html                  => default
+
+    ListView: extends base.html and put code in {% block page.body %}
+        [app]/[model]/list.html            => use with Generic[Form]ListView (internaly use {% display object %} on each object in the list )
+        Kraggne/generic[Form]ListPage.html => default
+        Use pagination too (see after)
+    
+    DetailView: extends base.html and put code in {% block page.body %}
+        [app]/[model]/detail.html         => use with Generic[Form]DetailView
+        Kraggne/generic[Form]DetailPage.html => default
+
+    FormView: extends base.html and put code in {% block page.body %}
+        see Form
+        Kraggne/genericForm[Detail/List]Page.html => default
+
+    Pagination:
+        Kraggne/pagination.inc.html
+
+    Breadcrumb:
+        Kraggne/breadcrumb.html
+
+    Menu (nav):
+        Kraggne/menu.html
+
+
+
+Views:
+------
+    If you want to create your own view, just herit of one of this:
+
+    GenericViewContextMixin:
+        slug = "your slug here"
+
+    class GenericView(GenericViewContextMixin,TemplateView):
+        template_name = "Kraggne/genericPage.html"
+        slug = "your slug here"
+
+    class GenericDetailView(GenericView):
+        template_name = "Kraggne/genericDetailPage.html"
+        slug = "your slug here"
+        model = "yourmodel"
+        #url need (?P<pk>[*0-9]+) or <slug> (exepte if your model have a self.get_object_from_url(**kwargs) methode)
+    
+    class GenericFormView(GenericViewContextMixin,FormView):
+        template_name = "Kraggne/genericFormPage.html"
+        slug = "your slug here"
+        form_class = "your form class"
+        #form.save(commit=True,request=self.request) or form.save(commit=True) for modelForm only
+
+    class GenericListView(GenericViewContextMixin,ListView):
+        template_name = "Kraggne/genericListPage.html"
+        slug = "your slug here"
+        model = "yourmodel"
+        paginate_by = 10 #default is model.paginate_by if existe
+
+    class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
+        template_name = "Kraggne/genericListFormPage.html"
+        slug = "your slug here"
+        model = "yourmodel"
+        paginate_by = 10 #default is model.paginate_by if existe
+        form_class = "your form class"
+        #form.save(commit=True,request=self.request) or form.save(commit=True) for modelForm only
+    
+    
+    class GenericDetailFormView(GenericDetailView,FormMixin,ProcessFormView):
+        template_name = "Kraggne/genericDetailFormPage.html"
+        slug = "your slug here"
+        model = "yourmodel"
+        form_class = "your form class"
+        #url need (?P<pk>[*0-9]+) or <slug> (exepte if your model have a self.get_object_from_url(**kwargs) methode)
+        #form.save(commit=True,request=self.request) or form.save(commit=True) for modelForm only
+
+
+    
+    Don't forget to add the correct slug="kraggne-[db-slug-view]" on your view and {% getmenu %} on your base.html (for menu,sousmenu,breadcrumb,containeur tags)
+
+
+
+

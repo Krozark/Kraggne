@@ -448,6 +448,8 @@ class DisplayFormNode(Node):
             except:
                 pass
 
+
+        template_paths.append('%s/%s/%s.html' % (o.__class__.__module__.split('.')[0].lower(),'forms',o.__class__.__name__.lower()))
         template_paths.append('Kraggne/form.html')
 
         try:
