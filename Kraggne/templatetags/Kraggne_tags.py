@@ -442,15 +442,18 @@ class DisplayFormNode(Node):
             return o.display(context,self.template_path)
 
         template_paths = [self.template_path,]
-        if issubclass(o.__class__,forms.ModelForm) and hasattr(o, '_meta'):#model form
-            template_paths.append('%s/%s/%s.html' % (o._meta.app_label.lower(),o._meta.object_name.lower(),'form'))
+        if issubclass(o.__class__,forms.ModelForm):
+            try:
+                template_paths.append('%s/%s/%s.html' % (o._meta.model._meta.app_label.lower(),o._meta.model._meta.object_name.lower(),'form'))
+            except:
+                pass
 
         template_paths.append('Kraggne/form.html')
 
         try:
             t = select_template(template_paths)
         except Exception,e:
-            return 'no template find to display the form (or not valid).\n Exception : %s' % (,e )
+            return 'no template find to display the form (or not valid).\n Exception : %s' % e 
 
         save = push_context(context,["form",])
         context["form"] = o
