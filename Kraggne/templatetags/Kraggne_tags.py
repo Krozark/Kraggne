@@ -6,6 +6,7 @@ import operator
 
 from Kraggne.models import MenuItem
 from django.db.models import Q
+from django import forms
 
 register = Library()
 def push_context(context,indices = ["generic_object","object","generic_object_list"]):
@@ -425,6 +426,49 @@ def do_try_display(parser, token):
 
     return TryDisplayNode(obj,template)
 register.tag('try_display', do_try_display)
+
+
+class DisplayFormNode(Node):
+
+    def __init__(self, obj, template_path):
+        self.obj = obj
+        self.template_path = template_path
+
+    def render(self,context):
+        o = resolve(self.obj,context)
+        if not o:
+            return ""
+        if hasattr(o,"display"):
+            return o.display(context,self.template_path)
+
+        template_paths = [self.template_path,]
+        if issubclass(o.__class__,forms.ModelForm) and hasattr(o, '_meta'):#model form
+            template_paths.append('%s/%s/%s.html' % (o._meta.app_label.lower(),o._meta.object_name.lower(),'form'))
+
+        template_paths.append('Kraggne/form.html')
+
+        try:
+            t = select_template(template_paths)
+        except Exception,e:
+            return 'no template find to display the form (or not valid).\n Exception : %s' % (,e )
+
+        save = push_context(context,["form",])
+        context["form"] = o
+        res = t.render(context)
+        context = pop_context(context,save)
+        return res
+
+@register.tag
+def displayform(parser,token):
+    """
+    {% displayform form [with template_path ] %}
+    """
+    bits = token.contents.split()
+    obj = next_bit_for(bits, 'displayform')
+    template = next_bit_for(bits,'with')
+
+    return DisplayFormNode(obj,template)
+
 
 ################################### pagination ################################
 class PaginationNode(Node):
