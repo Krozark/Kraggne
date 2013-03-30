@@ -398,7 +398,7 @@ To custom the display:
         Kraggne/flatblocks/object_list.html      => default (all)
 
     Form:
-        [app]/form/[classname].html        => use with {% displayform form %}
+        [app]/forms/[classname].html        => use with {% displayform form %}
         Kraggne/form.html                  => default
 
     ListView: extends base.html and put code in {% block page.body %}
