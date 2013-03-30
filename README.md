@@ -306,8 +306,6 @@ Bugs:
 Resum:
 ======
 
-Install:
-
 
 To display:
 -----------
