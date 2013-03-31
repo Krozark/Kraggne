@@ -15,10 +15,11 @@ Instalation:
      
     in your INSTALLED_APPS add :
         'mptt',
-        'Kraggne',
         'Kraggne.contrib.contentblocks',
         'Kraggne.contrib.flatblocks',
         'Kraggne.contrib.gblocks',
+        'Kraggne',
+
 
 
     in your urls.py add :
