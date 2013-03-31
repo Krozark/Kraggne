@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% load Kraggne_tags %}
+{% load Kraggne_tags contentblocks %}
 
 {% block page.body %}
+{% containeur page.slug  %}
+{% include "Kraggne/pagination.inc.html" %}
 <div class="contentblocks containeur">
     <div class="contentblocks object">
         {% for object in object_list %}
@@ -9,4 +11,5 @@
         {% endfor %}
     </div>
 </div>
+{% include "Kraggne/pagination.inc.html" %}
 {% endblock %}

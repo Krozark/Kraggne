@@ -1,7 +1,9 @@
 {% extends "Kraggne/genericPage.html" %}
+{% load contentblocks %}
 
 
 {% block page.body %}
+{% containeur page.slug  %}
 <form action="{{action_url}}#form" method="post" class="kraggne-form form-horizontal" id="form">
     {% csrf_token %}
     {% for field in form %}
