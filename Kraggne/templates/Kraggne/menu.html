@@ -2,7 +2,7 @@
 
 <div class="nav-block {{MENU_CLASS}}">
 {% for menu in object_list %}
-{% if request.user.is_authenticated and menu.login_required_to_see or not menu.login_required_to_see %}
+{% if menu|is_visible_for:request.user %}
 {% if forloop.first %}
 <ul class="nav nav-0">
 {% else %}

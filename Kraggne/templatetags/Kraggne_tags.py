@@ -382,6 +382,10 @@ def startswith(arg, val):
 def get_object_url(menu,obj):
     return menu.get_object_url(obj)
 
+@register.filter
+def is_visible_for(menu,user):
+    return menu.is_visible_for(user)
+
 ##############################################################
 ################ display tag #################################
 ##############################################################

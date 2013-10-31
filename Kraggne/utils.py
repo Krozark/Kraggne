@@ -5,6 +5,7 @@ from django.conf.urls.defaults import patterns,url
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.loading import get_model
 from django.contrib.auth.decorators import login_required
+from Kraggne.decorators import login_forbidden
 from Kraggne.parser import get_model_and_url_from_detail,get_model_from_include,  get_model_and_url_from_list
 
 def MakePattern(menuItem):
@@ -49,9 +50,14 @@ def MakePattern(menuItem):
     except :
         pass
 
+    v = None
     if menuItem.login_required:
         view = login_required(view.as_view(**q))
-    else:
+        v= True
+    if menuItem.login_forbidden:
+        view = login_forbidden(view.as_view(**q))
+        v = True
+    if not v:
         view = view.as_view(**q)
 
 

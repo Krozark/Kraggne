@@ -24,24 +24,36 @@ class MenuItem(MPTTModel):
     parent = TreeForeignKey('self',null=True,blank=True,default=1)
 
     cms_page = models.BooleanField(_('CMS page'),default=False,
-            help_text=_("Rafere to a stadar or a CMS page."))
+            help_text=_("Refere to a stadard or a CMS page."))
 
     view = models.CharField(_('View'),max_length=255
             ,help_text=_("The view of the page you want to link to, as url-name, absolute URL (/your/path), include(app.model) or detail(\"/your/path/(?P<what_you_want>[something]+)\",app.model).\nLeave blank to auto create the url by concatenate parent url and slug."),blank=True,null=True)
     #the calculated url
     url = models.CharField(_('Url'),editable=False,max_length=255)
     is_visible = models.BooleanField(_('Is Visible in menu'),default=True)
+
     login_required =  models.BooleanField(_('login required'),default=False)
     login_required_to_see =  models.BooleanField(_('login required to see'),default=False)
 
+    login_forbidden =  models.BooleanField(_('login forbidden'),default=False)
+    login_forbidden_to_see =  models.BooleanField(_('login forbidden to see'),default=False)
+
     #template_path = models.CharField(_('Template Path'), max_length=255,null=True,blank=True,
     #                                 help_text=_('Display usign specific template'))
-
+    
     class Meta:
         ordering = ('lft', 'tree_id')
 
     class MPTTMeta:
         order_insertion_by = ['order']
+
+    def is_visible_for(self,user):
+        if (not self.login_required_to_see) and (not self.login_forbidden_to_see):
+            return True
+        if user.is_authenticated():
+            return self.login_required_to_see and (not self.login_forbidden_to_see)
+        else:
+            return (not self.login_required_to_see) and (self.login_forbidden_to_see)
 
     def __IsAccessible__(self):
         if self.is_visible and self.parent != None:
