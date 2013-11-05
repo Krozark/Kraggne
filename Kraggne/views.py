@@ -141,7 +141,6 @@ class GenericFormView(GenericViewContextMixin,FormView):
         if hasattr(self,'object') and self.object is not None and hasattr(self.object,'get_absolute_url'):
             return self.object.get_absolute_url()
 
-        print self.slug
         if self.slug:
             page = MenuItem.objects.filter(slug=self.slug)[:1]
             if page:

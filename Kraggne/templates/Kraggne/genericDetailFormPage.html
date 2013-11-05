@@ -2,7 +2,7 @@
 {% load Kraggne_tags %}
 
 {% block page.body %}
-<form action="{{action_url}}#form" method="post" class="kraggne-form form-horizontal" id="form">
+<form action="{{action_url}}#form" method="post"  enctype="multipart/form-data" class="kraggne-form form-horizontal" id="form">
     {% csrf_token %}
     {% for field in form %}
     <div class="control-group">
