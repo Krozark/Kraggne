@@ -29,3 +29,12 @@
     </div>
 </div>
 {% endblock %}
+
+{% block project.scripts %}
+<script src="{{ STATIC_URL }}Kraggne/multi-select/js/jquery.multi-select.js"></script>
+<link href="{{ STATIC_URL}}Kraggne/multi-select/css/multi-select.css" rel="stylesheet" type="text/css" media="screen" />
+<script>
+    $("select[multiple]").multiSelect();
+
+</script>
+{% endblock %}
