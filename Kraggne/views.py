@@ -186,6 +186,7 @@ class GenericFormView(GenericViewContextMixin,FormView):
                 self.object = form.save(commit=True,request=self.request)
             except TypeError:
                 self.object = form.save(commit=True)
+            form.save_m2m()
         return FormMixin.form_valid(self,form)
 
 
@@ -318,6 +319,7 @@ class GenericListFormView(GenericListView,FormMixin,ProcessFormView):
                 self.object = form.save(commit=True,request=self.request)
             except TypeError:
                 self.object = form.save(commit=True)
+            form.save_m2m()
             #if hasattr(self.object,'save_model'):
             #    self.object.save_model(self.request,form,False):
         return FormMixin.form_valid(self,form)
@@ -405,6 +407,7 @@ class GenericDetailFormView(GenericDetailView,FormMixin,ProcessFormView):
                 self.object = form.save(commit=True,request=self.request)
             except TypeError:
                 self.object = form.save(commit=True)
+            form.save_m2m()
             #if hasattr(self.object,'save_model'):
             #    self.object.save_model(self.request,form,False):
         return FormMixin.form_valid(self,form)
