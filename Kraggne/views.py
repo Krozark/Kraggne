@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from Kraggne.models import MenuItem
 from Kraggne.contrib.flatblocks.utils import GetTemplatesPath
 from django.http import Http404
+from django.core.paginator import InvalidPage
 
 def addSelfToContext(slug,context):
     try:
